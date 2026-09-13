@@ -1,0 +1,36 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1440, "h": 900, "title": "Site overview" },
+    { "file": "Findings.dc.html", "x": 1560, "y": 0, "w": 1440, "h": 900, "title": "Findings" },
+    { "file": "FixReview.dc.html", "x": 3120, "y": 0, "w": 1440, "h": 900, "title": "Review a fix" },
+    { "file": "FixQueue.dc.html", "x": 4680, "y": 0, "w": 1440, "h": 900, "title": "Fix queue and history" },
+    { "file": "Sites.dc.html", "x": 0, "y": 1020, "w": 1440, "h": 900, "title": "All sites (agency)" },
+    { "file": "SearchData.dc.html", "x": 1560, "y": 1020, "w": 1440, "h": 900, "title": "Search data" },
+    { "file": "Connections.dc.html", "x": 3120, "y": 1020, "w": 1440, "h": 900, "title": "Connections" },
+    { "file": "Reports.dc.html", "x": 4680, "y": 1020, "w": 1440, "h": 900, "title": "White-label reports" }
+  ],
+  "annotations": [
+    {
+      "id": "core-loop",
+      "x": 0,
+      "y": -210,
+      "w": 660,
+      "text": "The product is one loop, left to right: scan the site, look at the findings, review a single proposed fix, approve the batch. Everything on the row below exists to support that loop."
+    },
+    {
+      "id": "data-scope",
+      "x": 1560,
+      "y": -210,
+      "w": 660,
+      "text": "Deliberate scope: every number on these screens comes from crawling the customer's own site or from their own Search Console. No backlink index, no keyword database, no bought rank data - so cost per site stays near zero and there is no vendor to license."
+    },
+    {
+      "id": "the-wedge",
+      "x": 3120,
+      "y": -210,
+      "w": 660,
+      "text": "The difference sits in Connections and Review a fix: changes are written into something the customer owns and every one can be rolled back. The crowded end of this market injects changes with a script that disappears when you stop paying."
+    }
+  ],
+  "launch": { "view": "canvas" }
+}

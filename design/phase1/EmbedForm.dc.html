@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+    :root {
+      --bg: #0F0E11;
+      --panel: #17161A;
+      --panel2: #1D1B21;
+      --raise: #232027;
+      --line: #2A272F;
+      --line2: #3A3542;
+      --tx: #ECEAF0;
+      --tx2: #A8A2B2;
+      --tx3: #6F6A7A;
+      --lime: #B6E24A;
+      --lime-d: #7E9E2A;
+      --amber: #E7A33C;
+      --coral: #E2705A;
+      --violet: #9B8CF4;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--tx);
+      font-family: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+      font-size: 13px;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--lime); text-decoration: none; }
+    a:hover { color: #C9EE72; }
+    h1, h2, h3, .dsp { font-family: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif; margin: 0; }
+    .mono { font-family: 'IBM Plex Mono', ui-monospace, 'Courier New', monospace; }
+    .shell { display: flex; width: 1440px; height: 900px; overflow: hidden; }
+    .side {
+      width: 232px; flex-shrink: 0; background: var(--panel);
+      border-right: 1px solid var(--line); display: flex; flex-direction: column;
+    }
+    .brandrow { display: flex; align-items: center; gap: 10px; padding: 20px 20px 22px 20px; }
+    .mark { width: 26px; height: 26px; border-radius: 7px; background: var(--lime);
+            display: flex; align-items: center; justify-content: center; }
+    .brand { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
+    .navsec { padding: 0 12px; display: flex; flex-direction: column; gap: 2px; }
+    .navlbl { font-size: 10px; letter-spacing: 1.1px; text-transform: uppercase;
+              color: var(--tx3); font-weight: 600; padding: 18px 10px 7px 10px; }
+    .nav { display: flex; align-items: center; gap: 10px; height: 34px; padding: 0 10px;
+           border-radius: 7px; color: var(--tx2); font-weight: 500; }
+    .nav.on { background: var(--raise); color: var(--tx); }
+    .nav .ct { margin-left: auto; font-size: 11px; color: var(--tx3); }
+    .nav.on .ct { color: var(--lime); }
+    .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+    .top { height: 60px; flex-shrink: 0; border-bottom: 1px solid var(--line);
+           display: flex; align-items: center; gap: 14px; padding: 0 24px; background: var(--panel); }
+    .picker { display: flex; align-items: center; gap: 9px; height: 34px; padding: 0 12px;
+              border: 1px solid var(--line2); border-radius: 8px; font-weight: 500; }
+    .body { flex: 1; overflow: hidden; padding: 24px; }
+    .btn { display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 14px;
+           border-radius: 8px; font-weight: 600; font-size: 12.5px; border: 1px solid var(--line2);
+           color: var(--tx); background: transparent; }
+    .btn.pri { background: var(--lime); color: #16200A; border-color: var(--lime); }
+    .btn.gh { border-color: transparent; color: var(--tx2); }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+    .pad { padding: 18px; }
+    .ch { display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+    .ctitle { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; }
+    .kicker { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--tx3); font-weight: 600; }
+    .pill { display: inline-flex; align-items: center; gap: 5px; height: 21px; padding: 0 8px;
+            border-radius: 999px; font-size: 10.5px; font-weight: 600; letter-spacing: 0.2px; }
+    .p-lime { background: rgba(182,226,74,0.14); color: var(--lime); }
+    .p-amber { background: rgba(231,163,60,0.14); color: var(--amber); }
+    .p-coral { background: rgba(226,112,90,0.15); color: var(--coral); }
+    .p-grey { background: rgba(168,162,178,0.12); color: var(--tx2); }
+    .p-violet { background: rgba(155,140,244,0.15); color: var(--violet); }
+    .row { display: flex; align-items: center; }
+    .muted { color: var(--tx2); }
+    .dim { color: var(--tx3); }
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; font-size: 10px; letter-spacing: 0.9px; text-transform: uppercase;
+         color: var(--tx3); font-weight: 600; padding: 0 14px 9px 14px; }
+    td { padding: 11px 14px; border-top: 1px solid var(--line); vertical-align: middle; }
+
+    .inp { height:36px; border:1px solid var(--line2); border-radius:8px; background:var(--raise);
+           padding:0 12px; display:flex; align-items:center; color:var(--tx); font-size:13px; }
+    .inp.ph { color: var(--tx3); }
+    .lbl { font-size:12px; font-weight:600; color:var(--tx2); margin-bottom:6px; display:block; }
+    .field { margin-bottom:14px; }
+    .sw { width:34px; height:20px; border-radius:99px; background:var(--lime); position:relative; }
+    .sw::after { content:''; position:absolute; right:2px; top:2px; width:16px; height:16px; border-radius:99px; background:#16200A; }
+    .sw.off { background: var(--line2); } .sw.off::after { left:2px; right:auto; background: var(--tx2); }
+    .tabs { display:flex; gap:2px; border-bottom:1px solid var(--line); }
+    .tab { padding:10px 14px; font-weight:600; font-size:12.5px; color:var(--tx2); border-bottom:2px solid transparent; }
+    .tab.on { color:var(--tx); border-color:var(--lime); }
+
+  .lt { font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#16161A; background:#fff; }
+  .lt .h { font-family: inherit; }
+  .lt .card { background:#fff; border:1px solid #E6E6EA; border-radius:12px; box-shadow:0 1px 2px rgba(0,0,0,.05); }
+  .lt .in { height:44px; border:1px solid #D9D9E0; border-radius:8px; padding:0 14px; display:flex; align-items:center; color:#8E8E99; font-size:15px; background:#fff; }
+  .lt .in.f { color:#16161A; border-color:#1F5AF6; box-shadow:0 0 0 3px rgba(31,90,246,.15); }
+  .lt .in.e { border-color:#D64545; color:#16161A; }
+  .lt .cta { height:46px; border-radius:8px; background:#1F5AF6; color:#fff; font-weight:600; font-size:15px; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .lt .cta.dis { opacity:.55; }
+  .lt .muted { color:#5B5B66; } .lt .dim { color:#8E8E99; }
+  .lt .lbl { font-size:12.5px; font-weight:600; color:#16161A; margin-bottom:6px; display:block; }
+  .lt .chk { width:18px; height:18px; border:1.5px solid #B8B8C2; border-radius:4px; flex-shrink:0; margin-top:2px; }
+  .lt .chk.on { background:#1F5AF6; border-color:#1F5AF6; }
+  .lt .pb { font-size:11px; color:#8E8E99; text-align:center; margin-top:14px; }
+  .lt .good { color:#2E9E5B; } .lt .warn { color:#D9822B; } .lt .bad { color:#D64545; }
+  .lt .bg-good { background:#2E9E5B; } .lt .bg-warn { background:#D9822B; } .lt .bg-bad { background:#D64545; }
+  .lt .pill { height:22px; padding:0 9px; border-radius:999px; font-size:11px; font-weight:600; display:inline-flex; align-items:center; gap:5px; }
+  .lt .pl-good { background:#E6F5EC; color:#22804A; } .lt .pl-warn { background:#FBEEDF; color:#A8621A; } .lt .pl-bad { background:#FBE5E5; color:#B33636; } .lt .pl-grey { background:#EFEFF3; color:#5B5B66; }
+  .lt .mono { font-family: 'SF Mono', Menlo, Consolas, monospace; }
+  .lt .sec { font-size:12px; letter-spacing:.8px; text-transform:uppercase; font-weight:700; color:#8E8E99; }
+ body{background:#fff} .wrap{width:2200px;height:1000px;overflow:hidden;position:relative} </style>
+</helmet>
+<div class="wrap"><div class="lt" style="padding:30px;width:2200px;height:1000px"><div style="display:flex;gap:24px;align-items:flex-start;overflow:hidden"><div><div class="sec" style="margin-bottom:10px;color:#5B5B66">1. Form (idle)</div><div class="card" style="width:400px;padding:26px 26px 22px 26px;flex-shrink:0"><div style="display:flex;align-items:center;gap:8px"><div style="width:20px;height:20px;border-radius:6px;background:#1F5AF6"></div><span style="font-weight:700;font-size:15.0px;letter-spacing:-.2px">Northwind Digital</span></div><div style="font-size:20px;font-weight:700;margin-top:16px;line-height:1.25">Get a free SEO report for your website</div><div class="muted" style="font-size:13.5px;margin-top:6px;line-height:1.5">Score, what is broken, and three fixes you can use today. Takes about 15 seconds.</div><div style="margin-top:22px"><span class="lbl">Website address</span><div class="in">https://yourwebsite.com</div></div><div style="margin-top:14px"><span class="lbl">Email for the report</span><div class="in">you@company.com</div></div><div style="display:flex;gap:10px;margin-top:14px"><div class="chk "></div><div class="dim" style="font-size:12px;line-height:1.5">I agree to receive my report and follow-up from Northwind Digital by email. <span style="color:#1F5AF6">Privacy policy</span></div></div><div style="margin-top:14px;height:38px;border:1px solid #E6E6EA;border-radius:6px;display:flex;align-items:center;gap:10px;padding:0 12px;background:#FAFAFB"><div style="width:18px;height:18px;border-radius:4px;border:1.5px solid #B8B8C2"></div><span class="dim" style="font-size:12px">Verify you are human</span><span class="dim" style="margin-left:auto;font-size:10px">Cloudflare</span></div><div class="cta" style="margin-top:16px">Get my report</div><div class="pb">Powered by SiteAuditServer</div></div></div><div><div class="sec" style="margin-bottom:10px;color:#5B5B66">2. Validating</div><div class="card" style="width:400px;padding:26px 26px 22px 26px;flex-shrink:0"><div style="display:flex;align-items:center;gap:8px"><div style="width:20px;height:20px;border-radius:6px;background:#1F5AF6"></div><span style="font-weight:700;font-size:15.0px;letter-spacing:-.2px">Northwind Digital</span></div><div style="font-size:20px;font-weight:700;margin-top:16px;line-height:1.25">Get a free SEO report for your website</div><div class="muted" style="font-size:13.5px;margin-top:6px;line-height:1.5">Score, what is broken, and three fixes you can use today. Takes about 15 seconds.</div><div style="margin-top:22px"><span class="lbl">Website address</span><div class="in f">northwind-client.com</div></div><div style="margin-top:14px"><span class="lbl">Email for the report</span><div class="in e">amir@northwind</div><div class="bad" style="font-size:12px;margin-top:6px">That email does not look complete. Check the domain.</div></div><div style="display:flex;gap:10px;margin-top:14px"><div class="chk on"></div><div class="dim" style="font-size:12px;line-height:1.5">I agree to receive my report and follow-up from Northwind Digital by email. <span style="color:#1F5AF6">Privacy policy</span></div></div><div style="margin-top:14px;height:38px;border:1px solid #E6E6EA;border-radius:6px;display:flex;align-items:center;gap:10px;padding:0 12px;background:#FAFAFB"><div style="width:18px;height:18px;border-radius:4px;background:#2E9E5B;border:0"></div><span class="dim" style="font-size:12px">Verify you are human</span><span class="dim" style="margin-left:auto;font-size:10px">Cloudflare</span></div><div class="cta dis" style="margin-top:16px">Get my report</div><div class="pb">Powered by SiteAuditServer</div></div></div><div><div class="sec" style="margin-bottom:10px;color:#5B5B66">3. Queued / running</div><div class="card" style="width:400px;padding:26px 26px 22px 26px;flex-shrink:0"><div style="display:flex;align-items:center;gap:8px"><div style="width:20px;height:20px;border-radius:6px;background:#1F5AF6"></div><span style="font-weight:700;font-size:15.0px;letter-spacing:-.2px">Northwind Digital</span></div><div style="font-size:20px;font-weight:700;margin-top:16px;line-height:1.25">Get a free SEO report for your website</div><div class="muted" style="font-size:13.5px;margin-top:6px;line-height:1.5">Score, what is broken, and three fixes you can use today. Takes about 15 seconds.</div><div style="margin-top:34px;text-align:center"><div style="width:56px;height:56px;border-radius:99px;border:4px solid #E6E6EA;border-top-color:#1F5AF6;margin:0 auto"></div><div style="font-weight:700;font-size:17px;margin-top:18px">Checking northwind-client.com</div><div class="muted" style="font-size:13px;margin-top:6px;line-height:1.5">Reading the page, running 29 checks, writing your fixes. Usually under 15 seconds.</div><div style="margin-top:20px;height:6px;border-radius:99px;background:#EFEFF3;overflow:hidden"><div style="width:62%;height:100%;background:#1F5AF6"></div></div><div class="dim" style="font-size:11.5px;margin-top:8px">Step 2 of 3: checks</div></div><div class="pb">Powered by SiteAuditServer</div></div></div><div><div class="sec" style="margin-bottom:10px;color:#5B5B66">4. Done</div><div class="card" style="width:400px;padding:26px 26px 22px 26px;flex-shrink:0"><div style="display:flex;align-items:center;gap:8px"><div style="width:20px;height:20px;border-radius:6px;background:#1F5AF6"></div><span style="font-weight:700;font-size:15.0px;letter-spacing:-.2px">Northwind Digital</span></div><div style="font-size:20px;font-weight:700;margin-top:16px;line-height:1.25">Get a free SEO report for your website</div><div class="muted" style="font-size:13.5px;margin-top:6px;line-height:1.5">Score, what is broken, and three fixes you can use today. Takes about 15 seconds.</div><div style="margin-top:30px;text-align:center"><div style="width:56px;height:56px;border-radius:99px;background:#E6F5EC;display:flex;align-items:center;justify-content:center;margin:0 auto"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2E9E5B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></div><div style="font-weight:700;font-size:17px;margin-top:18px">Your report is ready</div><div class="muted" style="font-size:13px;margin-top:6px;line-height:1.5">Score <b class="warn">58</b>. We found 3 things worth fixing first. We also sent the link to amir@northwind.com.</div><div class="cta" style="margin-top:20px">Open my report</div><div class="dim" style="font-size:11.5px;margin-top:12px">Free plan variant: "Check your inbox for the link" instead of the button</div></div><div class="pb">Powered by SiteAuditServer</div></div></div><div><div class="sec" style="margin-bottom:10px;color:#5B5B66">5. Error</div><div class="card" style="width:400px;padding:26px 26px 22px 26px;flex-shrink:0"><div style="display:flex;align-items:center;gap:8px"><div style="width:20px;height:20px;border-radius:6px;background:#1F5AF6"></div><span style="font-weight:700;font-size:15.0px;letter-spacing:-.2px">Northwind Digital</span></div><div style="font-size:20px;font-weight:700;margin-top:16px;line-height:1.25">Get a free SEO report for your website</div><div class="muted" style="font-size:13.5px;margin-top:6px;line-height:1.5">Score, what is broken, and three fixes you can use today. Takes about 15 seconds.</div><div style="margin-top:30px;text-align:center"><div style="width:56px;height:56px;border-radius:99px;background:#FBE5E5;display:flex;align-items:center;justify-content:center;margin:0 auto"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#D64545" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></div><div style="font-weight:700;font-size:17px;margin-top:18px">We could not reach that site</div><div class="muted" style="font-size:13px;margin-top:6px;line-height:1.5">northwind-client.com did not answer in 10 seconds. Check the address, or try again in a minute.</div><div class="cta" style="margin-top:20px;background:#fff;color:#16161A;border:1px solid #D9D9E0">Try again</div><div class="dim mono" style="font-size:10.5px;margin-top:12px">fetch_timeout · ref 7f3a2c</div></div><div class="pb">Powered by SiteAuditServer</div></div></div></div><div style="margin-top:36px" class="sec">How it sits on the agency page (iframe, auto height, no cookies)</div><div style="margin-top:12px;border:1px solid #E6E6EA;border-radius:12px;overflow:hidden;width:2140px;height:230px;background:#F7F7F8;position:relative"><div style="height:44px;background:#fff;border-bottom:1px solid #E6E6EA;display:flex;align-items:center;padding:0 22px;gap:24px"><div style="display:flex;align-items:center;gap:8px"><div style="width:18px;height:18px;border-radius:6px;background:#1F5AF6"></div><span style="font-weight:700;font-size:13.5px;letter-spacing:-.2px">Northwind Digital</span></div><span class="dim" style="font-size:13px;margin-left:auto">Services · Work · About · Contact</span></div><div style="display:flex;gap:40px;padding:26px 40px"><div style="flex:1"><div style="font-size:26px;font-weight:800;line-height:1.15;letter-spacing:-.5px">Is your website losing customers to Google?</div><div class="muted" style="font-size:14px;margin-top:10px;line-height:1.5;max-width:520px">Run a free check. You get a score, the three most important fixes, and we get a reason to talk.</div></div><div style="width:400px;height:150px;border:2px dashed #1F5AF6;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#fff"><span class="mono" style="font-size:12px;color:#1F5AF6">&lt;div id="tw-audit"&gt;  iframe from siteauditserver.com</span></div></div></div></div></div>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+    :root {
+      --bg: #0F0E11;
+      --panel: #17161A;
+      --panel2: #1D1B21;
+      --raise: #232027;
+      --line: #2A272F;
+      --line2: #3A3542;
+      --tx: #ECEAF0;
+      --tx2: #A8A2B2;
+      --tx3: #6F6A7A;
+      --lime: #B6E24A;
+      --lime-d: #7E9E2A;
+      --amber: #E7A33C;
+      --coral: #E2705A;
+      --violet: #9B8CF4;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--tx);
+      font-family: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+      font-size: 13px;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--lime); text-decoration: none; }
+    a:hover { color: #C9EE72; }
+    h1, h2, h3, .dsp { font-family: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif; margin: 0; }
+    .mono { font-family: 'IBM Plex Mono', ui-monospace, 'Courier New', monospace; }
+    .shell { display: flex; width: 1440px; height: 900px; overflow: hidden; }
+    .side {
+      width: 232px; flex-shrink: 0; background: var(--panel);
+      border-right: 1px solid var(--line); display: flex; flex-direction: column;
+    }
+    .brandrow { display: flex; align-items: center; gap: 10px; padding: 20px 20px 22px 20px; }
+    .mark { width: 26px; height: 26px; border-radius: 7px; background: var(--lime);
+            display: flex; align-items: center; justify-content: center; }
+    .brand { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
+    .navsec { padding: 0 12px; display: flex; flex-direction: column; gap: 2px; }
+    .navlbl { font-size: 10px; letter-spacing: 1.1px; text-transform: uppercase;
+              color: var(--tx3); font-weight: 600; padding: 18px 10px 7px 10px; }
+    .nav { display: flex; align-items: center; gap: 10px; height: 34px; padding: 0 10px;
+           border-radius: 7px; color: var(--tx2); font-weight: 500; }
+    .nav.on { background: var(--raise); color: var(--tx); }
+    .nav .ct { margin-left: auto; font-size: 11px; color: var(--tx3); }
+    .nav.on .ct { color: var(--lime); }
+    .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+    .top { height: 60px; flex-shrink: 0; border-bottom: 1px solid var(--line);
+           display: flex; align-items: center; gap: 14px; padding: 0 24px; background: var(--panel); }
+    .picker { display: flex; align-items: center; gap: 9px; height: 34px; padding: 0 12px;
+              border: 1px solid var(--line2); border-radius: 8px; font-weight: 500; }
+    .body { flex: 1; overflow: hidden; padding: 24px; }
+    .btn { display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 14px;
+           border-radius: 8px; font-weight: 600; font-size: 12.5px; border: 1px solid var(--line2);
+           color: var(--tx); background: transparent; }
+    .btn.pri { background: var(--lime); color: #16200A; border-color: var(--lime); }
+    .btn.gh { border-color: transparent; color: var(--tx2); }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+    .pad { padding: 18px; }
+    .ch { display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+    .ctitle { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; }
+    .kicker { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--tx3); font-weight: 600; }
+    .pill { display: inline-flex; align-items: center; gap: 5px; height: 21px; padding: 0 8px;
+            border-radius: 999px; font-size: 10.5px; font-weight: 600; letter-spacing: 0.2px; }
+    .p-lime { background: rgba(182,226,74,0.14); color: var(--lime); }
+    .p-amber { background: rgba(231,163,60,0.14); color: var(--amber); }
+    .p-coral { background: rgba(226,112,90,0.15); color: var(--coral); }
+    .p-grey { background: rgba(168,162,178,0.12); color: var(--tx2); }
+    .p-violet { background: rgba(155,140,244,0.15); color: var(--violet); }
+    .row { display: flex; align-items: center; }
+    .muted { color: var(--tx2); }
+    .dim { color: var(--tx3); }
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; font-size: 10px; letter-spacing: 0.9px; text-transform: uppercase;
+         color: var(--tx3); font-weight: 600; padding: 0 14px 9px 14px; }
+    td { padding: 11px 14px; border-top: 1px solid var(--line); vertical-align: middle; }
+
+    .inp { height:36px; border:1px solid var(--line2); border-radius:8px; background:var(--raise);
+           padding:0 12px; display:flex; align-items:center; color:var(--tx); font-size:13px; }
+    .inp.ph { color: var(--tx3); }
+    .lbl { font-size:12px; font-weight:600; color:var(--tx2); margin-bottom:6px; display:block; }
+    .field { margin-bottom:14px; }
+    .sw { width:34px; height:20px; border-radius:99px; background:var(--lime); position:relative; }
+    .sw::after { content:''; position:absolute; right:2px; top:2px; width:16px; height:16px; border-radius:99px; background:#16200A; }
+    .sw.off { background: var(--line2); } .sw.off::after { left:2px; right:auto; background: var(--tx2); }
+    .tabs { display:flex; gap:2px; border-bottom:1px solid var(--line); }
+    .tab { padding:10px 14px; font-weight:600; font-size:12.5px; color:var(--tx2); border-bottom:2px solid transparent; }
+    .tab.on { color:var(--tx); border-color:var(--lime); }
+
+  .lt { font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#16161A; background:#fff; }
+  .lt .h { font-family: inherit; }
+  .lt .card { background:#fff; border:1px solid #E6E6EA; border-radius:12px; box-shadow:0 1px 2px rgba(0,0,0,.05); }
+  .lt .in { height:44px; border:1px solid #D9D9E0; border-radius:8px; padding:0 14px; display:flex; align-items:center; color:#8E8E99; font-size:15px; background:#fff; }
+  .lt .in.f { color:#16161A; border-color:#1F5AF6; box-shadow:0 0 0 3px rgba(31,90,246,.15); }
+  .lt .in.e { border-color:#D64545; color:#16161A; }
+  .lt .cta { height:46px; border-radius:8px; background:#1F5AF6; color:#fff; font-weight:600; font-size:15px; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .lt .cta.dis { opacity:.55; }
+  .lt .muted { color:#5B5B66; } .lt .dim { color:#8E8E99; }
+  .lt .lbl { font-size:12.5px; font-weight:600; color:#16161A; margin-bottom:6px; display:block; }
+  .lt .chk { width:18px; height:18px; border:1.5px solid #B8B8C2; border-radius:4px; flex-shrink:0; margin-top:2px; }
+  .lt .chk.on { background:#1F5AF6; border-color:#1F5AF6; }
+  .lt .pb { font-size:11px; color:#8E8E99; text-align:center; margin-top:14px; }
+  .lt .good { color:#2E9E5B; } .lt .warn { color:#D9822B; } .lt .bad { color:#D64545; }
+  .lt .bg-good { background:#2E9E5B; } .lt .bg-warn { background:#D9822B; } .lt .bg-bad { background:#D64545; }
+  .lt .pill { height:22px; padding:0 9px; border-radius:999px; font-size:11px; font-weight:600; display:inline-flex; align-items:center; gap:5px; }
+  .lt .pl-good { background:#E6F5EC; color:#22804A; } .lt .pl-warn { background:#FBEEDF; color:#A8621A; } .lt .pl-bad { background:#FBE5E5; color:#B33636; } .lt .pl-grey { background:#EFEFF3; color:#5B5B66; }
+  .lt .mono { font-family: 'SF Mono', Menlo, Consolas, monospace; }
+  .lt .sec { font-size:12px; letter-spacing:.8px; text-transform:uppercase; font-weight:700; color:#8E8E99; }
+ body{background:#fff} .wrap{width:1440px;height:2150px;overflow:hidden;position:relative} </style>
+</helmet>
+<div class="wrap"><div class="lt" style="width:1440px"><div style="width:1040px;margin:0 auto;padding:0 0 20px 0"><div style="height:4px;background:#1F5AF6"></div><div style="display:flex;align-items:center;padding:18px 0"><div style="display:flex;align-items:center;gap:8px"><div style="width:24px;height:24px;border-radius:6px;background:#1F5AF6"></div><span style="font-weight:700;font-size:18.0px;letter-spacing:-.2px">Northwind Digital</span></div><div style="flex:1"></div><span class="dim" style="font-size:12.5px">Report for <b class="mono" style="color:#16161A">northwind-client.com</b> · 13 Sep 2026</span><div style="margin-left:18px;display:flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid #D9D9E0;border-radius:7px;font-size:12.5px;font-weight:600"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16161A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v13M6 12l6 6 6-6"/></svg>PDF</div></div><div class="card" style="padding:26px 30px;display:flex;gap:36px;align-items:center"><div><svg width="170" height="170" viewBox="0 0 170 170"><circle cx="85" cy="85" r="72" fill="none" stroke="#EFEFF3" stroke-width="14"/><circle cx="85" cy="85" r="72" fill="none" stroke="#D9822B" stroke-width="14" stroke-linecap="round" stroke-dasharray="452" stroke-dashoffset="190" transform="rotate(-90 85 85)"/><text x="85" y="82" text-anchor="middle" font-size="46" font-weight="800" fill="#16161A" font-family="-apple-system,Segoe UI,Roboto,sans-serif">58</text><text x="85" y="106" text-anchor="middle" font-size="12" fill="#8E8E99" font-family="-apple-system,Segoe UI,Roboto,sans-serif">out of 100</text></svg></div><div style="flex:1"><div style="font-size:24px;font-weight:800;letter-spacing:-.4px;line-height:1.2">Good bones, weak first impression</div><div class="muted" style="font-size:14px;margin-top:8px;line-height:1.55;max-width:560px">Google can read the site, but the title and description do not say what you do or where. Structured data is missing, so you do not qualify for rich results. Three fixes below take about 20 minutes.</div><div style="display:flex;gap:10px;margin-top:16px"><span class="pill pl-bad">3 critical</span><span class="pill pl-warn">6 warnings</span><span class="pill pl-good">20 passed</span></div></div><div style="width:280px"><div style="margin-bottom:14px"><div style="display:flex;font-size:13px;font-weight:600"><span>Technical</span><span style="margin-left:auto" class="good">82</span></div><div style="height:8px;border-radius:99px;background:#EFEFF3;margin-top:6px;overflow:hidden"><div class="bg-good" style="width:82%;height:100%"></div></div></div><div style="margin-bottom:14px"><div style="display:flex;font-size:13px;font-weight:600"><span>Content</span><span style="margin-left:auto" class="bad">44</span></div><div style="height:8px;border-radius:99px;background:#EFEFF3;margin-top:6px;overflow:hidden"><div class="bg-bad" style="width:44%;height:100%"></div></div></div><div style="margin-bottom:14px"><div style="display:flex;font-size:13px;font-weight:600"><span>Structured data</span><span style="margin-left:auto" class="bad">20</span></div><div style="height:8px;border-radius:99px;background:#EFEFF3;margin-top:6px;overflow:hidden"><div class="bg-bad" style="width:20%;height:100%"></div></div></div><div style="margin-bottom:14px"><div style="display:flex;font-size:13px;font-weight:600"><span>Social</span><span style="margin-left:auto" class="warn">65</span></div><div style="height:8px;border-radius:99px;background:#EFEFF3;margin-top:6px;overflow:hidden"><div class="bg-warn" style="width:65%;height:100%"></div></div></div></div></div><div style="display:flex;align-items:baseline;gap:12px;margin:34px 0 14px 0"><div style="font-size:20px;font-weight:800;letter-spacing:-.3px">Three fixes to do today</div><span class="muted" style="font-size:13px">Written for this page. Copy and paste into your CMS.</span></div><div class="card" style="padding:20px 22px;margin-bottom:14px"><div style="display:flex;align-items:center;gap:10px"><span class="pill pl-bad">Critical</span><div style="font-weight:700;font-size:15px">Title tag</div><div style="flex:1"></div><div style="display:flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid #D9D9E0;border-radius:7px;font-size:12.5px;font-weight:600"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16161A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copy</div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px"><div><div class="sec" style="font-size:10.5px">Now</div><div class="mono" style="margin-top:6px;padding:12px;border-radius:8px;background:#FBE5E5;font-size:12.5px;line-height:1.5;color:#7A2A2A;word-break:break-word">Home | Northwind Client</div></div><div><div class="sec" style="font-size:10.5px;color:#22804A">Suggested</div><div class="mono" style="margin-top:6px;padding:12px;border-radius:8px;background:#E6F5EC;font-size:12.5px;line-height:1.5;color:#1E5B36;word-break:break-word">Kitchen Renovation &amp; Custom Cabinets in Portland | Northwind Client</div></div></div><ul class="muted" style="font-size:12.5px;line-height:1.5;margin:12px 0 0 0;padding-left:18px"><li style="margin-bottom:5px">The current title is 24 characters and does not name a service or a city.</li><li style="margin-bottom:5px">The new one leads with the two things people search for, then the brand.</li><li style="margin-bottom:5px">58 characters, fits in results without being cut.</li></ul></div><div class="card" style="padding:20px 22px;margin-bottom:14px"><div style="display:flex;align-items:center;gap:10px"><span class="pill pl-bad">Critical</span><div style="font-weight:700;font-size:15px">Meta description</div><div style="flex:1"></div><div style="display:flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid #D9D9E0;border-radius:7px;font-size:12.5px;font-weight:600"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16161A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copy</div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px"><div><div class="sec" style="font-size:10.5px">Now</div><div class="mono" style="margin-top:6px;padding:12px;border-radius:8px;background:#FBE5E5;font-size:12.5px;line-height:1.5;color:#7A2A2A;word-break:break-word"><span class='dim'>(missing)</span></div></div><div><div class="sec" style="font-size:10.5px;color:#22804A">Suggested</div><div class="mono" style="margin-top:6px;padding:12px;border-radius:8px;background:#E6F5EC;font-size:12.5px;line-height:1.5;color:#1E5B36;word-break:break-word">Portland kitchen renovations and custom cabinetry, designed and built in-house. See recent projects, our process, and get a quote in 48 hours.</div></div></div><ul class="muted" style="font-size:12.5px;line-height:1.5;margin:12px 0 0 0;padding-left:18px"><li style="margin-bottom:5px">No description means Google picks random text from the page.</li><li style="margin-bottom:5px">This one says what, where, and what to do next, in 152 characters.</li></ul></div><div class="card" style="padding:20px 22px;margin-bottom:14px"><div style="display:flex;align-items:center;gap:10px"><span class="pill pl-bad">Critical</span><div style="font-weight:700;font-size:15px">Structured data (LocalBusiness)</div><div style="flex:1"></div><div style="display:flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid #D9D9E0;border-radius:7px;font-size:12.5px;font-weight:600"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16161A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copy</div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px"><div><div class="sec" style="font-size:10.5px">Now</div><div class="mono" style="margin-top:6px;padding:12px;border-radius:8px;background:#FBE5E5;font-size:12.5px;line-height:1.5;color:#7A2A2A;word-break:break-word"><span class='dim'>(none found)</span></div></div><div><div class="sec" style="font-size:10.5px;color:#22804A">Suggested</div><div class="mono" style="margin-top:6px;padding:12px;border-radius:8px;background:#E6F5EC;font-size:12.5px;line-height:1.5;color:#1E5B36;word-break:break-word">{ "@context": "https://schema.org", "@type": "HomeAndConstructionBusiness", "name": "Northwind Client", "address": { "addressLocality": "Portland", "addressRegion": "OR" }, "telephone": "+1 503 555 0100", "url": "https://northwind-client.com" }</div></div></div><ul class="muted" style="font-size:12.5px;line-height:1.5;margin:12px 0 0 0;padding-left:18px"><li style="margin-bottom:5px">Tells Google this is a local business with an address and phone, which local results require.</li><li style="margin-bottom:5px">Paste inside &lt;head&gt; in a script tag of type application/ld+json. Validated against schema.org.</li></ul></div><div style="position:relative;margin-top:26px"><div style="filter:blur(4px);opacity:.55;pointer-events:none"><div class="card" style="padding:14px 18px;margin-bottom:8px;display:flex;gap:12px;align-items:center"><span class="pill pl-warn">Warning</span><span style="font-weight:600">H1 repeats the title</span><span class="muted" style="margin-left:auto;font-size:12.5px">details</span></div><div class="card" style="padding:14px 18px;margin-bottom:8px;display:flex;gap:12px;align-items:center"><span class="pill pl-warn">Warning</span><span style="font-weight:600">og:image is the logo file</span><span class="muted" style="margin-left:auto;font-size:12.5px">details</span></div><div class="card" style="padding:14px 18px;margin-bottom:8px;display:flex;gap:12px;align-items:center"><span class="pill pl-warn">Warning</span><span style="font-weight:600">Canonical points to www version</span><span class="muted" style="margin-left:auto;font-size:12.5px">details</span></div><div class="card" style="padding:14px 18px;margin-bottom:8px;display:flex;gap:12px;align-items:center"><span class="pill pl-warn">Warning</span><span style="font-weight:600">6 images without alt text</span><span class="muted" style="margin-left:auto;font-size:12.5px">details</span></div><div class="card" style="padding:14px 18px;margin-bottom:8px;display:flex;gap:12px;align-items:center"><span class="pill pl-warn">Warning</span><span style="font-weight:600">No sitemap reference in robots.txt</span><span class="muted" style="margin-left:auto;font-size:12.5px">details</span></div><div class="card" style="padding:14px 18px;margin-bottom:8px;display:flex;gap:12px;align-items:center"><span class="pill pl-warn">Warning</span><span style="font-weight:600">Duplicate meta viewport</span><span class="muted" style="margin-left:auto;font-size:12.5px">details</span></div></div><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center"><div class="card" style="padding:26px 30px;width:520px;text-align:center;box-shadow:0 12px 32px rgba(0,0,0,.12)"><div style="font-size:19px;font-weight:800">6 more findings and a full technical checklist</div><div class="muted" style="font-size:13.5px;margin-top:8px;line-height:1.5">Northwind Digital can walk you through the rest and handle the fixes. No commitment.</div><div class="cta" style="margin-top:16px;width:280px;margin-left:auto;margin-right:auto">Book a free 20 minute call</div><div class="dim" style="font-size:11.5px;margin-top:10px">Agency sets this button: text and link</div></div></div></div><div style="margin:34px 0 12px 0;font-size:16px;font-weight:800">All 29 checks</div><div class="card" style="overflow:hidden"><div style="display:flex;align-items:center;gap:12px;padding:11px 18px;border-top:1px solid #EFEFF3;font-size:13px"><span class="pill pl-good">Pass</span><span style="font-weight:600;width:260px">HTTPS</span><span class="muted">Valid certificate, redirects from http</span><span class="dim mono" style="margin-left:auto;font-size:11px">https</span></div><div style="display:flex;align-items:center;gap:12px;padding:11px 18px;border-top:1px solid #EFEFF3;font-size:13px"><span class="pill pl-good">Pass</span><span style="font-weight:600;width:260px">Page loads</span><span class="muted">200 in 0.9 s, 184 KB HTML</span><span class="dim mono" style="margin-left:auto;font-size:11px">status</span></div><div style="display:flex;align-items:center;gap:12px;padding:11px 18px;border-top:1px solid #EFEFF3;font-size:13px"><span class="pill pl-bad">Fail</span><span style="font-weight:600;width:260px">Title length</span><span class="muted">24 characters, no keyword or location</span><span class="dim mono" style="margin-left:auto;font-size:11px">title_length</span></div><div style="display:flex;align-items:center;gap:12px;padding:11px 18px;border-top:1px solid #EFEFF3;font-size:13px"><span class="pill pl-bad">Fail</span><span style="font-weight:600;width:260px">Meta description</span><span class="muted">Missing</span><span class="dim mono" style="margin-left:auto;font-size:11px">meta_missing</span></div><div style="display:flex;align-items:center;gap:12px;padding:11px 18px;border-top:1px solid #EFEFF3;font-size:13px"><span class="pill pl-warn">Warn</span><span style="font-weight:600;width:260px">One H1</span><span class="muted">Two H1 elements found</span><span class="dim mono" style="margin-left:auto;font-size:11px">h1_count</span></div><div style="display:flex;align-items:center;gap:12px;padding:11px 18px;border-top:1px solid #EFEFF3;font-size:13px"><span class="pill pl-good">Pass</span><span style="font-weight:600;width:260px">Canonical present</span><span class="muted">Points to https://www version</span><span class="dim mono" style="margin-left:auto;font-size:11px">canonical</span></div><div style="display:flex;align-items:center;gap:12px;padding:11px 18px;border-top:1px solid #EFEFF3;font-size:13px"><span class="pill pl-bad">Fail</span><span style="font-weight:600;width:260px">Structured data</span><span class="muted">No JSON-LD found</span><span class="dim mono" style="margin-left:auto;font-size:11px">jsonld_missing</span></div><div style="display:flex;align-items:center;gap:12px;padding:11px 18px;border-top:1px solid #EFEFF3;font-size:13px"><span class="pill pl-warn">Warn</span><span style="font-weight:600;width:260px">Open Graph image</span><span class="muted">1:1 logo, recommended 1200 by 630</span><span class="dim mono" style="margin-left:auto;font-size:11px">og_image</span></div><div class="dim" style="padding:12px 18px;border-top:1px solid #EFEFF3;font-size:12px">21 more, collapsed</div></div><div style="display:flex;align-items:center;margin:30px 0 10px 0;padding-top:16px;border-top:1px solid #E6E6EA" class="dim"><span style="font-size:12px">Northwind Digital · 1200 NW Naito Pkwy, Portland OR · <span style="text-decoration:underline">Unsubscribe</span> · <span style="text-decoration:underline">Delete my data</span></span><span style="margin-left:auto;font-size:11px">Powered by SiteAuditServer (free plan only)</span></div></div></div></div>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,129 @@
+@import 'tailwindcss';
+
+/*
+ * Tidywright design tokens. docs/27-design-system.md.
+ *
+ * Two themes on one set of names. The app is dark and fixed. The report and the
+ * embed form are light and take the agency's colour, injected as --agency-primary
+ * on <html> by the server. A component written against these names works in both
+ * without knowing which one it is in.
+ */
+
+@theme {
+  /* App, dark. The default. */
+  --color-bg: #0f0e11;
+  --color-panel: #17161a;
+  --color-panel2: #1d1b21;
+  --color-raise: #232027;
+  --color-line: #2a272f;
+  --color-line2: #3a3542;
+
+  --color-tx: #eceaf0;
+  --color-tx2: #a8a2b2;
+  --color-tx3: #6f6a7a;
+
+  --color-lime: #b6e24a;
+  --color-lime-d: #7e9e2a;
+  --color-lime-l: #c9ee72;
+  --color-on-lime: #16200a;
+
+  --color-amber: #e7a33c;
+  --color-coral: #e2705a;
+  --color-violet: #9b8cf4;
+  --color-on-violet: #17131f;
+
+  /* Score bands. Used by ScoreRing, ScoreBar and every score badge. */
+  --color-score-good: #b6e24a;
+  --color-score-mid: #e7a33c;
+  --color-score-bad: #e2705a;
+
+  --font-display: 'Space Grotesk Variable', 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
+  --font-sans: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --radius-field: 6px;
+  --radius-card: 10px;
+  --radius-modal: 14px;
+
+  --shadow-pop: 0 12px 32px rgb(0 0 0 / 0.45);
+
+  --ease-out-fast: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/*
+ * Report and embed form, light, branded. The agency colour arrives as
+ * --agency-primary and --agency-on-primary, both computed on the server so the
+ * contrast is checked before it ever reaches the browser. See 27-design-system.
+ */
+[data-theme='report'] {
+  --color-bg: #ffffff;
+  --color-panel: #f7f7f8;
+  --color-panel2: #efeff3;
+  --color-raise: #ffffff;
+  --color-line: #e6e6ea;
+  --color-line2: #d9d9e0;
+
+  --color-tx: #16161a;
+  --color-tx2: #5b5b66;
+  --color-tx3: #8e8e99;
+
+  /* The accent is the agency's, with our lime as the fallback while loading. */
+  --color-lime: var(--agency-primary, #16161a);
+  --color-lime-d: var(--agency-primary, #16161a);
+  --color-lime-l: var(--agency-primary, #16161a);
+  --color-on-lime: var(--agency-on-primary, #ffffff);
+
+  --color-score-good: #2e9e5b;
+  --color-score-mid: #d9822b;
+  --color-score-bad: #d64545;
+
+  --color-amber: #d9822b;
+  --color-coral: #d64545;
+
+  --font-display: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-sans: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  --shadow-pop: 0 12px 32px rgb(0 0 0 / 0.12);
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  [data-theme='report'] {
+    color-scheme: light;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-tx);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* One focus ring everywhere. Never remove it, never make it invisible. */
+  :focus-visible {
+    outline: 2px solid var(--color-lime);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Numbers in tables and KPIs must not jump around as they change. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

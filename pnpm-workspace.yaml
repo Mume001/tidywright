@@ -1,0 +1,17 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+  - 'db'
+
+# Native binaries we trust and need compiled. Everything else stays unbuilt.
+allowBuilds:
+  esbuild: true
+  '@tailwindcss/oxide': true
+  '@swc/core': true
+  sharp: true
+  unrs-resolver: true
+
+# pnpm holds back packages published in the last few days as a supply-chain guard.
+# Anything listed here is one we deliberately take early.
+minimumReleaseAgeExclude:
+  - zod@4.6.4

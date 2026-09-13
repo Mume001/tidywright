@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+    :root {
+      --bg: #0F0E11;
+      --panel: #17161A;
+      --panel2: #1D1B21;
+      --raise: #232027;
+      --line: #2A272F;
+      --line2: #3A3542;
+      --tx: #ECEAF0;
+      --tx2: #A8A2B2;
+      --tx3: #6F6A7A;
+      --lime: #B6E24A;
+      --lime-d: #7E9E2A;
+      --amber: #E7A33C;
+      --coral: #E2705A;
+      --violet: #9B8CF4;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--tx);
+      font-family: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+      font-size: 13px;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--lime); text-decoration: none; }
+    a:hover { color: #C9EE72; }
+    h1, h2, h3, .dsp { font-family: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif; margin: 0; }
+    .mono { font-family: 'IBM Plex Mono', ui-monospace, 'Courier New', monospace; }
+    .shell { display: flex; width: 1440px; height: 900px; overflow: hidden; }
+    .side {
+      width: 232px; flex-shrink: 0; background: var(--panel);
+      border-right: 1px solid var(--line); display: flex; flex-direction: column;
+    }
+    .brandrow { display: flex; align-items: center; gap: 10px; padding: 20px 20px 22px 20px; }
+    .mark { width: 26px; height: 26px; border-radius: 7px; background: var(--lime);
+            display: flex; align-items: center; justify-content: center; }
+    .brand { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
+    .navsec { padding: 0 12px; display: flex; flex-direction: column; gap: 2px; }
+    .navlbl { font-size: 10px; letter-spacing: 1.1px; text-transform: uppercase;
+              color: var(--tx3); font-weight: 600; padding: 18px 10px 7px 10px; }
+    .nav { display: flex; align-items: center; gap: 10px; height: 34px; padding: 0 10px;
+           border-radius: 7px; color: var(--tx2); font-weight: 500; }
+    .nav.on { background: var(--raise); color: var(--tx); }
+    .nav .ct { margin-left: auto; font-size: 11px; color: var(--tx3); }
+    .nav.on .ct { color: var(--lime); }
+    .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+    .top { height: 60px; flex-shrink: 0; border-bottom: 1px solid var(--line);
+           display: flex; align-items: center; gap: 14px; padding: 0 24px; background: var(--panel); }
+    .picker { display: flex; align-items: center; gap: 9px; height: 34px; padding: 0 12px;
+              border: 1px solid var(--line2); border-radius: 8px; font-weight: 500; }
+    .body { flex: 1; overflow: hidden; padding: 24px; }
+    .btn { display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 14px;
+           border-radius: 8px; font-weight: 600; font-size: 12.5px; border: 1px solid var(--line2);
+           color: var(--tx); background: transparent; }
+    .btn.pri { background: var(--lime); color: #16200A; border-color: var(--lime); }
+    .btn.gh { border-color: transparent; color: var(--tx2); }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+    .pad { padding: 18px; }
+    .ch { display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+    .ctitle { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; }
+    .kicker { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--tx3); font-weight: 600; }
+    .pill { display: inline-flex; align-items: center; gap: 5px; height: 21px; padding: 0 8px;
+            border-radius: 999px; font-size: 10.5px; font-weight: 600; letter-spacing: 0.2px; }
+    .p-lime { background: rgba(182,226,74,0.14); color: var(--lime); }
+    .p-amber { background: rgba(231,163,60,0.14); color: var(--amber); }
+    .p-coral { background: rgba(226,112,90,0.15); color: var(--coral); }
+    .p-grey { background: rgba(168,162,178,0.12); color: var(--tx2); }
+    .p-violet { background: rgba(155,140,244,0.15); color: var(--violet); }
+    .row { display: flex; align-items: center; }
+    .muted { color: var(--tx2); }
+    .dim { color: var(--tx3); }
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; font-size: 10px; letter-spacing: 0.9px; text-transform: uppercase;
+         color: var(--tx3); font-weight: 600; padding: 0 14px 9px 14px; }
+    td { padding: 11px 14px; border-top: 1px solid var(--line); vertical-align: middle; }
+
+    .inp { height:36px; border:1px solid var(--line2); border-radius:8px; background:var(--raise);
+           padding:0 12px; display:flex; align-items:center; color:var(--tx); font-size:13px; }
+    .inp.ph { color: var(--tx3); }
+    .lbl { font-size:12px; font-weight:600; color:var(--tx2); margin-bottom:6px; display:block; }
+    .field { margin-bottom:14px; }
+    .sw { width:34px; height:20px; border-radius:99px; background:var(--lime); position:relative; }
+    .sw::after { content:''; position:absolute; right:2px; top:2px; width:16px; height:16px; border-radius:99px; background:#16200A; }
+    .sw.off { background: var(--line2); } .sw.off::after { left:2px; right:auto; background: var(--tx2); }
+        td, .btn, .pill { white-space:nowrap; }
+    .tabs { display:flex; gap:2px; border-bottom:1px solid var(--line); }
+    .tab { padding:10px 14px; font-weight:600; font-size:12.5px; color:var(--tx2); border-bottom:2px solid transparent; }
+    .tab.on { color:var(--tx); border-color:var(--lime); }
+ body{background:var(--bg)} .wrap{width:1560px;height:780px;overflow:hidden;position:relative} </style>
+</helmet>
+<div class="wrap"><div style="padding:34px 40px"><div class="row" style="margin-bottom:26px"><div class="row" style="gap:9px"><div class="mark"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16200A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4.5 4.5 0 0 0 5.9 5.9l-8.4 8.4a2.1 2.1 0 0 1-3-3z"/></svg></div><span class="brand">Tidywright</span></div><span class="dim" style="margin-left:auto;font-size:12px">amir@northwinddigital.com · Log out</span></div><div style="display:flex;gap:24px;align-items:flex-start"><div class="card" style="width:480px;padding:28px 30px 24px 30px;display:flex;flex-direction:column"><div class="row" style="gap:22px"><div class="row" style="gap:8px"><div style="width:22px;height:22px;border-radius:99px;border:2px solid var(--lime);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--lime);background:transparent">1</div><span style="font-size:12.5px;font-weight:600;color:var(--tx)">Agency</span></div><div style="width:28px;height:1px;background:var(--line2)"></div><div class="row" style="gap:8px"><div style="width:22px;height:22px;border-radius:99px;border:2px solid var(--line2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--line2);background:transparent">2</div><span style="font-size:12.5px;font-weight:600;color:var(--tx3)">Branding</span></div><div style="width:28px;height:1px;background:var(--line2)"></div><div class="row" style="gap:8px"><div style="width:22px;height:22px;border-radius:99px;border:2px solid var(--line2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--line2);background:transparent">3</div><span style="font-size:12.5px;font-weight:600;color:var(--tx3)">Embed</span></div></div><div class="dsp" style="font-size:22px;font-weight:600;margin-top:22px;letter-spacing:-.3px">Name your agency</div><div class="muted" style="font-size:13px;margin-top:6px;line-height:1.55">This is what visitors see on the form and in the email. You can change it later.</div><div style="margin-top:22px"><div class="field"><span class="lbl">Agency name</span><div class="inp">Northwind Digital</div></div><div class="field"><span class="lbl">Public link</span><div class="inp">siteauditserver.com/a/<span style="color:var(--lime)">northwind-digital</span><span class="pill p-lime" style="margin-left:auto">available</span></div></div><div class="field"><span class="lbl">Website</span><div class="inp">https://northwinddigital.com</div></div><div class="field"><span class="lbl">Privacy policy URL (shown under the consent box)</span><div class="inp">https://northwinddigital.com/privacy</div></div><div class="row" style="gap:10px;margin-top:8px"><span class="btn pri">Continue</span><span class="dim" style="font-size:12px">Step 1 of 3</span></div></div></div><div class="card" style="width:480px;padding:28px 30px 24px 30px;display:flex;flex-direction:column"><div class="row" style="gap:22px"><div class="row" style="gap:8px"><div style="width:22px;height:22px;border-radius:99px;border:2px solid var(--lime);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#16200A;background:var(--lime)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16200A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></div><span style="font-size:12.5px;font-weight:600;color:var(--tx3)">Agency</span></div><div style="width:28px;height:1px;background:var(--line2)"></div><div class="row" style="gap:8px"><div style="width:22px;height:22px;border-radius:99px;border:2px solid var(--lime);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--lime);background:transparent">2</div><span style="font-size:12.5px;font-weight:600;color:var(--tx)">Branding</span></div><div style="width:28px;height:1px;background:var(--line2)"></div><div class="row" style="gap:8px"><div style="width:22px;height:22px;border-radius:99px;border:2px solid var(--line2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--line2);background:transparent">3</div><span style="font-size:12.5px;font-weight:600;color:var(--tx3)">Embed</span></div></div><div class="dsp" style="font-size:22px;font-weight:600;margin-top:22px;letter-spacing:-.3px">Make it yours</div><div class="muted" style="font-size:13px;margin-top:6px;line-height:1.55">Logo and one color. The form and report use them; the rest stays neutral white.</div><div style="margin-top:22px"><div class="row" style="gap:16px;margin-bottom:16px"><div style="width:84px;height:84px;border-radius:10px;border:1px dashed var(--line2);display:flex;align-items:center;justify-content:center;background:var(--raise)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--tx3)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></div><div class="muted" style="font-size:12.5px;line-height:1.5">Drop a PNG or SVG here, or <span style="color:var(--lime)">browse</span>. Up to 512 KB. Skip and we use your name as text.</div></div><div class="row" style="gap:12px"><div class="field" style="flex:1"><span class="lbl">Brand color</span><div class="inp"><div style="width:16px;height:16px;border-radius:4px;background:#1F5AF6;margin-right:8px"></div><span class="mono">#1F5AF6</span></div></div><div class="field" style="flex:1"><span class="lbl">Or pick from your logo</span><div class="row" style="height:36px;gap:8px"><div style="width:24px;height:24px;border-radius:6px;background:#1F5AF6;outline:2px solid var(--lime);outline-offset:2px"></div><div style="width:24px;height:24px;border-radius:6px;background:#16161A;"></div><div style="width:24px;height:24px;border-radius:6px;background:#5B7CFA;"></div><div style="width:24px;height:24px;border-radius:6px;background:#0B3AB5;"></div><div style="width:24px;height:24px;border-radius:6px;background:#E6E6EA;"></div></div></div></div><div class="field"><span class="lbl">Button label</span><div class="inp">Get my report</div></div><div style="border-radius:10px;background:#fff;padding:14px;margin-top:4px;color:#16161A;font-family:-apple-system,Segoe UI,Roboto,sans-serif"><div class="row" style="gap:7px"><div style="width:16px;height:16px;border-radius:4px;background:#1F5AF6"></div><b style="font-size:12.5px">Northwind Digital</b></div><div style="height:30px;border:1px solid #D9D9E0;border-radius:6px;margin-top:10px"></div><div style="height:32px;border-radius:6px;background:#1F5AF6;color:#fff;font-weight:600;font-size:12px;display:flex;align-items:center;justify-content:center;margin-top:8px">Get my report</div></div><div class="row" style="gap:10px;margin-top:18px"><span class="btn pri">Continue</span><span class="btn gh">Back</span><span class="dim" style="font-size:12px;margin-left:auto">Step 2 of 3</span></div></div></div><div class="card" style="width:480px;padding:28px 30px 24px 30px;display:flex;flex-direction:column"><div class="row" style="gap:22px"><div class="row" style="gap:8px"><div style="width:22px;height:22px;border-radius:99px;border:2px solid var(--lime);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#16200A;background:var(--lime)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16200A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></div><span style="font-size:12.5px;font-weight:600;color:var(--tx3)">Agency</span></div><div style="width:28px;height:1px;background:var(--line2)"></div><div class="row" style="gap:8px"><div style="width:22px;height:22px;border-radius:99px;border:2px solid var(--lime);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#16200A;background:var(--lime)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16200A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></div><span style="font-size:12.5px;font-weight:600;color:var(--tx3)">Branding</span></div><div style="width:28px;height:1px;background:var(--line2)"></div><div class="row" style="gap:8px"><div style="width:22px;height:22px;border-radius:99px;border:2px solid var(--lime);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--lime);background:transparent">3</div><span style="font-size:12.5px;font-weight:600;color:var(--tx)">Embed</span></div></div><div class="dsp" style="font-size:22px;font-weight:600;margin-top:22px;letter-spacing:-.3px">Put it on your site</div><div class="muted" style="font-size:13px;margin-top:6px;line-height:1.55">Paste this where the form should appear. Then run one test so you see exactly what a visitor gets.</div><div style="margin-top:22px"><div style="position:relative"><pre class="mono" style="margin:0;padding:14px;border-radius:10px;background:var(--bg);border:1px solid var(--line);font-size:11px;line-height:1.6;color:var(--tx2);white-space:pre;overflow:hidden">&lt;script async
+  src="https://siteauditserver.com/embed.js"
+  data-key="pk_live_7Kd93mQz2XbA8pLw4RtY0nVe"&gt;
+&lt;/script&gt;
+&lt;div id="tw-audit"&gt;&lt;/div&gt;</pre><span class="btn" style="position:absolute;bottom:8px;right:8px;height:28px;font-size:11.5px;background:var(--panel)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copy</span></div><div class="muted" style="font-size:12px;margin-top:10px">Guides: <span style="color:var(--lime)">WordPress</span> · <span style="color:var(--lime)">Webflow</span> · <span style="color:var(--lime)">Squarespace</span> · <span style="color:var(--lime)">Wix</span> · <span style="color:var(--lime)">HTML</span></div><div style="margin-top:20px;padding:14px;border-radius:10px;border:1px solid var(--line);background:var(--panel2)"><div class="row" style="gap:8px"><div style="width:8px;height:8px;border-radius:99px;background:var(--lime)"></div><span style="font-weight:600;font-size:13px">Widget detected on northwinddigital.com/free-seo-check</span></div><div class="muted" style="font-size:12px;margin-top:6px">We saw the script load 40 seconds ago. Not there yet? Give it a minute after publishing.</div></div><div class="field"><span class="lbl">Send a test report to</span><div class="inp">amir@northwinddigital.com</div></div><div class="row" style="gap:10px;margin-top:6px"><span class="btn pri"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16200A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>Run test and finish</span><span class="btn gh">Skip, go to dashboard</span></div></div></div></div></div></div>
+</x-dc>
+</body>
+</html>

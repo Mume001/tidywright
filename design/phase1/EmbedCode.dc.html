@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+    :root {
+      --bg: #0F0E11;
+      --panel: #17161A;
+      --panel2: #1D1B21;
+      --raise: #232027;
+      --line: #2A272F;
+      --line2: #3A3542;
+      --tx: #ECEAF0;
+      --tx2: #A8A2B2;
+      --tx3: #6F6A7A;
+      --lime: #B6E24A;
+      --lime-d: #7E9E2A;
+      --amber: #E7A33C;
+      --coral: #E2705A;
+      --violet: #9B8CF4;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--tx);
+      font-family: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+      font-size: 13px;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--lime); text-decoration: none; }
+    a:hover { color: #C9EE72; }
+    h1, h2, h3, .dsp { font-family: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif; margin: 0; }
+    .mono { font-family: 'IBM Plex Mono', ui-monospace, 'Courier New', monospace; }
+    .shell { display: flex; width: 1440px; height: 900px; overflow: hidden; }
+    .side {
+      width: 232px; flex-shrink: 0; background: var(--panel);
+      border-right: 1px solid var(--line); display: flex; flex-direction: column;
+    }
+    .brandrow { display: flex; align-items: center; gap: 10px; padding: 20px 20px 22px 20px; }
+    .mark { width: 26px; height: 26px; border-radius: 7px; background: var(--lime);
+            display: flex; align-items: center; justify-content: center; }
+    .brand { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
+    .navsec { padding: 0 12px; display: flex; flex-direction: column; gap: 2px; }
+    .navlbl { font-size: 10px; letter-spacing: 1.1px; text-transform: uppercase;
+              color: var(--tx3); font-weight: 600; padding: 18px 10px 7px 10px; }
+    .nav { display: flex; align-items: center; gap: 10px; height: 34px; padding: 0 10px;
+           border-radius: 7px; color: var(--tx2); font-weight: 500; }
+    .nav.on { background: var(--raise); color: var(--tx); }
+    .nav .ct { margin-left: auto; font-size: 11px; color: var(--tx3); }
+    .nav.on .ct { color: var(--lime); }
+    .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+    .top { height: 60px; flex-shrink: 0; border-bottom: 1px solid var(--line);
+           display: flex; align-items: center; gap: 14px; padding: 0 24px; background: var(--panel); }
+    .picker { display: flex; align-items: center; gap: 9px; height: 34px; padding: 0 12px;
+              border: 1px solid var(--line2); border-radius: 8px; font-weight: 500; }
+    .body { flex: 1; overflow: hidden; padding: 24px; }
+    .btn { display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 14px;
+           border-radius: 8px; font-weight: 600; font-size: 12.5px; border: 1px solid var(--line2);
+           color: var(--tx); background: transparent; }
+    .btn.pri { background: var(--lime); color: #16200A; border-color: var(--lime); }
+    .btn.gh { border-color: transparent; color: var(--tx2); }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+    .pad { padding: 18px; }
+    .ch { display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+    .ctitle { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; }
+    .kicker { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--tx3); font-weight: 600; }
+    .pill { display: inline-flex; align-items: center; gap: 5px; height: 21px; padding: 0 8px;
+            border-radius: 999px; font-size: 10.5px; font-weight: 600; letter-spacing: 0.2px; }
+    .p-lime { background: rgba(182,226,74,0.14); color: var(--lime); }
+    .p-amber { background: rgba(231,163,60,0.14); color: var(--amber); }
+    .p-coral { background: rgba(226,112,90,0.15); color: var(--coral); }
+    .p-grey { background: rgba(168,162,178,0.12); color: var(--tx2); }
+    .p-violet { background: rgba(155,140,244,0.15); color: var(--violet); }
+    .row { display: flex; align-items: center; }
+    .muted { color: var(--tx2); }
+    .dim { color: var(--tx3); }
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; font-size: 10px; letter-spacing: 0.9px; text-transform: uppercase;
+         color: var(--tx3); font-weight: 600; padding: 0 14px 9px 14px; }
+    td { padding: 11px 14px; border-top: 1px solid var(--line); vertical-align: middle; }
+
+    .inp { height:36px; border:1px solid var(--line2); border-radius:8px; background:var(--raise);
+           padding:0 12px; display:flex; align-items:center; color:var(--tx); font-size:13px; }
+    .inp.ph { color: var(--tx3); }
+    .lbl { font-size:12px; font-weight:600; color:var(--tx2); margin-bottom:6px; display:block; }
+    .field { margin-bottom:14px; }
+    .sw { width:34px; height:20px; border-radius:99px; background:var(--lime); position:relative; }
+    .sw::after { content:''; position:absolute; right:2px; top:2px; width:16px; height:16px; border-radius:99px; background:#16200A; }
+    .sw.off { background: var(--line2); } .sw.off::after { left:2px; right:auto; background: var(--tx2); }
+        td, .btn, .pill { white-space:nowrap; }
+    .tabs { display:flex; gap:2px; border-bottom:1px solid var(--line); }
+    .tab { padding:10px 14px; font-weight:600; font-size:12.5px; color:var(--tx2); border-bottom:2px solid transparent; }
+    .tab.on { color:var(--tx); border-color:var(--lime); }
+ .shell{height:900px} </style>
+</helmet>
+<div class="shell"><div class="side"><div class="brandrow"><div class="mark"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16200A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4.5 4.5 0 0 0 5.9 5.9l-8.4 8.4a2.1 2.1 0 0 1-3-3z"/></svg></div><div class="brand">Tidywright</div></div><div class="navlbl">AGENCY</div><div class="navsec"><div class="nav"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg><span>Overview</span></div><div class="nav"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg><span>Leads</span><span class="ct">14</span></div><div class="nav"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg><span>Audits</span></div></div><div class="navlbl">WIDGET</div><div class="navsec"><div class="nav on"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18-6-6 6-6M15 6l6 6-6 6"/></svg><span>Embed code</span></div><div class="nav"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="8.5" cy="10" r="1.2"/><circle cx="12" cy="7.5" r="1.2"/><circle cx="15.5" cy="10" r="1.2"/><path d="M12 21a2 2 0 0 0 0-4h-1a1.5 1.5 0 0 1 0-3h2"/></svg><span>Branding</span></div></div><div class="navlbl">ACCOUNT</div><div class="navsec"><div class="nav"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg><span>Billing</span></div><div class="nav"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg><span>Team</span></div></div><div style="flex:1"></div><div class="navsec" style="padding-bottom:16px"><div class="nav"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 14a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1v.3a2 2 0 1 1-4 0v-.2a1.6 1.6 0 0 0-2.8-1.1l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.6 1.6 0 0 0 3.5 14a2 2 0 1 1 0-4 1.6 1.6 0 0 0 1.1-2.7l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.6 1.6 0 0 0 10 3.5 2 2 0 1 1 14 3.5a1.6 1.6 0 0 0 2.7 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1A1.6 1.6 0 0 0 20.5 10a2 2 0 1 1 0 4z"/></svg><span>Settings</span></div><div class="nav" style="gap:10px"><div style="width:20px;height:20px;border-radius:6px;background:var(--violet);color:#17131F;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">AH</div><span>Amir H.</span></div></div></div><div class="main"><div class="top"><h1 style="font-size:17px;font-weight:600;letter-spacing:-0.2px">Embed code</h1><div class="row" style="gap:8px;height:34px;padding:0 12px;border:1px solid var(--line);border-radius:8px;width:240px;color:var(--tx3);margin-left:18px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--tx3)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg><span>Search leads, URLs</span><span class="mono dim" style="margin-left:auto;font-size:11px">⌘K</span></div><div style="flex:1"></div><div class="picker" style="height:32px;font-size:12px;margin-right:10px"><div style="width:16px;height:16px;border-radius:4px;background:#1F5AF6"></div><span>Northwind Digital</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--tx3)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="btn gh" style="width:34px;padding:0;justify-content:center"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8z"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div></div><div class="body"><div class="row" style="gap:16px;align-items:stretch;height:792px"><div class="card" style="flex:1;display:flex;flex-direction:column"><div class="ch"><div class="ctitle">Embed code</div><div style="flex:1"></div><span class="pill p-lime">Main site</span></div><div style="padding:18px"><div class="muted" style="font-size:12.5px;line-height:1.6">Paste where the form should appear. It loads a 4 KB script and an iframe from siteauditserver.com. Height adjusts itself. No cookies, nothing to add to your privacy banner.</div><div style="position:relative;margin-top:14px"><pre class="mono" style="margin:0;padding:16px;border-radius:10px;background:var(--bg);border:1px solid var(--line);font-size:12.5px;line-height:1.6;color:var(--tx2);white-space:pre">&lt;script src="https://siteauditserver.com/embed.js"
+        data-key="pk_live_7Kd93mQz2XbA8pLw4RtY0nVe"
+        async&gt;&lt;/script&gt;
+&lt;div id="tw-audit"&gt;&lt;/div&gt;</pre><span class="btn" style="position:absolute;top:10px;right:10px;height:30px;font-size:12px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copy</span></div><div class="tabs" style="margin-top:18px"><span class="tab on">WordPress</span><span class="tab">Webflow</span><span class="tab">Squarespace</span><span class="tab">Wix</span><span class="tab">Framer</span><span class="tab">Plain HTML</span></div><ol class="muted" style="font-size:12.5px;line-height:1.8;padding-left:18px;margin:14px 0 0 0"><li>Open the page in the block editor and add a <b>Custom HTML</b> block.</li><li>Paste the code above and click Preview.</li><li>Publish. The form appears within a second; if it does not, check that your theme does not strip script tags.</li></ol><div class="row" style="gap:10px;margin-top:18px"><span class="btn pri"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16200A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>Run a test from this page</span><span class="muted" style="font-size:12px">Sends a real report to your own email</span></div></div><div style="flex:1"></div><div class="ch" style="border-top:1px solid var(--line);border-bottom:0"><div class="ctitle">Hosted form, no embed needed</div></div><div style="padding:0 18px 18px 18px" class="row"><div class="inp mono" style="flex:1;font-size:12.5px;color:var(--tx2)">https://siteauditserver.com/a/northwind-digital</div><span class="btn" style="margin-left:8px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>Copy</span></div></div><div style="width:420px;display:flex;flex-direction:column;gap:16px"><div class="card"><div class="ch"><div class="ctitle">Keys</div><div style="flex:1"></div><span class="btn" style="height:30px;font-size:12px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>New key</span></div><div style="padding:14px 18px;border-top:1px solid var(--line)"><div class="row" style="gap:8px"><span style="font-weight:600">Main site</span><span class="pill p-lime">Active</span><div style="flex:1"></div><span class="dim" style="font-size:11.5px">seen 4 min ago</span></div><div class="mono dim" style="font-size:11.5px;margin-top:5px">pk_live_7Kd9…nVe</div><div class="muted" style="font-size:12px;margin-top:6px">Allowed origins: northwinddigital.com, www.northwinddigital.com</div></div><div style="padding:14px 18px;border-top:1px solid var(--line)"><div class="row" style="gap:8px"><span style="font-weight:600">Landing: roofing</span><span class="pill p-lime">Active</span><div style="flex:1"></div><span class="dim" style="font-size:11.5px">seen 2 h ago</span></div><div class="mono dim" style="font-size:11.5px;margin-top:5px">pk_live_Qm2s…8cL</div><div class="muted" style="font-size:12px;margin-top:6px">Allowed origins: offers.northwinddigital.com</div></div><div style="padding:14px 18px;border-top:1px solid var(--line)"><div class="row" style="gap:8px"><span style="font-weight:600">Old site</span><span class="pill p-grey">Revoked</span><div style="flex:1"></div><span class="dim" style="font-size:11.5px">stopped 2 Sep</span></div><div class="mono dim" style="font-size:11.5px;margin-top:5px">pk_live_Ab77…zzQ</div><div class="muted" style="font-size:12px;margin-top:6px">Allowed origins: (none)</div></div><div class="dim" style="padding:12px 18px;border-top:1px solid var(--line);font-size:11.5px">Starter plan: 3 keys. Rotating a key keeps the old one alive for 7 days.</div></div><div class="card pad"><div class="kicker">Preview with your branding</div><div style="margin-top:12px;border-radius:10px;background:#fff;padding:18px;color:#16161A;font-family:-apple-system,Segoe UI,Roboto,sans-serif"><div class="row" style="gap:7px"><div style="width:16px;height:16px;border-radius:4px;background:#1F5AF6"></div><b style="font-size:13px">Northwind Digital</b></div><div style="font-weight:700;font-size:15px;margin-top:10px">Get a free SEO report for your website</div><div style="height:34px;border:1px solid #D9D9E0;border-radius:7px;margin-top:12px;padding:0 10px;display:flex;align-items:center;color:#8E8E99;font-size:12px">https://yourwebsite.com</div><div style="height:34px;border:1px solid #D9D9E0;border-radius:7px;margin-top:8px;padding:0 10px;display:flex;align-items:center;color:#8E8E99;font-size:12px">you@company.com</div><div style="height:36px;border-radius:7px;background:#1F5AF6;color:#fff;font-weight:600;font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:10px">Get my report</div></div></div></div></div></div></div></div>
+</x-dc>
+</body>
+</html>

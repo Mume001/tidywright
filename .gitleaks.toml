@@ -1,0 +1,18 @@
+# Secret scanning. Runs in CI and in the pre-commit hook.
+# docs/22-security.md: nothing secret ever enters the repository.
+title = "Tidywright"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Placeholders and fixtures that look like secrets but are not"
+paths = [
+  '''\.env\.example$''',
+  '''pnpm-lock\.yaml$''',
+  '''docs/.*\.md$''',
+]
+regexes = [
+  '''pk_live_7Kd93mQz2XbA8pLw4RtY0nVe''',
+  '''pk_live_Qm2s''',
+]

@@ -1,0 +1,4 @@
+@import '@tw/ui/styles.css';
+
+/* Tailwind needs to see the class names used inside the UI package too. */
+@source '../../../packages/ui/src';

@@ -1,0 +1,10 @@
+pnpm-lock.yaml
+.next
+dist
+storybook-static
+coverage
+docs
+design
+decisions
+model
+next-env.d.ts

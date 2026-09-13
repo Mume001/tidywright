@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+    :root {
+      --bg: #0F0E11;
+      --panel: #17161A;
+      --panel2: #1D1B21;
+      --raise: #232027;
+      --line: #2A272F;
+      --line2: #3A3542;
+      --tx: #ECEAF0;
+      --tx2: #A8A2B2;
+      --tx3: #6F6A7A;
+      --lime: #B6E24A;
+      --lime-d: #7E9E2A;
+      --amber: #E7A33C;
+      --coral: #E2705A;
+      --violet: #9B8CF4;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--tx);
+      font-family: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+      font-size: 13px;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--lime); text-decoration: none; }
+    a:hover { color: #C9EE72; }
+    h1, h2, h3, .dsp { font-family: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif; margin: 0; }
+    .mono { font-family: 'IBM Plex Mono', ui-monospace, 'Courier New', monospace; }
+    .shell { display: flex; width: 1440px; height: 900px; overflow: hidden; }
+    .side {
+      width: 232px; flex-shrink: 0; background: var(--panel);
+      border-right: 1px solid var(--line); display: flex; flex-direction: column;
+    }
+    .brandrow { display: flex; align-items: center; gap: 10px; padding: 20px 20px 22px 20px; }
+    .mark { width: 26px; height: 26px; border-radius: 7px; background: var(--lime);
+            display: flex; align-items: center; justify-content: center; }
+    .brand { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: -0.2px; }
+    .navsec { padding: 0 12px; display: flex; flex-direction: column; gap: 2px; }
+    .navlbl { font-size: 10px; letter-spacing: 1.1px; text-transform: uppercase;
+              color: var(--tx3); font-weight: 600; padding: 18px 10px 7px 10px; }
+    .nav { display: flex; align-items: center; gap: 10px; height: 34px; padding: 0 10px;
+           border-radius: 7px; color: var(--tx2); font-weight: 500; }
+    .nav.on { background: var(--raise); color: var(--tx); }
+    .nav .ct { margin-left: auto; font-size: 11px; color: var(--tx3); }
+    .nav.on .ct { color: var(--lime); }
+    .main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+    .top { height: 60px; flex-shrink: 0; border-bottom: 1px solid var(--line);
+           display: flex; align-items: center; gap: 14px; padding: 0 24px; background: var(--panel); }
+    .picker { display: flex; align-items: center; gap: 9px; height: 34px; padding: 0 12px;
+              border: 1px solid var(--line2); border-radius: 8px; font-weight: 500; }
+    .body { flex: 1; overflow: hidden; padding: 24px; }
+    .btn { display: inline-flex; align-items: center; gap: 7px; height: 34px; padding: 0 14px;
+           border-radius: 8px; font-weight: 600; font-size: 12.5px; border: 1px solid var(--line2);
+           color: var(--tx); background: transparent; }
+    .btn.pri { background: var(--lime); color: #16200A; border-color: var(--lime); }
+    .btn.gh { border-color: transparent; color: var(--tx2); }
+    .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; }
+    .pad { padding: 18px; }
+    .ch { display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+    .ctitle { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 600; }
+    .kicker { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--tx3); font-weight: 600; }
+    .pill { display: inline-flex; align-items: center; gap: 5px; height: 21px; padding: 0 8px;
+            border-radius: 999px; font-size: 10.5px; font-weight: 600; letter-spacing: 0.2px; }
+    .p-lime { background: rgba(182,226,74,0.14); color: var(--lime); }
+    .p-amber { background: rgba(231,163,60,0.14); color: var(--amber); }
+    .p-coral { background: rgba(226,112,90,0.15); color: var(--coral); }
+    .p-grey { background: rgba(168,162,178,0.12); color: var(--tx2); }
+    .p-violet { background: rgba(155,140,244,0.15); color: var(--violet); }
+    .row { display: flex; align-items: center; }
+    .muted { color: var(--tx2); }
+    .dim { color: var(--tx3); }
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; font-size: 10px; letter-spacing: 0.9px; text-transform: uppercase;
+         color: var(--tx3); font-weight: 600; padding: 0 14px 9px 14px; }
+    td { padding: 11px 14px; border-top: 1px solid var(--line); vertical-align: middle; }
+  </style>
+</helmet>
+<div class="shell"><div class="side"><div class="brandrow"><div class="mark"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16200A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4.5 4.5 0 0 0 5.9 5.9l-8.4 8.4a2.1 2.1 0 0 1-3-3z"/></svg></div><div class="brand">Tidywright</div></div><div class="navlbl">SITE</div><div class="navsec"><div class="nav"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg><span>Overview</span></div><div class="nav"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18-2.5-2.7-2.5-15.3 0-18z"/></svg><span>Sites</span><span class="ct">6</span></div></div><div class="navlbl">AUDIT</div><div class="navsec"><div class="nav"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 2.4 17.5A1.9 1.9 0 0 0 4 20.4h16a1.9 1.9 0 0 0 1.6-2.9L13.7 3.9a1.9 1.9 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg><span>Findings</span><span class="ct">38</span></div><div class="nav"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 1 1 9-9"/><path d="m12 12 5-3"/></svg><span>Speed</span></div><div class="nav"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg><span>Search data</span></div></div><div class="navlbl">FIXES</div><div class="navsec"><div class="nav on"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4.5 4.5 0 0 0 5.9 5.9l-8.4 8.4a2.1 2.1 0 0 1-3-3z"/></svg><span>Fix queue</span><span class="ct">12</span></div><div class="nav"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>History</span></div></div><div class="navlbl">DELIVER</div><div class="navsec"><div class="nav"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg><span>Reports</span></div><div class="nav"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v6M15 3v6M6 9h12v3a6 6 0 0 1-12 0z"/><path d="M12 18v3"/></svg><span>Connections</span></div></div><div style="flex:1"></div><div class="navsec" style="padding-bottom:16px"><div class="nav"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 14a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1v.3a2 2 0 1 1-4 0v-.2a1.6 1.6 0 0 0-2.8-1.1l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.6 1.6 0 0 0 3.5 14a2 2 0 1 1 0-4 1.6 1.6 0 0 0 1.1-2.7l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.6 1.6 0 0 0 10 3.5 2 2 0 1 1 14 3.5a1.6 1.6 0 0 0 2.7 1.1l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1A1.6 1.6 0 0 0 20.5 10a2 2 0 1 1 0 4z"/></svg><span>Settings</span></div><div class="nav" style="gap:10px"><div style="width:20px;height:20px;border-radius:6px;background:var(--violet);color:#17131F;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center">MK</div><span>Marta K.</span></div></div></div><div class="main"><div class="top"><div class="picker"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--tx2)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18-2.5-2.7-2.5-15.3 0-18z"/></svg><span>adconnecta.com</span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--tx3)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div><div class="row" style="gap:8px;height:34px;padding:0 12px;border:1px solid var(--line);border-radius:8px;width:260px;color:var(--tx3)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--tx3)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg><span>Search pages, findings…</span></div><div style="flex:1"></div><div class="btn gh" style="width:34px;padding:0;justify-content:center"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 8-3 8h18s-3-1-3-8z"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div></div><div class="body"><div class="row" style="margin-bottom:16px;gap:10px"><span class="btn gh" style="width:32px;padding:0;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span><h1 style="font-size:20px;font-weight:600;letter-spacing:-0.3px">Review fix 1 of 12</h1><div style="flex:1"></div><span class="btn">Approve all 12</span></div><div class="row" style="gap:16px;align-items:stretch;height:700px"><div class="card" style="flex:1;display:flex;flex-direction:column;overflow:hidden"><div class="ch"><span class="pill p-amber">High</span><div class="ctitle">Title and meta description, homepage</div><div style="flex:1"></div><span class="muted mono" style="font-size:11.5px">/index.php</span></div><div style="padding:14px 18px 6px 18px" class="row" style="gap:8px"><span class="pill p-grey">Proposed 2 h ago</span><span class="muted" style="font-size:12px;margin-left:10px">Nothing has changed on the live site yet.</span></div><div style="margin:10px 14px 0 14px;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--bg)"><div style="padding:9px 14px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:center"><span class="kicker">Diff</span><span class="dim mono" style="font-size:11px">wp_head · 2 replacements</span></div><div style="display:flex;gap:12px;background:transparent;padding:4px 14px"><span class="mono" style="color:var(--tx3);width:10px;flex-shrink:0"> </span><span class="mono" style="font-size:12px;color:var(--tx2);white-space:pre-wrap;word-break:break-word">&lt;head&gt;</span></div><div style="display:flex;gap:12px;background:rgba(226,112,90,0.10);padding:4px 14px"><span class="mono" style="color:var(--coral);width:10px;flex-shrink:0">−</span><span class="mono" style="font-size:12px;color:var(--tx2);white-space:pre-wrap;word-break:break-word">&lt;title&gt;AdConnecta - Digital agency for complete marketing solutions&lt;/title&gt;</span></div><div style="display:flex;gap:12px;background:rgba(182,226,74,0.09);padding:4px 14px"><span class="mono" style="color:var(--lime);width:10px;flex-shrink:0">+</span><span class="mono" style="font-size:12px;color:var(--tx2);white-space:pre-wrap;word-break:break-word">&lt;title&gt;Digital Marketing &amp; Web Design Agency in Sarajevo | AdConnecta&lt;/title&gt;</span></div><div style="display:flex;gap:12px;background:rgba(226,112,90,0.10);padding:4px 14px"><span class="mono" style="color:var(--coral);width:10px;flex-shrink:0">−</span><span class="mono" style="font-size:12px;color:var(--tx2);white-space:pre-wrap;word-break:break-word">&lt;meta name="description" content="AdConnecta is a digital agency offering marketing, design and web development."&gt;</span></div><div style="display:flex;gap:12px;background:rgba(182,226,74,0.09);padding:4px 14px"><span class="mono" style="color:var(--lime);width:10px;flex-shrink:0">+</span><span class="mono" style="font-size:12px;color:var(--tx2);white-space:pre-wrap;word-break:break-word">&lt;meta name="description" content="Web design, SEO and paid campaigns from a Sarajevo studio. See the work, the process and what a project costs."&gt;</span></div><div style="display:flex;gap:12px;background:transparent;padding:4px 14px"><span class="mono" style="color:var(--tx3);width:10px;flex-shrink:0"> </span><span class="mono" style="font-size:12px;color:var(--tx2);white-space:pre-wrap;word-break:break-word">&lt;link rel="canonical" href="https://www.adconnecta.com"&gt;</span></div><div style="display:flex;gap:12px;background:transparent;padding:4px 14px"><span class="mono" style="color:var(--tx3);width:10px;flex-shrink:0"> </span><span class="mono" style="font-size:12px;color:var(--tx2);white-space:pre-wrap;word-break:break-word">&lt;/head&gt;</span></div></div><div style="padding:16px 18px"><div class="kicker">Why this change</div><div style="padding:12px 0;border-top:1px solid var(--line)"><div style="font-weight:600;font-size:12.5px;margin-bottom:4px">Length</div><div class="muted" style="font-size:12px;line-height:1.65">The old title was 62 characters of company description. The new one leads with the service and the city, which is what people type.</div></div><div style="padding:12px 0;border-top:1px solid var(--line)"><div style="font-weight:600;font-size:12.5px;margin-bottom:4px">Duplication</div><div class="muted" style="font-size:12px;line-height:1.65">The same string was also the H1 and the og:title. Both are being changed in this patch so they stop competing.</div></div><div style="padding:12px 0;border-top:1px solid var(--line)"><div style="font-weight:600;font-size:12.5px;margin-bottom:4px">Evidence</div><div class="muted" style="font-size:12px;line-height:1.65">Search Console shows 41 impressions for “web design sarajevo” at position 38. The page is close but not named for it.</div></div></div><div style="flex:1"></div><div style="padding:14px 18px;border-top:1px solid var(--line);display:flex;gap:8px;align-items:center"><span class="btn pri"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#16200A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Approve and apply</span><span class="btn">Edit before applying</span><span class="btn gh">Skip</span><div style="flex:1"></div><span class="muted" style="font-size:12px">Reversible for 90 days</span></div></div><div style="width:360px;display:flex;flex-direction:column;gap:16px"><div class="card pad"><div class="kicker">How the result reads</div><div style="margin-top:12px;padding:14px;border:1px solid var(--line);border-radius:9px;background:var(--bg)"><div class="dim" style="font-size:11.5px">www.adconnecta.com</div><div style="color:var(--violet);font-size:15px;margin:5px 0 5px 0;font-weight:500">Digital Marketing &amp; Web Design Agency in Sarajevo | AdConnecta</div><div class="muted" style="font-size:12px;line-height:1.55">Web design, SEO and paid campaigns from a Sarajevo studio. See the work, the process and what a project costs.</div></div></div><div class="card" style="flex:1"><div class="ch"><div class="ctitle">Next in queue</div><div style="flex:1"></div><span class="pill p-grey">11 left</span></div><div style="padding:6px 18px 14px 18px"><div style="padding:12px 0;border-bottom:1px solid var(--line)"><div style="font-weight:600;font-size:12.5px">LocalBusiness schema</div><div class="dim mono" style="font-size:11px;margin-top:3px">sitewide · new JSON-LD block</div></div><div style="padding:12px 0;border-bottom:1px solid var(--line)"><div style="font-weight:600;font-size:12.5px">Meta description</div><div class="dim mono" style="font-size:11px;margin-top:3px">/service/</div></div><div style="padding:12px 0;border-bottom:1px solid var(--line)"><div style="font-weight:600;font-size:12.5px">Second H1 → H2</div><div class="dim mono" style="font-size:11px;margin-top:3px">/</div></div><div style="padding:12px 0;border-bottom:1px solid var(--line)"><div style="font-weight:600;font-size:12.5px">Alt text, 12 images</div><div class="dim mono" style="font-size:11px;margin-top:3px">/service/</div></div><div style="padding:12px 0;border-bottom:1px solid var(--line)"><div style="font-weight:600;font-size:12.5px">og:image replacement</div><div class="dim mono" style="font-size:11px;margin-top:3px">sitewide</div></div></div></div></div></div></div></div></div>
+</x-dc>
+</body>
+</html>
