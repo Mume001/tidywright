@@ -33,7 +33,7 @@ export function FixesSection({
     return (
       <section className="mt-9">
         <div className="flex gap-3.5 rounded-[var(--radius-card)] border border-score-good/30 bg-score-good/8 p-5">
-          <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-score-good" aria-hidden />
+          <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-score-good-ink" aria-hidden />
           <div>
             <h2 className="font-display text-base font-bold">Nothing needed fixing</h2>
             <p className="mt-1.5 text-[13.5px] leading-relaxed text-tx2">

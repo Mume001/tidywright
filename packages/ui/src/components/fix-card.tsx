@@ -58,11 +58,13 @@ export function FixCard({ fix, onCopy }: FixCardProps) {
         <div>
           <div className="text-[10.5px] font-bold tracking-wider text-tx3 uppercase">Now</div>
           <p className="mt-1.5 rounded-lg bg-score-bad/10 p-3 font-mono text-[12.5px] leading-relaxed break-words text-tx2">
-            {fix.before ?? <span className="text-tx3 italic">(missing)</span>}
+            {/* tx2, not tx3: "nothing is there" is the finding, not a
+                placeholder, and it sits on a tint that eats the lighter grey. */}
+            {fix.before ?? <span className="italic">(missing)</span>}
           </p>
         </div>
         <div>
-          <div className="text-[10.5px] font-bold tracking-wider text-score-good uppercase">
+          <div className="text-[10.5px] font-bold tracking-wider text-score-good-ink uppercase">
             Suggested
           </div>
           <p

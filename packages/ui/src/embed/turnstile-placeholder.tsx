@@ -56,7 +56,7 @@ export function TurnstilePlaceholder({
         <span className="ml-auto text-[10px] text-tx3">Cloudflare</span>
       </button>
       {error && (
-        <p id={`${id}-error`} className="mt-1.5 text-xs text-score-bad" role="alert">
+        <p id={`${id}-error`} className="mt-1.5 text-xs text-score-bad-ink" role="alert">
           {error}
         </p>
       )}

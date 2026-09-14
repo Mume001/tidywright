@@ -80,7 +80,7 @@ function GroupBlock({
   if (group.allPassed) {
     return (
       <div className="flex items-center gap-3 border-t border-line px-4.5 py-3 text-[13px] first:border-t-0">
-        <Check className="size-4 shrink-0 text-score-good" aria-hidden />
+        <Check className="size-4 shrink-0 text-score-good-ink" aria-hidden />
         <span className="font-semibold">{group.label}</span>
         <span className="text-tx2">{groupCountLabel(group)}</span>
         <span className={`tabular ml-auto font-semibold ${scoreClass}`}>{group.score}</span>

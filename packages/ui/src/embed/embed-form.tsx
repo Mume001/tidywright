@@ -156,7 +156,7 @@ export function EmbedForm({
         <form className="mt-5" onSubmit={handleSubmit} noValidate>
           {branding.privacyPolicyUrl === null && (
             <p className="mb-3.5 flex gap-2 rounded-[var(--radius-field)] border border-score-mid/40 bg-score-mid/10 p-2.5 text-xs text-tx2">
-              <AlertTriangle className="mt-px size-4 shrink-0 text-score-mid" aria-hidden />
+              <AlertTriangle className="mt-px size-4 shrink-0 text-score-mid-ink" aria-hidden />
               <span>
                 {agencyName} has not linked a privacy policy yet. Ask them for one before you leave
                 your address.
@@ -212,7 +212,7 @@ export function EmbedForm({
               }
             />
             {errors.consent && (
-              <p className="mt-1.5 text-xs text-score-bad" role="alert">
+              <p className="mt-1.5 text-xs text-score-bad-ink" role="alert">
                 {errors.consent}
               </p>
             )}
@@ -283,7 +283,7 @@ export function EmbedForm({
       {state.kind === 'error' && (
         <Centred
           tone="bad"
-          icon={<XCircle className="size-7 text-score-bad" aria-hidden />}
+          icon={<XCircle className="size-7 text-score-bad-ink" aria-hidden />}
           title="That did not work"
         >
           <p className="mt-1.5 text-[13px] leading-relaxed text-tx2">

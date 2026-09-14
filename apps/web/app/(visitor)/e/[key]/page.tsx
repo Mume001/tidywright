@@ -38,14 +38,16 @@ export default async function EmbeddedFormPage({ params, searchParams }: PagePro
 
   return (
     <BrandTheme primary={branding.primaryColor} surface="transparent">
-      <AuditForm
-        agencyName={agency.name}
-        branding={branding}
-        publicKey={key}
-        showPoweredBy={!branding.hidePoweredBy}
-        mode={mode}
-        variant={variant}
-      />
+      <main>
+        <AuditForm
+          agencyName={agency.name}
+          branding={branding}
+          publicKey={key}
+          showPoweredBy={!branding.hidePoweredBy}
+          mode={mode}
+          variant={variant}
+        />
+      </main>
     </BrandTheme>
   )
 }

@@ -64,36 +64,38 @@ export function ReportView({
         onCalendarClick={() => onEvent?.('calendar_clicked')}
       />
 
-      <ScorePanel
-        score={audit.score ?? 0}
-        headline={audit.summary?.headline ?? 'Your report'}
-        sentence={sentence}
-        counts={counts}
-        layout={layout}
-      />
+      <main>
+        <ScorePanel
+          score={audit.score ?? 0}
+          headline={audit.summary?.headline ?? 'Your report'}
+          sentence={sentence}
+          counts={counts}
+          layout={layout}
+        />
 
-      <FixesSection
-        fixes={layout.fixes}
-        scoreOnly={scoreOnly}
-        agencyName={agencyName}
-        nothingToFix={layout.problemCount === 0}
-        onCopy={(kind) => onEvent?.('fix_copied', { kind })}
-      />
+        <FixesSection
+          fixes={layout.fixes}
+          scoreOnly={scoreOnly}
+          agencyName={agencyName}
+          nothingToFix={layout.problemCount === 0}
+          onCopy={(kind) => onEvent?.('fix_copied', { kind })}
+        />
 
-      <PriorityList findings={layout.priority} />
+        <PriorityList findings={layout.priority} />
 
-      <LockedFindings
-        findings={layout.locked}
-        agencyName={agencyName}
-        ctaLabel={branding.ctaLabel}
-        ctaUrl={ctaUrl}
-        onCtaClick={() => onEvent?.('cta_clicked')}
-      />
+        <LockedFindings
+          findings={layout.locked}
+          agencyName={agencyName}
+          ctaLabel={branding.ctaLabel}
+          ctaUrl={ctaUrl}
+          onCtaClick={() => onEvent?.('cta_clicked')}
+        />
 
-      <ChecksExplorer
-        groups={layout.groups}
-        onExpand={(group) => onEvent?.('checks_expanded', { group })}
-      />
+        <ChecksExplorer
+          groups={layout.groups}
+          onExpand={(group) => onEvent?.('checks_expanded', { group })}
+        />
+      </main>
 
       <ReportFooter
         agencyName={agencyName}

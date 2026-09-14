@@ -40,7 +40,9 @@ export function FormFrame({
         <span className="font-display text-[15px] font-bold tracking-tight">{agencyName}</span>
       </div>
 
-      <h2 className="mt-4 font-display text-xl leading-tight font-bold">{headline}</h2>
+      {/* h1: inside the iframe this is a document of its own, and on the hosted
+          page it is the heading of the page. Either way it is the first level. */}
+      <h1 className="mt-4 font-display text-xl leading-tight font-bold">{headline}</h1>
       <p className="mt-1.5 text-[13.5px] leading-relaxed text-tx2">{subline}</p>
 
       {children}

@@ -32,7 +32,7 @@ export function UnsubscribeCard({ agencyName, logoUrl, state }: UnsubscribeCardP
       {state === 'done' && (
         <>
           <div className="mx-auto grid size-14 place-items-center rounded-full bg-score-good/12">
-            <CheckCircle2 className="size-7 text-score-good" aria-hidden />
+            <CheckCircle2 className="size-7 text-score-good-ink" aria-hidden />
           </div>
           <h1 className="mt-4 font-display text-xl font-bold" aria-live="polite">
             You have been unsubscribed from {agencyName}

@@ -21,7 +21,9 @@ export interface StatusShellProps {
 /** The small branded card every terminal visitor page is drawn in. */
 export function StatusShell({ agencyName, logoUrl, children }: StatusShellProps) {
   return (
-    <div className="mx-auto w-full max-w-[520px] overflow-hidden rounded-[var(--radius-card)] border border-line bg-panel shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
+    // <main>, because on these pages the card is the entire page. Without a
+    // landmark a screen reader has nothing to jump to.
+    <main className="mx-auto w-full max-w-[520px] overflow-hidden rounded-[var(--radius-card)] border border-line bg-panel shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
       <div className="h-1 bg-lime" />
       <div className="p-6">
         <div className="flex items-center gap-2">
@@ -30,7 +32,7 @@ export function StatusShell({ agencyName, logoUrl, children }: StatusShellProps)
         </div>
         <div className="py-8 text-center">{children}</div>
       </div>
-    </div>
+    </main>
   )
 }
 
@@ -89,7 +91,7 @@ export function ReportPending({
       {!tookTooLong && (
         <ul className="mt-5 flex flex-wrap justify-center gap-x-6 gap-y-1 text-[12px]">
           {steps.map((step, index) => (
-            <li key={step} className={index < done ? 'text-score-good' : 'text-tx3'}>
+            <li key={step} className={index < done ? 'text-score-good-ink' : 'text-tx3'}>
               {index < done ? '✓' : '○'} {step}
             </li>
           ))}
@@ -125,9 +127,9 @@ export function ReportFailed({
         className={`mx-auto grid size-16 place-items-center rounded-full ${blocked ? 'bg-score-mid/12' : 'bg-score-bad/12'}`}
       >
         {blocked ? (
-          <ShieldAlert className="size-8 text-score-mid" aria-hidden />
+          <ShieldAlert className="size-8 text-score-mid-ink" aria-hidden />
         ) : (
-          <RotateCw className="size-8 text-score-bad" aria-hidden />
+          <RotateCw className="size-8 text-score-bad-ink" aria-hidden />
         )}
       </div>
 

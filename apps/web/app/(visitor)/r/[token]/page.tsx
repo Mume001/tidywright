@@ -122,6 +122,7 @@ export default async function ReportPage({ params, searchParams }: PageProps) {
   )
 }
 
+/** The status cards bring their own <main>, so this is only the centring. */
 function Centred({ children }: { children: React.ReactNode }) {
   return <div className="flex min-h-[80vh] items-center justify-center px-4 py-10">{children}</div>
 }

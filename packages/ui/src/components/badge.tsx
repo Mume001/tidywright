@@ -7,12 +7,14 @@ const badge = cva(
   'inline-flex h-[21px] items-center gap-1.5 rounded-full px-2 text-[10.5px] font-semibold tracking-[0.2px] whitespace-nowrap',
   {
     variants: {
+      // Tint from the band colour, letters from its ink. The two differ on the
+      // white report, where the bar colour is too light to read at 10.5px.
       tone: {
         neutral: 'bg-tx2/12 text-tx2',
-        good: 'bg-score-good/14 text-score-good',
-        mid: 'bg-score-mid/14 text-score-mid',
-        bad: 'bg-score-bad/15 text-score-bad',
-        info: 'bg-violet/15 text-violet',
+        good: 'bg-score-good/14 text-score-good-ink',
+        mid: 'bg-score-mid/14 text-score-mid-ink',
+        bad: 'bg-score-bad/15 text-score-bad-ink',
+        info: 'bg-violet/15 text-violet-ink',
       },
     },
     defaultVariants: { tone: 'neutral' },
