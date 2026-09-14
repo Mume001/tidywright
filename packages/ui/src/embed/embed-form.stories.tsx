@@ -66,14 +66,28 @@ export const QueuedWritingFixes: Story = {
   args: { state: { kind: 'queued', host: 'northwind-client.com', status: 'generating' } },
 }
 
-/** Done. The score is the hook, the button is the point. */
+/** Done. The score is the hook, the link is the point. */
 export const Done: Story = {
-  args: { state: { kind: 'done', score: 58, email: 'amir@northwind-client.com' } },
+  args: {
+    state: {
+      kind: 'done',
+      score: 58,
+      email: 'amir@northwind-client.com',
+      reportUrl: '/r/demo-done',
+    },
+  },
 }
 
 /** A good score, so the sentence praises rather than promising repairs. */
 export const DoneWithNothingToFix: Story = {
-  args: { state: { kind: 'done', score: 96, email: 'amir@northwind-client.com' } },
+  args: {
+    state: {
+      kind: 'done',
+      score: 96,
+      email: 'amir@northwind-client.com',
+      reportUrl: '/r/demo-clean',
+    },
+  },
 }
 
 /** Error, one story per code a visitor can actually reach. */

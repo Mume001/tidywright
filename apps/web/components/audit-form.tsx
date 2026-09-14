@@ -128,7 +128,12 @@ export function AuditForm({
 
         if (body.status === 'done') {
           track('result_viewed', { score: body.score })
-          setState({ kind: 'done', score: body.score ?? 0, email: email.current })
+          setState({
+            kind: 'done',
+            score: body.score ?? 0,
+            email: email.current,
+            reportUrl: body.report_url,
+          })
           return
         }
 

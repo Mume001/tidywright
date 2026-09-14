@@ -4,7 +4,7 @@ import { AlertTriangle, ArrowRight, XCircle } from 'lucide-react'
 import { useId, useState } from 'react'
 import { formErrorMessage, normalizeEmail, normalizeUrl, type AuditStatus } from '@tw/shared'
 import type { Branding } from '@tw/shared'
-import { Button } from '../components/button'
+import { Button, ButtonLink } from '../components/button'
 import { Checkbox } from '../components/toggle'
 import { Input } from '../components/input'
 import { ScoreRing } from '../components/score-ring'
@@ -36,7 +36,7 @@ export type EmbedFormState =
    * endpoint deliberately returns no finding counts and no email, so this card
    * cannot say more than it is entitled to know.
    */
-  | { kind: 'done'; score: number; email: string }
+  | { kind: 'done'; score: number; email: string; reportUrl: string }
   | { kind: 'error'; code: string; requestId?: string }
 
 export interface EmbedFormProps {
@@ -260,15 +260,23 @@ export function EmbedForm({
               : 'We found what is holding it back, and wrote the most important fixes for you.'}{' '}
             We also sent the link to {state.email}.
           </p>
-          <Button
+          {/*
+            A link, not a button. The form is usually inside an iframe on
+            somebody else's domain, and opening a tab from script after an await
+            has lost its user activation. A click on a real link has not.
+          */}
+          <ButtonLink
             size="lg"
             full
             className="mt-5 h-[46px] text-[15px]"
+            href={state.reportUrl}
+            target="_blank"
+            rel="noopener"
             onClick={onOpenReport}
             icon={<ArrowRight className="size-4" />}
           >
             See your full report
-          </Button>
+          </ButtonLink>
         </div>
       )}
 

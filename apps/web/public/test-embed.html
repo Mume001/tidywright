@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Northwind Digital (test page for the Tidywright embed)</title>
+    <style>
+      :root {
+        color-scheme: light;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        color: #16161a;
+        background: #fff;
+        font-size: 15px;
+        line-height: 1.5;
+      }
+      .bar {
+        height: 4px;
+        background: #1f5af6;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 22px;
+        border-bottom: 1px solid #e6e6ea;
+      }
+      .mark {
+        width: 20px;
+        height: 20px;
+        border-radius: 6px;
+        background: #1f5af6;
+      }
+      .name {
+        font-weight: 700;
+        letter-spacing: -0.2px;
+      }
+      nav {
+        margin-left: auto;
+        color: #8e8e99;
+        font-size: 14px;
+      }
+      main {
+        max-width: 1040px;
+        margin: 0 auto;
+        padding: 40px 22px 60px;
+      }
+      .hero {
+        display: flex;
+        gap: 40px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
+      .pitch {
+        flex: 1 1 380px;
+      }
+      h1 {
+        font-size: 30px;
+        line-height: 1.15;
+        letter-spacing: -0.5px;
+        margin: 0;
+      }
+      .pitch p {
+        color: #5b5b66;
+        max-width: 42ch;
+      }
+      #tw-audit {
+        flex: 0 1 420px;
+        width: 100%;
+      }
+      section.panel {
+        margin-top: 56px;
+        border: 1px solid #e6e6ea;
+        border-radius: 12px;
+        padding: 20px 22px;
+        background: #fafafb;
+      }
+      section.panel h2 {
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: #8e8e99;
+        margin: 0 0 4px;
+      }
+      section.panel h3 {
+        font-size: 14px;
+        margin: 20px 0 6px;
+      }
+      ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+      li {
+        margin: 4px 0;
+        color: #5b5b66;
+      }
+      a {
+        color: #1741b0;
+      }
+      code {
+        font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+        font-size: 12.5px;
+        background: #eff0f4;
+        border-radius: 4px;
+        padding: 1px 5px;
+      }
+      pre {
+        background: #16161a;
+        color: #eceaf0;
+        border-radius: 8px;
+        padding: 14px 16px;
+        overflow-x: auto;
+        font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+        font-size: 12.5px;
+        line-height: 1.6;
+      }
+      .cols {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 8px 28px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bar"></div>
+
+    <header>
+      <div class="mark"></div>
+      <span class="name">Northwind Digital</span>
+      <nav>Services &middot; Work &middot; About &middot; Contact</nav>
+    </header>
+
+    <main>
+      <!--
+        Everything above and below this comment is a pretend agency website. The
+        only real part is the script tag and the div: that is exactly what an
+        agency pastes, and nothing else on this page is ours.
+      -->
+      <div class="hero">
+        <div class="pitch">
+          <h1>Is your website losing customers to Google?</h1>
+          <p>
+            Run a free check. You get a score, the fixes that matter most, and we get a reason to
+            talk.
+          </p>
+        </div>
+
+        <div id="tw-audit"></div>
+      </div>
+
+      <section class="panel">
+        <h2>Test page, not part of the product</h2>
+        <p style="margin-top: 6px; color: #5b5b66">
+          Served from <code>apps/web/public/test-embed.html</code>. It exists so the embed can be
+          tried the way an agency will use it, and so every state of the report can be opened
+          without waiting for one to happen.
+        </p>
+
+        <h3>The tag an agency pastes</h3>
+        <pre>
+&lt;script src="https://siteauditserver.com/embed.js" data-key="pk_live_..." async&gt;&lt;/script&gt;
+&lt;div id="tw-audit"&gt;&lt;/div&gt;</pre>
+
+        <h3>Test it cross origin, which is the case that actually matters</h3>
+        <p style="color: #5b5b66">
+          Opened from <code>localhost:3000</code> this page is same origin with the app, and an
+          embed that only works there is an embed that breaks at the first agency. Serve this file
+          from a different port and load it there:
+        </p>
+        <pre>
+python3 -m http.server 4000 --directory apps/web/public
+# or: npx serve apps/web/public -p 4000
+# then open http://localhost:4000/test-embed.html</pre>
+        <p style="color: #5b5b66">
+          The script tag below points at <code>http://localhost:3000</code> on purpose, so the
+          iframe, the resize messages and the report link are all crossing an origin boundary.
+        </p>
+
+        <h3>On a phone</h3>
+        <p style="color: #5b5b66">
+          Run <code>pnpm dev</code>, find your machine's address on the network, and open
+          <code>http://&lt;address&gt;:3000/test-embed.html</code>. The form and the report both
+          have to work at 360 px.
+        </p>
+
+        <div class="cols">
+          <div>
+            <h3>Every report state</h3>
+            <ul>
+              <li><a href="http://localhost:3000/r/demo-done">Finished, three fixes</a></li>
+              <li>
+                <a href="http://localhost:3000/r/demo-score-only">Pilot variant, score only</a>
+              </li>
+              <li><a href="http://localhost:3000/r/demo-clean">Nothing failed</a></li>
+              <li><a href="http://localhost:3000/r/demo-pending">Pending, polls to done</a></li>
+              <li>
+                <a href="http://localhost:3000/r/demo-pending-stuck">Pending that never finishes</a>
+              </li>
+              <li><a href="http://localhost:3000/r/demo-failed-fetch">Site did not answer</a></li>
+              <li>
+                <a href="http://localhost:3000/r/demo-failed-blocked">Site blocked the check</a>
+              </li>
+              <li><a href="http://localhost:3000/r/demo-expired">Expired, returns 410</a></li>
+              <li><a href="http://localhost:3000/r/nothing-here">Token that never existed</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>Every form refusal</h3>
+            <ul>
+              <li><code>notaddress</code> gives invalid address</li>
+              <li><code>192.168.1.1</code> gives blocked address</li>
+              <li><code>blocked.example.com</code> gives blocked address</li>
+              <li><code>quota.example.com</code> gives agency over quota</li>
+              <li><code>you@nowhere</code> gives invalid email</li>
+              <li><code>you@mailinator.com</code> gives throwaway email</li>
+              <li>Leave the human check unticked for the robot refusal</li>
+              <li>Send the same address twice for already checked today</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>Other surfaces</h3>
+            <ul>
+              <li>
+                <a href="http://localhost:3000/a/northwind-digital">Hosted form, paid plan</a>
+              </li>
+              <li>
+                <a href="http://localhost:3000/a/atlas-web-studio"
+                  >Hosted form, free plan with badge</a
+                >
+              </li>
+              <li>
+                <a href="http://localhost:3000/e/pk_live_demo?mode=redirect"
+                  >Form in redirect mode</a
+                >
+              </li>
+              <li><a href="http://localhost:3000/u/demo-lead">Unsubscribe page</a></li>
+              <li><a href="http://localhost:3000/embed/v1/frame.js">The loader itself</a></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="http://localhost:3000/embed.js" data-key="pk_live_demo" async></script>
+  </body>
+</html>
