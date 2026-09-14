@@ -101,7 +101,11 @@ Jedan red po agenciji.
 | button_label | text | max 30 |
 | report_intro | text | max 400, ispod ocjene |
 | cta_label, cta_url | text | dugme na zamućenom dijelu |
+| calendar_url | text null | link na kalendar, dugme "Book a call" u zaglavlju izvještaja |
 | footer_text | text null | max 200 |
+| company_address | text null | podnožje izvještaja i emaila, obavezno kad agencija šalje marketing |
+| privacy_policy_url | text null | link uz kvačicu pristanka; bez njega obrazac pokazuje upozorenje |
+| consent_version | text | verzija teksta pristanka koja se upisuje na lead, `docs/23-compliance.md` |
 | hide_powered_by | boolean | samo ako entitlement dozvoli, provjera u API-ju |
 | updated_at | | |
 

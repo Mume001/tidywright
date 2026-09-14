@@ -81,6 +81,8 @@ export interface Branding {
   reportIntro: string
   ctaLabel: string
   ctaUrl: string
+  /** Booking link. When set, the report shows "Book a call" in its header. */
+  calendarUrl: string | null
   footerText: string | null
   companyAddress: string | null
   hidePoweredBy: boolean

@@ -27,6 +27,10 @@
   --color-lime-l: #c9ee72;
   --color-on-lime: #16200a;
 
+  /* Accent used as text. On the dark app that is the accent itself; the report
+   * theme swaps in the agency colour darkened until it reads on white. */
+  --color-ink: #b6e24a;
+
   --color-amber: #e7a33c;
   --color-coral: #e2705a;
   --color-violet: #9b8cf4;
@@ -72,6 +76,13 @@
   --color-lime-d: var(--agency-primary, #16161a);
   --color-lime-l: var(--agency-primary, #16161a);
   --color-on-lime: var(--agency-on-primary, #ffffff);
+
+  /*
+   * The same brand colour, darkened on the server until it reads as text on
+   * white. Use this for links and for any coloured word, never --color-lime,
+   * which is sized for a filled button where the text sits on top of it.
+   */
+  --color-ink: var(--agency-ink, #16161a);
 
   --color-score-good: #2e9e5b;
   --color-score-mid: #d9822b;
