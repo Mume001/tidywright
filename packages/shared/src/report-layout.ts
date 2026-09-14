@@ -187,7 +187,7 @@ export function biggestProblemSentence(layout: ReportLayout, criticalCount: numb
 
   const head =
     criticalCount > 0
-      ? `${criticalCount} critical ${criticalCount === 1 ? 'problem' : 'problems'} are holding this page back.`
+      ? `${criticalCount} critical ${criticalCount === 1 ? 'problem is' : 'problems are'} holding this page back.`
       : `${layout.problemCount} ${layout.problemCount === 1 ? 'thing is' : 'things are'} worth fixing.`
 
   if (!worst) return head

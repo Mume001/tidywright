@@ -239,6 +239,19 @@ export function staticAuditByToken(token: string): Audit | null {
   return demoAudits().get(token) ?? mock.audits.find((a) => a.token === token) ?? null
 }
 
+/**
+ * Where the report's call to action points. docs/15-frontend-spec.md 2.1: the
+ * agency's own link, then their calendar, and if they have set up neither, an
+ * email to the owner. The button is the whole reason the report exists, so it
+ * never renders as a dead end.
+ */
+export function ctaUrlFor(agency: Agency, branding: Branding): string {
+  if (branding.ctaUrl) return branding.ctaUrl
+  if (branding.calendarUrl) return branding.calendarUrl
+  const owner = mock.users.find((u) => u.id === agency.ownerUserId)
+  return owner ? `mailto:${owner.email}` : '#'
+}
+
 export interface ResolvedReport {
   audit: Audit
   agency: Agency

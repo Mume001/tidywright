@@ -14,7 +14,19 @@ import { type NextRequest, NextResponse } from 'next/server'
  */
 const VISITOR_PATHS = ['/e/', '/r/', '/a/', '/u/', '/embed.js', '/embed/']
 
-export default function proxy(request: NextRequest) {
+/** The token out of /r/<token>, and nothing from /r/gone. */
+function reportToken(pathname: string): string | null {
+  if (!pathname.startsWith('/r/')) return null
+  const segment = pathname.slice(3).split('/')[0]
+  if (!segment || segment === 'gone') return null
+  try {
+    return decodeURIComponent(segment)
+  } catch {
+    return segment
+  }
+}
+
+export default async function proxy(request: NextRequest) {
   const host = request.headers.get('host') ?? ''
   const { pathname } = request.nextUrl
   const isVisitorHost = host.includes('siteauditserver')
@@ -28,6 +40,30 @@ export default function proxy(request: NextRequest) {
     }
     if (!isVisitorHost && isVisitorPath) {
       return new NextResponse(null, { status: 404 })
+    }
+  }
+
+  /*
+   * A deleted or expired report has to answer 410, not 200. A page in Next
+   * cannot set its own status code, and notFound() is the only interrupt there
+   * is, so the status is put on here and the body comes from /r/gone.
+   *
+   * The lookup is imported inside the branch: it reads the whole mock dataset,
+   * and no other request should pay for that. In B4 it becomes the same shape of
+   * check against a deleted_at column.
+   */
+  const token = reportToken(pathname)
+  if (token) {
+    const { isExpiredToken } = await import('@/lib/mock/expired')
+    if (isExpiredToken(token)) {
+      const gone = request.nextUrl.clone()
+      gone.pathname = '/r/gone'
+      gone.search = ''
+      gone.searchParams.set('t', token)
+      const response = NextResponse.rewrite(gone, { status: 410 })
+      response.headers.set('X-Robots-Tag', 'noindex, nofollow')
+      response.headers.set('x-tw-surface', 'visitor')
+      return response
     }
   }
 

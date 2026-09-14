@@ -50,7 +50,11 @@ export function FixCard({ fix, onCopy }: FixCardProps) {
         </Button>
       </div>
 
-      <div className="mt-3.5 grid gap-3.5 md:grid-cols-2">
+      {/*
+        items-start, so a one line "Now" does not stretch into a tall empty box
+        beside ten lines of suggested JSON-LD.
+      */}
+      <div className="mt-3.5 grid items-start gap-3.5 md:grid-cols-2">
         <div>
           <div className="text-[10.5px] font-bold tracking-wider text-tx3 uppercase">Now</div>
           <p className="mt-1.5 rounded-lg bg-score-bad/10 p-3 font-mono text-[12.5px] leading-relaxed break-words text-tx2">

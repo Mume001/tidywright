@@ -18,7 +18,8 @@ export interface StatusShellProps {
   children: ReactNode
 }
 
-function StatusShell({ agencyName, logoUrl, children }: StatusShellProps) {
+/** The small branded card every terminal visitor page is drawn in. */
+export function StatusShell({ agencyName, logoUrl, children }: StatusShellProps) {
   return (
     <div className="mx-auto w-full max-w-[520px] overflow-hidden rounded-[var(--radius-card)] border border-line bg-panel shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
       <div className="h-1 bg-lime" />

@@ -197,6 +197,18 @@ describe('biggestProblemSentence', () => {
     )
   })
 
+  it('agrees with itself when there is exactly one critical problem', () => {
+    const layout = buildReportLayout({
+      checks: [
+        check('title_present', 'tags', 'fail', 'critical'),
+        check('https_active', 'indexing', 'pass', 'critical'),
+      ],
+      fixes: [],
+      summary: null,
+    })
+    expect(biggestProblemSentence(layout, 1)).toContain('1 critical problem is holding this page')
+  })
+
   it('does not say critical when nothing is', () => {
     const layout = buildReportLayout({
       checks: [check('og_image', 'social', 'warn')],

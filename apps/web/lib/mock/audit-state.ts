@@ -39,9 +39,30 @@ interface Run {
   frozen: boolean
 }
 
-const runs = new Map<string, Run>()
-const submissions = new Map<string, string>()
-const unsubscribed = new Set<string>()
+interface MockStore {
+  runs: Map<string, Run>
+  submissions: Map<string, string>
+  unsubscribed: Set<string>
+}
+
+/*
+ * Hung off globalThis, not off this module.
+ *
+ * Next gives route handlers and server components separate module instances, so
+ * an audit created by POST /api/mock/audits was invisible to the page that
+ * rendered /r/<token> and every submitted report came back 404. Module scope is
+ * also thrown away on every hot reload, which made reports vanish mid session.
+ * One object on the process fixes both.
+ */
+const globalRef = globalThis as typeof globalThis & { __twMockStore?: MockStore }
+
+const store: MockStore = (globalRef.__twMockStore ??= {
+  runs: new Map<string, Run>(),
+  submissions: new Map<string, string>(),
+  unsubscribed: new Set<string>(),
+})
+
+const { runs, submissions, unsubscribed } = store
 
 /** Tests and the dev server both want a way back to a known state. */
 export function resetMockAudits(): void {
