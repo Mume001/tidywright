@@ -1,3 +1,6 @@
 export * from './types'
 export * from './plans'
 export * from './checks-catalog'
+export * from './fix-guard'
+export * from './specificity'
+export * from './score'

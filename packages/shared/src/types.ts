@@ -25,8 +25,18 @@ export type FailureCode =
 
 export type AuditVariant = 'full' | 'score_only'
 
-/** The four groups the score is broken into. docs/05-checks.md. */
-export type CheckGroup = 'indexing' | 'tags' | 'structured_data' | 'content'
+/** The groups the score is broken into. docs/05-checks.md. */
+export type CheckGroup =
+  | 'indexing'
+  | 'tags'
+  | 'structured_data'
+  | 'content'
+  | 'media'
+  | 'social'
+  | 'performance'
+  | 'mobile'
+  | 'security'
+  | 'accessibility'
 
 export type Severity = 'critical' | 'warning' | 'notice'
 export type CheckStatus = 'pass' | 'fail' | 'warn' | 'skipped'
@@ -141,6 +151,11 @@ export interface Fix {
 /** The small blob kept on the audit row. The full result lives in object storage. */
 export interface AuditSummary {
   groups: Record<CheckGroup, number>
+  /** Counts by severity, so the header can say "3 critical, 12 warnings" without
+   *  walking the full check list. */
+  counts: { critical: number; warning: number; notice: number; passed: number }
+  /** The codes the report leads with, in the order it shows them. */
+  priority: string[]
   passed: string[]
   failed: string[]
   warnings: string[]

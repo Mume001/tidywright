@@ -1,11 +1,12 @@
-import { CHECKS, SEVERITY_WEIGHT } from '../checks-catalog'
+import { PHASE_1_CHECKS } from '../checks-catalog'
+import { prioritise, scoreChecks } from '../score'
 import { entitlementsFor } from '../plans'
 import type {
   Agency,
   Audit,
   AuditStatus,
   Branding,
-  CheckGroup,
+  AuditSummary,
   CheckResult,
   EmbedKey,
   Entitlements,
@@ -34,6 +35,8 @@ export interface MockData {
   stats: StatsDaily[]
 }
 
+const FIXABLE_CODES = new Set(PHASE_1_CHECKS.filter((c) => c.fixable).map((c) => c.code))
+
 const AGENCY_SEEDS = [
   {
     slug: 'northwind-digital',
@@ -45,44 +48,20 @@ const AGENCY_SEEDS = [
   { slug: 'meridian-seo', name: 'Meridian SEO', plan: 'agency' as Plan, color: '#0F766E' },
 ]
 
-function scoreFromChecks(checks: CheckResult[]): {
-  score: number
-  groups: Record<CheckGroup, number>
-} {
-  const groups: CheckGroup[] = ['indexing', 'tags', 'structured_data', 'content']
-  const perGroup = {} as Record<CheckGroup, number>
-
-  for (const group of groups) {
-    const inGroup = checks.filter((c) => c.group === group && c.status !== 'skipped')
-    if (inGroup.length === 0) {
-      perGroup[group] = 100
-      continue
-    }
-    const total = inGroup.reduce((sum, c) => sum + SEVERITY_WEIGHT[c.severity], 0)
-    const lost = inGroup
-      .filter((c) => c.status === 'fail' || c.status === 'warn')
-      .reduce((sum, c) => sum + SEVERITY_WEIGHT[c.severity] * (c.status === 'fail' ? 1 : 0.5), 0)
-    perGroup[group] = Math.round(((total - lost) / total) * 100)
-  }
-
-  const score = Math.round(groups.reduce((sum, g) => sum + perGroup[g], 0) / groups.length)
-  return { score: Math.max(0, Math.min(100, score)), groups: perGroup }
-}
-
 function buildChecks(rng: Rng, quality: number): CheckResult[] {
-  return CHECKS.map((def): CheckResult => {
-    const failChance = def.severity === 'critical' ? 0.35 : def.severity === 'warning' ? 0.45 : 0.5
+  return PHASE_1_CHECKS.map((d): CheckResult => {
+    const base = d.severity === 'critical' ? 0.3 : d.severity === 'warning' ? 0.42 : 0.5
+    const chanceToFail = base * (1 - quality)
     const roll = rng.float()
-    const adjusted = failChance * (1 - quality)
-    const status = roll < adjusted ? 'fail' : roll < adjusted + adjusted * 0.6 ? 'warn' : 'pass'
+    const status = roll < chanceToFail ? 'fail' : roll < chanceToFail * 1.7 ? 'warn' : 'pass'
     return {
-      code: def.code,
-      group: def.group,
-      severity: def.severity,
+      code: d.code,
+      group: d.group,
+      severity: d.severity,
       status,
-      title: def.title,
-      detail: status === 'pass' ? 'Looks right.' : def.failText,
-      evidence: status === 'pass' ? null : `<${def.code}>`,
+      title: d.title,
+      detail: status === 'pass' ? 'Looks right.' : d.failText,
+      evidence: status === 'pass' ? null : `<${d.code}>`,
     }
   })
 }
@@ -340,9 +319,7 @@ export function buildMockData(seed = 42): MockData {
     const done = status === 'done'
     const quality = rng.float() * 0.7 + 0.1
     const checks = done ? buildChecks(rng, quality) : []
-    const { score, groups } = done
-      ? scoreFromChecks(checks)
-      : { score: 0, groups: { indexing: 0, tags: 0, structured_data: 0, content: 0 } }
+    const breakdown = done ? scoreChecks(checks) : null
 
     audits.push({
       id: rng.id(),
@@ -359,17 +336,19 @@ export function buildMockData(seed = 42): MockData {
             ['dns', 1],
           ])
         : null,
-      score: done ? score : null,
-      summary: done
+      score: breakdown ? breakdown.score : null,
+      summary: breakdown
         ? {
-            groups,
+            groups: breakdown.groups as AuditSummary['groups'],
+            counts: breakdown.counts,
+            priority: prioritise(checks, FIXABLE_CODES).slice(0, 8),
             passed: checks.filter((c) => c.status === 'pass').map((c) => c.code),
             failed: checks.filter((c) => c.status === 'fail').map((c) => c.code),
             warnings: checks.filter((c) => c.status === 'warn').map((c) => c.code),
             headline:
-              score >= 80
+              breakdown.score >= 80
                 ? 'Solid, a few things to tidy'
-                : score >= 50
+                : breakdown.score >= 50
                   ? 'Good bones, weak first impression'
                   : 'Google can barely read this page',
             intro:

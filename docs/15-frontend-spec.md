@@ -14,6 +14,34 @@ Konvencije u ovom dokumentu:
 - Sve što piše korisniku je na engleskom. Tekstovi u ovom dokumentu su prijedlog, ne
   konačni.
 
+## Raspored izvještaja kad ima 174 nalaza
+
+Katalog je narastao sa 29 na 174 provjere (`05-checks.md`). To mijenja stranicu
+izvještaja, jer lista od 174 reda je zid teksta kroz koji niko ne prolazi. Raspored je
+obavezan i ide odozgo:
+
+| Red | Šta | Zašto tu |
+|---|---|---|
+| 1 | Prsten ocjene, deset traka po grupama, jedna rečenica šta je najveći problem | broj prvo, objašnjenje odmah uz njega |
+| 2 | Tri gotove popravke, otvorene | ovo je proizvod, ne smije biti ispod pregiba |
+| 3 | "Prvo popravi ovo": šest nalaza iz `summary.priority` | odgovara na jedino pitanje koje posjetilac ima |
+| 4 | Zamućeni ostatak plus CTA agencije | ovdje se lead pretvara u razgovor |
+| 5 | Sve provjere, grupisane, **sklopljene** | dubina za onoga ko je hoće |
+
+Pravila za peti red:
+- Grupe su sklopljene po defaultu, s brojem u zaglavlju ("Speed, 4 od 16 palo").
+- Grupa u kojoj je sve prošlo prikazuje samo zelenu liniju, bez rasklapanja.
+- Unutar grupe redoslijed je: palo, upozorenje, prošlo. Prošlo ide na dno i sivo je.
+- Provjera koja nije radila (nema slika na stranici) se ne prikazuje uopšte, ne
+  prikazuje se kao prošla. Lažno zeleno je gore od ničega.
+- Iznad liste stoji prekidač "Prikaži samo probleme", uključen po defaultu.
+
+Deset traka umjesto četiri: dvije kolone po pet na desktopu, jedna kolona na telefonu.
+Svaka traka ima ime grupe, broj, i rečenicu iz `GROUP_INTROS` ispod, jer "Accessibility
+44" nikome ne znači ništa bez te rečenice.
+
+PDF izvještaj (faza 2) je jedini gdje se sve rasklapa, jer se PDF štampa i prosljeđuje.
+
 ## 0. Dizajn sistem, kratko
 
 Detalji u `27-design-system.md`. Ovdje samo šta frontend koristi:

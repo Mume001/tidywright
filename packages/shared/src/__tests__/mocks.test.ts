@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { buildMockData } from '../mocks/build'
-import { CHECKS } from '../checks-catalog'
+import { PHASE_1_CHECKS } from '../checks-catalog'
 import { PLANS, entitlementsFor, formatPrice } from '../plans'
 
 describe('mock data', () => {
@@ -30,7 +30,7 @@ describe('mock data', () => {
       expect(audit.score).toBeLessThanOrEqual(100)
       expect(audit.summary).not.toBeNull()
       expect(audit.fixes).toHaveLength(3)
-      expect(audit.checks).toHaveLength(CHECKS.length)
+      expect(audit.checks).toHaveLength(PHASE_1_CHECKS.length)
     }
   })
 

@@ -39,23 +39,23 @@ popravke `docs/06-fixes.md`.
 
 ## Mapa dokumenata po temi
 
-| Tema | Dokument |
-|---|---|
-| šta gdje živi, uloge, tokovi | `docs/14-product-map.md` |
-| rute i ekrani | `docs/15-frontend-spec.md` |
-| dozvole i RLS | `docs/16-access-control.md` |
-| API, poslovi, radnik | `docs/17-backend-spec.md` |
-| tabele | `docs/18-data-model.md` |
-| infrastruktura i deploy | `docs/20-infrastructure.md`, `docs/25-observability-and-ops.md` |
-| kapacitet | `docs/21-capacity.md` |
-| sigurnost | `docs/22-security.md` |
-| pravo | `docs/23-compliance.md` |
-| naplata | `docs/24-billing.md` |
-| email | `docs/26-email.md` |
-| dizajn | `docs/27-design-system.md`, `design/` |
-| testovi | `docs/30-testing.md` |
-| redoslijed | `docs/31-build-plan.md` |
-| promptovi i validacija modela | `docs/33-model-prompts.md` |
+| Tema                          | Dokument                                                        |
+| ----------------------------- | --------------------------------------------------------------- |
+| šta gdje živi, uloge, tokovi  | `docs/14-product-map.md`                                        |
+| rute i ekrani                 | `docs/15-frontend-spec.md`                                      |
+| dozvole i RLS                 | `docs/16-access-control.md`                                     |
+| API, poslovi, radnik          | `docs/17-backend-spec.md`                                       |
+| tabele                        | `docs/18-data-model.md`                                         |
+| infrastruktura i deploy       | `docs/20-infrastructure.md`, `docs/25-observability-and-ops.md` |
+| kapacitet                     | `docs/21-capacity.md`                                           |
+| sigurnost                     | `docs/22-security.md`                                           |
+| pravo                         | `docs/23-compliance.md`                                         |
+| naplata                       | `docs/24-billing.md`                                            |
+| email                         | `docs/26-email.md`                                              |
+| dizajn                        | `docs/27-design-system.md`, `design/`                           |
+| testovi                       | `docs/30-testing.md`                                            |
+| redoslijed                    | `docs/31-build-plan.md`                                         |
+| promptovi i validacija modela | `docs/33-model-prompts.md`                                      |
 
 ## Kako se radi u ovom repozitoriju
 
