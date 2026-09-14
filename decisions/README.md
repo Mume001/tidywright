@@ -36,3 +36,4 @@ Ako se promijeni, stari fajl ostaje i dobija status "zamijenjeno".
 | 0006 | Stack |
 | 0007 | Ime i domene |
 | 0008 | Pet otvorenih tehničkih pitanja: Vercel, model, izvještaj odmah, Cloudflare Free, marketing tekstovi |
+| 0009 | Kad se dokument i nacrt ne slažu, nacrt pobjeđuje i dokument se ispravlja |

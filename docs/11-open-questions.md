@@ -94,15 +94,15 @@ Uz to provjereno: `audits.token` je već zasebna kolona s jedinstvenim indeksom 
 što je mock sloj pravio `id` iz tokena, pa je ko vidi id u aplikaciji mogao izračunati
 javni link.
 
-## 17. Pet mjesta gdje se specifikacija i nacrtani dizajn ne slažu. TREBA MUMETOVO OKO
+## 17. Pet mjesta gdje se specifikacija i nacrtani dizajn ne slažu. ZATVORENO
 
-Sve je već odlučeno u kodu da F1 ne stane, ali svaka se mijenja u jednom fajlu ako Mume
-kaže drugačije. Ovo je lista za kontrolnu tačku, ne za sada.
+Nije trebalo ni biti pitanje. Odluke su već bile donesene u kodu, samo nezapisane.
 
-| Šta | Specifikacija kaže | Dizajn kaže | Šta je urađeno |
-|---|---|---|---|
-| Kartica popravke | "Now" i "Suggested" jedno ispod drugog (`13`, `15`) | jedno pored drugog | pored, kao dizajn i kao F0 kod; ispod 768 px se ionako slaže u kolonu |
-| Prsten ocjene | boja agencije ako kontrast prolazi (`27`) | boja po rasponu ocjene | po rasponu; plavi prsten na ocjeni 34 ne kaže da je 34 loše |
-| "Powered by" | "Powered by Tidywright" (`15`) | "Powered by SiteAuditServer" | Tidywright |
-| `--tx3` u izvještaju | `#8E8E99` (`27`) | isto | `#6F6F7A`; original je 3,2:1 na bijeloj, a izvještaj u njemu piše rečenice, ne placeholdere |
-| `--panel` u izvještaju | `#F7F7F8` (`27`) | bijele kartice s ivicom | `#FFFFFF`, da "panel" znači "površina kartice" u obje teme |
+Pravilo je sada u `decisions/0009`: kad se dokument i nacrt ne slažu oko toga kako nešto
+izgleda, nacrt pobjeđuje i dokument se ispravlja u istom PR-u. Za činjenice (ime, brojka,
+pravilo pristupačnosti) pravilo ne važi, jer nacrt o njima ne odlučuje i zna biti stariji
+od odluke.
+
+Svih pet stavki je razvrstano i ispravljeno u `decisions/0009`, u `docs/13`, `docs/15`,
+`docs/27`, `docs/32` i u dva nacrta. Ubuduće se ovakvo neslaganje ne prijavljuje kao
+pitanje nego se razriješi po pravilu.

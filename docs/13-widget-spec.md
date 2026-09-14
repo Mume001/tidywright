@@ -171,8 +171,9 @@ Redoslijed odozgo:
 
 1. Logo i boja agencije, URL koji je skeniran, datum
 2. Ocjena u krugu, četiri podocjene u boji
-3. **Tri popravke, svaka kao kartica:** naslov nalaza, "sada" i "prijedlog" jedno ispod
-   drugog, dugme za kopiranje, dva do tri razloga ispod
+3. **Tri popravke, svaka kao kartica:** naslov nalaza, "sada" i "prijedlog" jedno pored
+   drugog na širini od 768 px naviše i jedno ispod drugog ispod toga, dugme za kopiranje,
+   dva do tri razloga ispod. Vidi `decisions/0009` i `docs/15-frontend-spec.md` 2.1.
 4. Ostali nalazi kao lista: naslov i ozbiljnost vidljivi, opis i popravka zamagljeni,
    preko svega jedan poziv: "Get the full fix pack from [Agencija]" s dugmetom na
    cta_url ili kalendar

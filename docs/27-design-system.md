@@ -45,6 +45,11 @@ Semantika ocjene (score ring, badge, bar):
 | 50 do 79 | amber |
 | 0 do 49 | coral |
 
+Na tamnoj temi iste boje služe i za traku i za tekst, jer na `--panel` prolaze i jedno i
+drugo (lime 12:1, amber 8,3:1, coral 5,7:1). Svejedno postoje i kao `--*-ink` tokeni, s
+istim vrijednostima, da komponenta koja se piše jednom radi i u temi izvještaja gdje se
+razlikuju. Vidi "Površina i tekst su dva tokena".
+
 Ozbiljnost nalaza: `critical` coral, `warning` amber, `notice` violet, `passed` lime,
 `info` tx2.
 
@@ -53,23 +58,37 @@ Ozbiljnost nalaza: `critical` coral, `warning` amber, `notice` violet, `passed` 
 ```css
 :root[data-theme="report"] {
   --bg:      #FFFFFF;
-  --panel:   #F7F7F8;
+  --panel:   #FFFFFF;   /* kartica je bijela s ivicom, kao na nacrtu */
+  --panel2:  #EFEFF3;   /* traka mjerača, ugniježdena površina */
   --line:    #E6E6EA;
   --tx:      #16161A;
   --tx2:     #5B5B66;
-  --tx3:     #8E8E99;
+  --tx3:     #6F6F7A;   /* 4,96:1 na bijeloj, vidi Dostupnost */
   --brand:   var(--agency-primary);         /* iz branding.primary_color */
   --on-brand: var(--agency-on-primary);      /* računa se: #fff ili #111 po WCAG kontrastu */
-  --good:    #2E9E5B;
+  --ink:     var(--agency-ink);              /* ista boja, zatamnjena dok ne prođe 4,5:1 na bijeloj */
+  --good:    #2E9E5B;   /* traka i prsten */
   --warn:    #D9822B;
   --bad:     #D64545;
+  --good-ink: #1E7042;  /* iste tri kao tekst, vidi "Površina i tekst su dva tokena" */
+  --warn-ink: #985716;
+  --bad-ink:  #B33636;
 }
 ```
 
-Boja agencije se koristi samo za: dugme CTA, prsten ocjene (ako je kontrast dovoljan,
-inače semantička boja ocjene), linkove, i tanku traku na vrhu. Nikad za velike površine
-i nikad za tekst na bijelom ako kontrast padne ispod 4,5:1 (tada se zatamni algoritmom,
-`color-mix` prema crnoj dok ne prođe).
+`--panel` je bijela, ista kao `--bg`. Kartica se u ovoj temi vidi po ivici, ne po
+podlozi, kako je nacrtano u `design/phase1/Report.dc.html`. To znači da "panel" u obje
+teme znači isto: površina kartice. Zato `FixCard` i `ScoreRing` rade u obje bez posebnog
+koda.
+
+Boja agencije se koristi samo za: dugme CTA, linkove, i tanku traku na vrhu. Nikad za
+velike površine i nikad za tekst na bijelom ako kontrast padne ispod 4,5:1 (tada se
+zatamni algoritmom, `color-mix` prema crnoj dok ne prođe, i rezultat se servira kao
+`--agency-ink`).
+
+**Prsten ocjene nije među njima.** Prsten uzima boju po rasponu ocjene, ne po brendu.
+Plavi prsten na ocjeni 34 ne kaže posjetiocu da je 34 loše, a to je jedino što prsten i
+treba da kaže. Tako je i nacrtano. Vidi `decisions/0009`.
 
 ## Tipografija
 
@@ -160,8 +179,11 @@ Storybook mora pokazati bar 1 do 4 za svaki ekran prije nego što backend postoj
 
 ## Dostupnost
 
-- Kontrast tekst/podloga bar 4,5:1 (provjereno: `--tx2` na `--panel` je 6,8:1, `--tx3`
-  na `--panel` je 3,4:1 pa se koristi samo za placeholder i onemogućeno).
+- Kontrast tekst/podloga bar 4,5:1. Na app temi `--tx2` na `--panel` je 6,8:1, a `--tx3`
+  3,4:1, pa se `--tx3` tamo koristi samo za placeholder i onemogućeno.
+- U temi izvještaja `--tx3` je `#6F6F7A`, a ne `#8E8E99` kako je prvo pisalo. Izvještaj u
+  toj boji piše prave rečenice (datum, linija ispod svake trake grupe, podnožje), a ne
+  placeholdere, i `#8E8E99` je 3,2:1 na bijeloj. Sada je 4,96:1.
 - Fokus prsten `2px solid var(--lime)` s 2 px offsetom, vidljiv na svemu.
 - Sve ikone-dugmad imaju `aria-label`.
 - Tabele s pravim `<table>`, ne div grid.
