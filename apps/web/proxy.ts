@@ -12,7 +12,7 @@ import { type NextRequest, NextResponse } from 'next/server'
  *
  * Next 16 calls this file proxy.ts. It was middleware.ts up to Next 15.
  */
-const VISITOR_PATHS = ['/e/', '/r/', '/a/', '/u/', '/embed.js']
+const VISITOR_PATHS = ['/e/', '/r/', '/a/', '/u/', '/embed.js', '/embed/']
 
 export default function proxy(request: NextRequest) {
   const host = request.headers.get('host') ?? ''
@@ -33,6 +33,14 @@ export default function proxy(request: NextRequest) {
 
   const response = NextResponse.next()
   response.headers.set('x-tw-surface', isVisitorPath ? 'visitor' : 'brand')
+
+  // Nothing a visitor sees belongs in an index. A report is somebody's audit
+  // with their address in it, and a form indexed on our host would compete with
+  // the agency's own page. docs/15-frontend-spec.md 2.1.
+  if (isVisitorPath) {
+    response.headers.set('X-Robots-Tag', 'noindex, nofollow')
+  }
+
   return response
 }
 

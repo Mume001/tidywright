@@ -68,16 +68,12 @@ export const QueuedWritingFixes: Story = {
 
 /** Done. The score is the hook, the button is the point. */
 export const Done: Story = {
-  args: {
-    state: { kind: 'done', score: 58, problemCount: 9, email: 'amir@northwind-client.com' },
-  },
+  args: { state: { kind: 'done', score: 58, email: 'amir@northwind-client.com' } },
 }
 
-/** Nothing failed, so the sentence changes rather than reading as an error. */
+/** A good score, so the sentence praises rather than promising repairs. */
 export const DoneWithNothingToFix: Story = {
-  args: {
-    state: { kind: 'done', score: 100, problemCount: 0, email: 'amir@northwind-client.com' },
-  },
+  args: { state: { kind: 'done', score: 96, email: 'amir@northwind-client.com' } },
 }
 
 /** Error, one story per code a visitor can actually reach. */

@@ -31,7 +31,12 @@ export type EmbedFormState =
   | { kind: 'form' }
   | { kind: 'validating' }
   | { kind: 'queued'; host: string; status: AuditStatus }
-  | { kind: 'done'; score: number; problemCount: number; email: string }
+  /**
+   * The score and the address we sent the link to, and nothing else. The status
+   * endpoint deliberately returns no finding counts and no email, so this card
+   * cannot say more than it is entitled to know.
+   */
+  | { kind: 'done'; score: number; email: string }
   | { kind: 'error'; code: string; requestId?: string }
 
 export interface EmbedFormProps {
@@ -250,9 +255,9 @@ export function EmbedForm({
           <ScoreRing score={state.score} size={96} showCaption={false} className="mx-auto" />
           <h3 className="mt-3 font-display text-[17px] font-bold">Your report is ready</h3>
           <p className="mt-1.5 text-[13px] leading-relaxed text-tx2">
-            {state.problemCount > 0
-              ? `We found ${state.problemCount} ${state.problemCount === 1 ? 'thing' : 'things'} worth fixing, and wrote the top three for you.`
-              : 'Nothing failed. The full checklist is in your report.'}{' '}
+            {state.score >= 90
+              ? 'Your page is in good shape. The full checklist is in your report.'
+              : 'We found what is holding it back, and wrote the most important fixes for you.'}{' '}
             We also sent the link to {state.email}.
           </p>
           <Button
