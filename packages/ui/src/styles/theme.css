@@ -61,7 +61,13 @@
  */
 [data-theme='report'] {
   --color-bg: #ffffff;
-  --color-panel: #f7f7f8;
+  /*
+   * A card is --panel in both themes. On the dark app that is a surface lifted
+   * off the page; on the white report it is the page colour with a border, which
+   * is what the drawn design uses. Keeping one name for "card" is what lets
+   * FixCard and ScoreRing render in both without knowing where they are.
+   */
+  --color-panel: #ffffff;
   --color-panel2: #efeff3;
   --color-raise: #ffffff;
   --color-line: #e6e6ea;

@@ -31,7 +31,7 @@ export function FormFrame({
   return (
     <div
       className={cn(
-        'mx-auto w-full max-w-[420px] rounded-[var(--radius-card)] border border-line bg-raise p-6 shadow-[0_1px_2px_rgba(0,0,0,0.05)]',
+        'mx-auto w-full max-w-[420px] rounded-[var(--radius-card)] border border-line bg-panel p-6 shadow-[0_1px_2px_rgba(0,0,0,0.05)]',
         className,
       )}
     >

@@ -14,13 +14,20 @@ import { Button } from './button'
  * Works in both themes: the app shows it inside an audit, the report shows it to
  * the visitor on the agency's white page.
  */
-export function FixCard({ fix }: { fix: Fix }) {
+export interface FixCardProps {
+  fix: Fix
+  /** Reported so the pilot can count which fixes people actually take. */
+  onCopy?: (kind: Fix['kind']) => void
+}
+
+export function FixCard({ fix, onCopy }: FixCardProps) {
   const [copied, setCopied] = useState(false)
 
   async function copy() {
     try {
       await navigator.clipboard.writeText(fix.after)
       setCopied(true)
+      onCopy?.(fix.kind)
       setTimeout(() => setCopied(false), 1600)
     } catch {
       /* blocked clipboard, the text is selectable */
