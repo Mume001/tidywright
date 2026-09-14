@@ -116,15 +116,26 @@ aplikacijom na 3000, dakle svaki skok prelazi granicu origina:
    "46 warnings" je bila 2,5:1. Traka smije biti 3:1, riječ mora 4,5:1, pa sada postoje
    `--color-score-*-ink` odvojeno od `--color-score-*`.
 
-### Šta traži tvoje oko
+### Zatvoreno poslije prvog pregleda F1
 
-`docs/11-open-questions.md` pitanje 17: pet mjesta gdje se `docs/15` i `docs/27` ne
-slažu s nacrtanim dizajnom. Sve je odlučeno da F1 ne stane, svaka se vraća u jednom
-fajlu. Najveća je kartica popravke: specifikacija kaže "Now" i "Suggested" jedno ispod
-drugog, dizajn i F0 kod ih imaju jedno pored drugog.
+**Pitanje 16, token za odjavu.** `leads` je dobio kolonu `unsubscribe_token`: 32
+nasumična bajta kao base64url, jedinstveni indeks, nullable dok se ne pošalje prvi email.
+Vlastita vrijednost, nikad izvedena iz `id`, jer link ide kroz tuđe mail servere i log
+fajlove, pa ko ga ima ne smije time imati i primarni ključ reda. `/u/[token]` sada
+razrješava po toj koloni i odbija `id`. `audits.token` je provjeren i već je bio zasebna
+kolona, ali je mock pravio `id` iz tokena, pa je to popravljeno.
 
-Novo pitanje 16: `/u/[token]` koristi `lead.id` jer kolone za token nema u
-`docs/18-data-model.md`. Treba prava kolona prije nego što B5 pošalje prvi email.
+**Pitanje 17, neslaganja dokumenta i nacrta.** Zatvoreno odlukom `decisions/0009`:
+**kad se dokument i nacrt ne slažu oko toga kako nešto izgleda, nacrt pobjeđuje i dokument
+se ispravlja u istom PR-u.** Za činjenice (ime, brojka, pravilo pristupačnosti) pravilo ne
+važi. Svih pet stavki razvrstano i ispravljeno u `docs/13`, `docs/15`, `docs/27`,
+`docs/32` i u dva nacrta. Kartica popravke ostaje jedno pored drugog, a provjereno je da
+se slaže u kolonu ispod 768 px, na 360, 500, 767, 768 i 1280 px.
+
+**Novo pravilo u `docs/27-design-system.md`:** boja za površinu i boja za tekst su
+odvojeni tokeni. Traka mora 3:1, riječ mora 4,5:1, nikad isti token za oboje. Napisano
+prije F2, jer F2 donosi tabele, značke statusa i KPI kartice, to jest mnogo malog
+obojenog teksta, i ista greška se tamo ponavlja u jednom potezu.
 
 ## Sljedeći korak
 
@@ -133,8 +144,8 @@ Novo pitanje 16: `/u/[token]` koristi `lead.id` jer kolone za token nema u
    `python3 -m http.server 4000 --directory apps/web/public` i otvori
    `http://localhost:4000/test-embed.html`.
 2. `pnpm storybook` za sva stanja obrasca i izvještaja bez klikanja kroz aplikaciju.
-3. Pogledaj pitanja 16 i 17 u `docs/11-open-questions.md`.
-4. Claude Code kreće na F2: auth ekrani, onboarding, shell, i svi ekrani aplikacije.
+3. **Mume prolazi kroz F1 vizuelno i javlja primjedbe. F2 ne kreće prije toga.**
+4. Poslije toga F2: auth ekrani, onboarding, shell, i svi ekrani aplikacije.
 5. Mume otvara naloge iz pitanja 15, redom kako trebaju.
 6. Otvoreno je i dalje pravno lice za Stripe (pitanje 9), smjer je Estonija, treba do
    kraja F2.

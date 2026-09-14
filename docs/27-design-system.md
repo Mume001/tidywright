@@ -90,6 +90,47 @@ zatamni algoritmom, `color-mix` prema crnoj dok ne prođe, i rezultat se servira
 Plavi prsten na ocjeni 34 ne kaže posjetiocu da je 34 loše, a to je jedino što prsten i
 treba da kaže. Tako je i nacrtano. Vidi `decisions/0009`.
 
+## Površina i tekst su dva tokena
+
+**Pravilo koje se ne krši: boja za površinu i boja za tekst nikad nisu isti token.**
+
+| Šta | Koliko mora | Standard |
+|---|---|---|
+| Traka, prsten, ispuna mjerača, ivica kontrole, ikona koja nosi značenje | 3:1 | WCAG 1.4.11 |
+| Riječ, broj, oznaka, bilo šta složeno slovima | 4,5:1 | WCAG 1.4.3 |
+
+Ista boja rijetko prolazi oba praga. `#2E9E5B` je odlična traka na bijeloj i loš tekst na
+njoj (3,4:1). Zato svaka semantička boja ima par:
+
+| Površina | Tekst | App | Izvještaj |
+|---|---|---|---|
+| `--score-good` | `--score-good-ink` | `#B6E24A` / isto | `#2E9E5B` / `#1E7042` |
+| `--score-mid` | `--score-mid-ink` | `#E7A33C` / isto | `#D9822B` / `#985716` |
+| `--score-bad` | `--score-bad-ink` | `#E2705A` / isto | `#D64545` / `#B33636` |
+| `--violet` | `--violet-ink` | `#9B8CF4` / isto | `#9B8CF4` / `#5A49C8` |
+| `--agency-primary` | `--agency-ink` | ne postoji | boja agencije / zatamnjena na serveru |
+
+Na tamnoj app temi su parovi iste vrijednosti, jer na `--panel` prolaze i jedno i drugo.
+Postoje svejedno, i koriste se svejedno, jer komponenta koja se piše jednom mora raditi i
+u temi izvještaja gdje se razlikuju.
+
+U kodu: `SCORE_COLOR` za grafiku, `SCORE_INK` i `SCORE_TEXT_CLASS` za tekst
+(`packages/ui/src/lib/score.ts`). Značka uzima podlogu iz boje površine i slova iz ink
+boje, nikad obje iz iste.
+
+### Zašto ovo stoji ovdje, a ne u napomeni
+
+Prvi izvještaj je napisan sa `text-score-*` na desetak mjesta. Prošao je lint, prošao je
+tipove, izgledao je dobro na snimku ekrana. Axe je onda našao pilulu "46 warnings" na
+2,5:1 i broj grupe na 3,4:1, dakle nečitljivo za svakog ko ne gleda savršen ekran u
+savršenom svjetlu. Greška nije bila u izboru boje nego u tome što je jedan token pokrivao
+dvije upotrebe s dva različita praga, pa nijedna provjera osim mjerenja kontrasta nije ni
+mogla da je vidi.
+
+F2 donosi tabele, značke statusa leada, KPI kartice i grafove, to jest mnogo malog
+obojenog teksta. Ista greška se tamo ponavlja u jednom potezu ako ovo pravilo nije
+napisano prije nego što se ekrani počnu pisati.
+
 ## Tipografija
 
 | Uloga | Font | Veličina / linija | Težina |
@@ -179,8 +220,10 @@ Storybook mora pokazati bar 1 do 4 za svaki ekran prije nego što backend postoj
 
 ## Dostupnost
 
-- Kontrast tekst/podloga bar 4,5:1. Na app temi `--tx2` na `--panel` je 6,8:1, a `--tx3`
-  3,4:1, pa se `--tx3` tamo koristi samo za placeholder i onemogućeno.
+- Kontrast tekst/podloga bar 4,5:1, grafika bar 3:1, i to su dva različita tokena. Vidi
+  "Površina i tekst su dva tokena".
+- Na app temi `--tx2` na `--panel` je 6,8:1, a `--tx3` 3,4:1, pa se `--tx3` tamo koristi
+  samo za placeholder i onemogućeno.
 - U temi izvještaja `--tx3` je `#6F6F7A`, a ne `#8E8E99` kako je prvo pisalo. Izvještaj u
   toj boji piše prave rečenice (datum, linija ispod svake trake grupe, podnožje), a ne
   placeholdere, i `#8E8E99` je 3,2:1 na bijeloj. Sada je 4,96:1.
