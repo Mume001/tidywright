@@ -315,6 +315,9 @@ export function buildMockData(seed = 42): MockData {
       country: rng.pick(COUNTRIES),
       firstViewedAt: rng.chance(0.7) ? minutesAgo(Math.max(1, minutes - 20)) : null,
       notes: null,
+      // Written when the first email goes out. See below: the newest lead is
+      // left without one on purpose.
+      unsubscribeToken: rng.secret(),
       unsubscribedAt: null,
       createdAt: minutesAgo(minutes),
     }
@@ -392,6 +395,15 @@ export function buildMockData(seed = 42): MockData {
 
   leads.sort((a, b) => b.createdAt.localeCompare(a.createdAt))
   audits.sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+
+  /*
+   * The newest lead has no unsubscribe token: it is written when the first email
+   * is sent, and that job has not run yet. Set here rather than left to a dice
+   * roll, because a fixture that only sometimes contains a state is a fixture
+   * that only sometimes tests it.
+   */
+  const newest = leads[0]
+  if (newest) newest.unsubscribeToken = null
 
   const stats: StatsDaily[] = []
   for (const agency of agencies) {

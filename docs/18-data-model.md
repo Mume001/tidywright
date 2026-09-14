@@ -148,15 +148,26 @@ Osoba koja je unijela URL i email.
 | country | text null | iz Cloudflare zaglavlja |
 | first_viewed_at | timestamptz null | kad je agencija prvi put otvorila |
 | notes | text null | |
+| unsubscribe_token | text unique null | 32 nasumična bajta kao base64url (43 znaka), link `/u/<token>`; upisuje se pri slanju prvog emaila, vidi ispod |
 | unsubscribed_at | timestamptz null | |
 | created_at, updated_at | | |
+
+**`unsubscribe_token` je vlastita vrijednost, nikad izvedena iz `id`.** Ni heš, ni
+potpis, ništa što se može izračunati iz reda. Razlog: taj link ide u email i prolazi
+kroz tuđe mail servere, log fajlove i automatski pretpregled odjave koji neki klijenti
+pokreću. Ko god ga na kraju ima ne smije time imati i primarni ključ reda u bazi. Pošto
+je vlastita kolona, jedan link se povlači sa `UPDATE ... SET unsubscribe_token = <novi>`
+bez diranja ostatka reda.
+
+Isti razlog stoji iza `audits.token`, koji je već zasebna kolona, i tu je ulog veći jer
+izvještaj sadrži podatke o kupčevom sajtu.
 
 `consent` sadrži: `{text: "puni tekst pristanka", version: "2026-09-01", checked: true,
 ts: "...", form_url: "...", ip_hash: "..."}`. Ovo je dokaz za GDPR, ne mijenja se.
 
 Indeksi: `(agency_id, created_at desc)`, `(agency_id, status)`, `(agency_id, email)`,
-`(agency_id, site_host)`, GIN na `to_tsvector('simple', email || ' ' || site_url)` za
-pretragu.
+`(agency_id, site_host)`, jedinstveni `(unsubscribe_token)` gdje nije null, GIN na
+`to_tsvector('simple', email || ' ' || site_url)` za pretragu.
 
 Dedup pravilo: isti email i isti site_host u istoj agenciji unutar 24 h ne pravi novi
 lead nego novi audit na postojećem leadu.

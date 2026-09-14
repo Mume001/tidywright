@@ -78,22 +78,21 @@ Nije pitanje nego lista radnji koje niko osim njega ne može uraditi:
    (`packages/shared/plans.ts`), ali treba da ih pogleda prije nego što odu na marketing
    stranicu.
 
-## 16. Koji je token u `/u/[token]`. OTVORENO, treba do B5
+## 16. Koji je token u `/u/[token]`. ZATVORENO
 
-`docs/15-frontend-spec.md` 2.3 traži stranicu za odjavu na `/u/[token]`, ali tabela
-`leads` u `docs/18-data-model.md` ima samo `unsubscribed_at`, bez kolone za token.
+Kolona `unsubscribe_token` na `leads`: 32 nasumična bajta kao base64url (43 znaka),
+jedinstveni indeks, nullable dok se ne pošalje prvi email. Upisana u
+`docs/18-data-model.md`, u tip `Lead`, u mock i u rutu.
 
-U F1 stranica koristi `lead.id`. To radi za mock, ali nije dobro za pravo:
+Vlastita vrijednost, nikad izvedena iz `id`, ni hešom ni potpisom. Link ide u email i
+prolazi kroz tuđe mail servere, log fajlove i automatski pretpregled odjave koji neki
+klijenti pokreću, pa ko god ga na kraju ima ne smije time imati i primarni ključ reda.
+Pošto je vlastita kolona, jedan link se povlači jednim `UPDATE`-om.
 
-- `id` je uuid v7, što znači da mu je prvih 48 bita vrijeme nastanka. Nije pogodiv
-  napamet, ali jeste djelimično predvidiv, a ovaj link ide u email i prolazi kroz tuđe
-  servere i skenere.
-- Ista vrijednost se onda pojavljuje i u linku i kao ključ reda, pa se ne može
-  poništiti bez brisanja leada.
-
-Prijedlog: kolona `unsubscribe_token text unique` na `leads`, 32 znaka, generisana pri
-kreiranju, i `/u/[token]` traži po njoj. Odluka treba prije nego što B5 pošalje prvi
-email. Ne blokira F2.
+Uz to provjereno: `audits.token` je već zasebna kolona s jedinstvenim indeksom i
+`/r/[token]` je koristi svuda, nigdje ne pada na `audit.id`. Popravljeno je jedino to
+što je mock sloj pravio `id` iz tokena, pa je ko vidi id u aplikaciji mogao izračunati
+javni link.
 
 ## 17. Pet mjesta gdje se specifikacija i nacrtani dizajn ne slažu. TREBA MUMETOVO OKO
 

@@ -64,6 +64,17 @@ export class Rng {
     const alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
     return Array.from({ length: len }, () => this.pick(alphabet.split(''))).join('')
   }
+
+  /**
+   * What base64url encoding of n random bytes looks like: 43 characters for 32
+   * bytes, no padding. Used where the real column will hold a secret rather
+   * than an identifier, so the mock is the same shape and the same length.
+   */
+  secret(bytes = 32): string {
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_'
+    const length = Math.ceil((bytes * 4) / 3)
+    return Array.from({ length }, () => this.pick(alphabet.split(''))).join('')
+  }
 }
 
 /** Fixed "now" so relative times in stories never drift. */

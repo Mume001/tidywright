@@ -59,12 +59,21 @@ export function leadById(id: string): Lead | null {
   return mock.leads.find((l) => l.id === id) ?? null
 }
 
+/** The alias printed on the test page, so /u/ is reachable without copying 43 characters. */
+export const DEMO_UNSUBSCRIBE_TOKEN = 'demo-lead'
+
 /**
- * The unsubscribe link in an email carries the lead's own token. Until leads
- * have one, the demo uses the lead id, which is what /u/[token] is handed.
+ * Resolves the /u/<token> link by unsubscribe_token and by nothing else.
+ *
+ * Never by id: whoever ends up holding this link, and it travels through mail
+ * servers and log files to get anywhere, must not thereby hold a primary key.
+ * docs/18-data-model.md.
  */
 export function leadByToken(token: string): Lead | null {
-  return leadById(token) ?? (token === 'demo-lead' ? (mock.leads[0] ?? null) : null)
+  if (token === DEMO_UNSUBSCRIBE_TOKEN) {
+    return mock.leads.find((l) => l.unsubscribeToken !== null) ?? null
+  }
+  return mock.leads.find((l) => l.unsubscribeToken !== null && l.unsubscribeToken === token) ?? null
 }
 
 function baseDoneAudit(): Audit {
@@ -73,6 +82,14 @@ function baseDoneAudit(): Audit {
   )
   if (!found) throw new Error('mock data has no finished audit to build the demo reports from')
   return found
+}
+
+let auditCounter = 0
+
+/** A row id for a mock audit, unrelated to its public token. */
+function mockAuditId(): string {
+  auditCounter += 1
+  return `mock-audit-${auditCounter.toString(36).padStart(6, '0')}`
 }
 
 export function hostOf(url: string): string {
@@ -119,7 +136,10 @@ export function retargetAudit(
 
   return {
     ...base,
-    id: `mock-${token}`,
+    // Its own value, not `mock-${token}`. An id that spells out the token means
+    // anyone who sees the id in the agency app can open the public report, which
+    // is the same mistake as an unsubscribe link built from a primary key.
+    id: mockAuditId(),
     token,
     url: to.url,
     finalUrl: to.url,

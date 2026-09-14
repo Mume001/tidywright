@@ -8,6 +8,7 @@ import {
   demoBaseAudit,
   formContextByKey,
   formContextBySlug,
+  leadByToken,
   reportContext,
   retargetAudit,
   staticAuditByToken,
@@ -98,6 +99,63 @@ describe('retargetAudit', () => {
     const moved = retargetAudit(base, { url: 'https://x.com/', host: 'x.com' }, 'tok')
     expect(moved.checks).toEqual(base.checks)
     expect(moved.score).toBe(base.score)
+  })
+})
+
+describe('the unsubscribe token', () => {
+  const withToken = mock.leads.find((l) => l.unsubscribeToken !== null)!
+
+  it('resolves a lead by its own token', () => {
+    expect(leadByToken(withToken.unsubscribeToken!)?.id).toBe(withToken.id)
+  })
+
+  it('refuses to resolve a lead by its id', () => {
+    expect(leadByToken(withToken.id)).toBeNull()
+  })
+
+  it('is not derived from the id, so one link can be revoked on its own', () => {
+    for (const lead of mock.leads.filter((l) => l.unsubscribeToken !== null)) {
+      expect(lead.unsubscribeToken).not.toContain(lead.id)
+      expect(lead.id).not.toContain(lead.unsubscribeToken!)
+    }
+  })
+
+  it('is 32 bytes of base64url, and unique across every lead', () => {
+    const tokens = mock.leads.map((l) => l.unsubscribeToken).filter((t): t is string => t !== null)
+    expect(tokens.length).toBeGreaterThan(100)
+    for (const token of tokens) {
+      expect(token).toMatch(/^[A-Za-z0-9_-]{43}$/)
+    }
+    expect(new Set(tokens).size).toBe(tokens.length)
+  })
+
+  it('is missing on a lead whose first email has not gone out yet', () => {
+    expect(mock.leads.some((l) => l.unsubscribeToken === null)).toBe(true)
+  })
+
+  it('resolves nothing for a token nobody holds, and never for null', () => {
+    expect(leadByToken('not-a-token')).toBeNull()
+    expect(leadByToken('')).toBeNull()
+  })
+
+  it('keeps the alias the test page links to', () => {
+    expect(leadByToken('demo-lead')).not.toBeNull()
+  })
+})
+
+describe('the report token', () => {
+  it("is the audit's own column, never its id", () => {
+    for (const audit of mock.audits.slice(0, 50)) {
+      expect(audit.token).toMatch(/^[A-Za-z0-9]{32}$/)
+      expect(audit.token).not.toContain(audit.id)
+      expect(audit.id).not.toContain(audit.token)
+    }
+  })
+
+  it('does not spell the token into the id of a demo or submitted audit', () => {
+    for (const audit of demoAudits().values()) {
+      expect(audit.id).not.toContain(audit.token)
+    }
   })
 })
 

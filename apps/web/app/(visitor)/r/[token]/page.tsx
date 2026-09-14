@@ -114,7 +114,9 @@ export default async function ReportPage({ params, searchParams }: PageProps) {
             dateLabel={dateLabel}
             ctaUrl={ctaUrlFor(agency, branding)}
             showPoweredBy={!branding.hidePoweredBy}
-            unsubscribeUrl={lead ? `/u/${lead.id}` : null}
+            // The lead's own secret, not its id, and absent until the first
+            // email has gone out. docs/18-data-model.md.
+            unsubscribeUrl={lead?.unsubscribeToken ? `/u/${lead.unsubscribeToken}` : null}
           />
         )}
       </div>
