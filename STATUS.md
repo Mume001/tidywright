@@ -1,6 +1,6 @@
 # Gdje smo
 
-Zadnja izmjena: 15. septembar 2026. (F2a gotov i čeka potvrdu, identitet bota spreman za prijavu)
+Zadnja izmjena: 15. septembar 2026. (server živ, F2a čeka potvrdu, prijave čekaju mejl)
 
 ## Faza 1 je OTVORENA: gradnja widgeta
 
@@ -204,24 +204,39 @@ kao fiksni set; izbor tri popravke po uticaju dolazi u B3.
 obrazac dobio drugu kvačicu. Na njima se vidi da je neobavezna kvačica neoznačena i da uz
 nju nema greške kad se obrazac pošalje prazan, dok prva i dalje ima.
 
-## Verifikacija bota: kod gotov, čeka naloge
+## Server je živ, prijave nisu poslane
 
-Prijava je pomjerena **ispred F2**, jer ne čeka samo Cloudflareov red nego prvo naš:
-obrazac traži ime bota, operatera, izlazne adrese, User-Agent i **živu javnu stranicu**.
+`tidywright.com` odgovara. Jedan Hetzner server, `tw-app-1` (CPX12, Falkenstein), Caddy i
+systemd, **bez Vercela**. Postavka i, važnije, popis onoga što na njemu **nije** urađeno su
+u **`docs/39-server-setup.md`**.
 
-Urađeno 15.09.2026., provjereno protiv pokrenutog servera:
+Provjereno uživo 15.09.2026.:
 
-- `packages/shared/src/bot-identity.ts`, jedan izvor za ime, UA, limite i kontakte
-- `/bot` javna stranica i `/bot/ips.json`
-- `/.well-known/http-message-signatures-directory`, potpisan po RFC 9421, Ed25519
-- `apps/web/lib/bot-auth.ts` sa 11 testova, i `pnpm bot:keys` koji ne upisuje nijedan fajl
-- `proxy.ts` servira samo bot putanje na tidywright.com dok `TW_MARKETING_LIVE` nije
-  postavljen, da nedovršena naslovna ne bude javno lice firme
+|                                                     |                                                 |
+| --------------------------------------------------- | ----------------------------------------------- |
+| `https://tidywright.com/bot`                        | 200                                             |
+| `https://tidywright.com/bot/ips.json`               | obje adrese                                     |
+| `.../.well-known/http-message-signatures-directory` | 200, tačan content-type, oba potpisna zaglavlja |
 
-**Runbook sa tačnim vrijednostima za obrazac, polje po polje, je u
-`docs/38-bot-verification.md`.** Ostaje Mumetovo: Hetzner server sa Primary IP-om koji
-preživljava brisanje servera, reverse DNS u oba smjera, `pnpm bot:keys`, Vercel deploy, tri
-`curl` provjere, pa prijava. Oko 45 minuta, plus čekanje od kvartala.
+Dvije Primary IP adrese u Falkensteinu, obje sa zaštitom od brisanja, obje sa reverse
+DNS-om u oba smjera, obje prijavljujemo:
+
+| Adresa           | Reverse DNS              | Uloga                                        |
+| ---------------- | ------------------------ | -------------------------------------------- |
+| `49.13.83.98`    | `web.tidywright.com`     | aplikacija, `/bot`, direktorij ključeva      |
+| `188.245.170.86` | `crawler.tidywright.com` | izlaz radnika, rezervisana, u upotrebi od B2 |
+
+**`crawler` A zapis mora zauvijek ostati sivi oblak**, inače forward provjera vraća
+Cloudflareovu adresu i verifikacija po reverse DNS-u pada.
+
+**Ostaje, pola sata:** napraviti `bot@tidywright.com` kroz Cloudflare Email Routing (mora
+prije prijave, jer ga i stranica i obrazac navode kao kontakt), pa poslati dvije prijave.
+Sve vrijednosti, polje po polje, uključujući key ID, su u `docs/38-bot-verification.md`,
+korak 6.
+
+**Najozbiljnija rupa, za B2:** IPv6 izlaz nije ograničen, pa bi radnik izlazio sa adrese
+koju nismo prijavili. To je tačno ono zbog čega se ispada iz programa, i tiho je. Tri
+rješenja su popisana u `docs/39`.
 
 Dvije ispravke u odnosu na `36-fetch-reliability.md`: **Akamai** je u međuvremenu otvorio
 javnu prijavu na istoj mehanici (RFC 9421 plus JWKS), pa ista infrastruktura pokriva i
@@ -251,8 +266,9 @@ ih nije uhvatio jer F1 renderuje samo temu izvještaja, gdje je isti token 4,96:
 
 1. **Mume potvrđuje F2a.** Otvori `docs/review/f2a/README.md`, prođi kroz 22 snimka.
    **F2b ne kreće prije potvrde**, jer shell nosi svih petnaest ekrana poslije njega.
-2. **Prijava u Cloudflare Verified Bots**, po runbooku iz `docs/38-bot-verification.md`.
-   Ovo ne čeka F2a i ne treba mu ništa od mene.
+2. **Dvije prijave**, po `docs/38-bot-verification.md`, korak 6 i korak 8. Prije njih
+   `bot@tidywright.com` mora primati poštu. Ovo ne čeka F2a i ne treba mu ništa od mene.
+   Kad pošalješ, upiši datum ovdje, da se zna od kad se čeka.
 3. Poslije potvrde: **F2b** bez zaustavljanja. `/leads`, `/audits`, `/embed`, `/branding`,
    `/settings` (sa prekidačem za analitiku), `/billing` i `/team` (sa godišnjim planom kao
    ravnopravnim izborom), i pet admin ekrana.
@@ -311,3 +327,4 @@ Backend:
 | 15.09.2026. | Odluka 0011: pet odgovora. Model podataka nosi oba oblika i B1 je odblokiran, dva pristanka umjesto jednog, brend u tri sloja      |
 | 15.09.2026. | Identitet bota, potpisani direktorij ključeva i runbook za prijavu (`docs/38`). Akamai ima javnu prijavu, DataDome nema            |
 | 15.09.2026. | F2a: auth, onboarding, shell, `/overview`. 22 snimka, axe čist, dvije contrast greške iz F1 popravljene                            |
+| 15.09.2026. | Server `tw-app-1` živ, `tidywright.com` odgovara. Obje adrese objavljene, `docs/39` zapisuje postavku i rupe                       |
