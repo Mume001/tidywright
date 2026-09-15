@@ -1,6 +1,6 @@
 # Gdje smo
 
-Zadnja izmjena: 14. septembar 2026. (F1 gotov)
+Zadnja izmjena: 15. septembar 2026. (F1 prihvaćen i spojen, backlog pretočen)
 
 ## Faza 1 je OTVORENA: gradnja widgeta
 
@@ -59,8 +59,8 @@ aktuelna), i TypeScript 6 umjesto 7 zbog `typescript-eslint`.
 
 ## F1 je GOTOV
 
-Grana `feat/f1-embed-and-report`, osam commita, jedan po cjelini. Sve na mock podacima,
-bez ijednog reda pravog backenda.
+Prihvaćen 15.09.2026. i spojen u `master`. Dvanaest commita, jedan po cjelini. Sve na mock
+podacima, bez ijednog reda pravog backenda.
 
 ### Šta radi
 
@@ -137,18 +137,58 @@ odvojeni tokeni. Traka mora 3:1, riječ mora 4,5:1, nikad isti token za oboje. N
 prije F2, jer F2 donosi tabele, značke statusa i KPI kartice, to jest mnogo malog
 obojenog teksta, i ista greška se tamo ponavlja u jednom potezu.
 
+## Urađeno 15.09. (pregled F1 pretočen u odluke i zadatke)
+
+F1 je prihvaćen i grana `feat/f1-embed-and-report` je spojena u `master` sa `--no-ff`, pa
+miljokaz stoji kao jedan čitljiv raspon u historiji. Poslije toga sedam commita, jedan po
+tački, svaki uz pun krug provjera.
+
+- [x] Četiri dokumenta iz istraživačkog prolaza zapisana kakvi jesu: `34-backlog.md` i tri
+      istraživanja (`35` djelotvornost popravki, `36` pouzdanost dohvata, `37` self-serve
+      segment). Svaka brojka u njima nosi izvor.
+- [x] **Odluka `0010`**, tri stvari koje su bile odlučene ali nezapisane: poziv na akciju
+      u agencijinom izvještaju ostaje agencijin, ne guramo vlastitu vidljivost kroz
+      kupčeve sajtove, i ne obećavamo rang ni promet nego izvršene ispravke i izmjerene
+      tehničke ishode u prozoru od 90 dana.
+- [x] **Preduslov za B2** u `31-build-plan.md`: deklarišemo se Cloudflareu kao kategorija
+      **SEO**, nikad Agent ni Training, i prijavljujemo se u Verified Bots sa Web Bot Auth
+      potpisom. Identitet agenta i granica koju ne prelazimo su u `22-security.md`.
+- [x] **Kaskada dohvata** u `17-backend-spec.md` kao obaveza za B2: jedanaest klasa kvara,
+      četiri sloja, ponovni pokušaji, politika prema `robots.txt` u tri režima, i
+      djelimičan izvještaj iz sloja 0 kad HTML nije dostupan.
+- [x] **Oznaka uticaja po provjeri** u `05-checks.md` i u katalogu: `blokator`, `prikaz`,
+      `kvalitet`, `higijena`. `prioritise()` sada vodi po uticaju puta ozbiljnost, ne po
+      težini grupe. `pnpm docs:checks` regeneriše dokument iz koda.
+- [x] **Pet novih pitanja** (19 do 23) u `11-open-questions.md`, plus pitanje 18 zatvoreno
+      odlukom `0010`.
+- [x] Usput ispravljeno: `20-infrastructure.md` je imao stariji plan za Cloudflare,
+      `17-backend-spec.md` je tvrdio da faza 1 ne renderuje JavaScript dok je `31` imao
+      Playwright u B2, `18-data-model.md` je imao stari rječnik za `failure_code`, a
+      `types.ts` ga je pratio u istom commitu po svom pravilu.
+
+### Šta ostaje u backlogu i nije nigdje drugo
+
+Tačka B, dizajn: podnožje izvještaja treba bolje izgledati, a `/a/[slug]` i marketinški
+sajt trebaju ozbiljnije zaglavlje i burger meni na telefonu. To je posao za F2 i F3 i
+stoji u `34-backlog.md`. Nije pitanje, nema šta da se odluči.
+
 ## Sljedeći korak
 
-1. Na Macu: `corepack enable && pnpm install`, pa `pnpm dev`, pa otvori
-   `http://localhost:3000/test-embed.html`. Za pravi test ugradnje, u drugom terminalu
-   `python3 -m http.server 4000 --directory apps/web/public` i otvori
-   `http://localhost:4000/test-embed.html`.
-2. `pnpm storybook` za sva stanja obrasca i izvještaja bez klikanja kroz aplikaciju.
-3. **Mume prolazi kroz F1 vizuelno i javlja primjedbe. F2 ne kreće prije toga.**
-4. Poslije toga F2: auth ekrani, onboarding, shell, i svi ekrani aplikacije.
-5. Mume otvara naloge iz pitanja 15, redom kako trebaju.
-6. Otvoreno je i dalje pravno lice za Stripe (pitanje 9), smjer je Estonija, treba do
+1. **Mume odgovara na pitanja 19 do 23** u `11-open-questions.md`. Jedino koje ima rok je
+   19, tačka 3: model podataka mora podržavati i agenciju s više sajtova i vlasnika s
+   jednim sajtom **prije B1**, jer je to jeftino sada i skupo za šest mjeseci.
+2. **Prijava u Cloudflare Verified Bots kreće odmah**, ne kad B2 dođe na red. Odobrenje
+   traje od nekoliko sedmica do nekoliko mjeseci i nema SLA, a rok je prvi audit uživo.
+   Vidi preduslov za B2 u `31-build-plan.md`.
+3. F2: auth ekrani, onboarding, shell, i svi ekrani aplikacije.
+4. Mume otvara naloge iz pitanja 15, redom kako trebaju.
+5. Otvoreno je i dalje pravno lice za Stripe (pitanje 9), smjer je Estonija, treba do
    kraja F2.
+
+Za pokretanje lokalno: `corepack enable && pnpm install`, pa `pnpm dev`, pa
+`http://localhost:3000/test-embed.html`. Za pravi test ugradnje, u drugom terminalu
+`python3 -m http.server 4000 --directory apps/web/public` i otvori
+`http://localhost:4000/test-embed.html`. `pnpm storybook` daje sva stanja bez klikanja.
 
 ## Miljokazi (iz `docs/31-build-plan.md`)
 
@@ -156,14 +196,16 @@ Frontend s mock podacima:
 
 - [x] F0 monorepo, alati, dizajn sistem, mock sloj, CI
 - [x] F1 embed obrazac, `/embed.js`, izvještaj sa svim stanjima
+- [x] Kontrolna tačka: pregled s Mumetom, F1 prihvaćen i spojen u `master`
 - [ ] F2 aplikacija: auth, onboarding, svi ekrani, admin, Storybook
-- [ ] Kontrolna tačka: pregled s Mumetom
 - [ ] F3 marketing sajt
 
 Backend:
 
+- [ ] **Preduslov za B2, kreće odmah:** kategorija SEO prema Cloudflareu, `/bot` stranica,
+      ekskluzivne izlazne adrese, Web Bot Auth, prijava u Verified Bots
 - [ ] B1 Supabase, schema, RLS, auth, brendiranje, ključevi
-- [ ] B2 radnik, safeFetch, 29 provjera, ocjena, CLI
+- [ ] B2 radnik, safeFetch, katalog provjera, kaskada dohvata, ocjena, CLI
 - [ ] B3 popravke kroz model
 - [ ] B4 API, izvještaj uživo, embed, deploy
 - [ ] B5 leadovi, emailovi, webhook, zaštita, statistike, retention
@@ -171,16 +213,18 @@ Backend:
 
 ## Dnevnik
 
-| Datum       | Šta se desilo                                                                           |
-| ----------- | --------------------------------------------------------------------------------------- |
-| 12.09.2026. | Ideja nastala iz ručnog audita adconnecta.com                                           |
-| 12.09.2026. | Istraživanje konkurencije i troškova, dizajn ekrana                                     |
-| 13.09.2026. | Finansijski model i tri scenarija, postavljen ovaj folder                               |
-| 13.09.2026. | Istraživanje kanala s 8 agenata, odluka: widget prvi                                    |
-| 13.09.2026. | Opseg widgeta i stack odlučeni, specifikacija napisana, faza 1 otvorena                 |
-| 13.09.2026. | Ime Tidywright, domene kupljene, folder i dizajn preimenovani                           |
-| 14.09.2026. | Noćna sesija: 19 dokumenata (14 do 32), plan gradnje frontend prvo, drugo dizajn platno |
-| 14.09.2026. | Promptovi modela (`docs/33`), odluka 0008 zatvara pet otvorenih pitanja                 |
-| 14.09.2026. | F0 napravljen i verifikovan: monorepo, dizajn sistem, mock podaci, Next.js              |
-| 14.09.2026. | Katalog 29 -> 176 provjera, nova ocjena s težinama, šest filtera kvaliteta, 72 testa    |
-| 14.09.2026. | F1: embed obrazac, loader od 2,9 KB, izvještaj sa svim stanjima, 156 testova            |
+| Datum       | Šta se desilo                                                                                                                      |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| 12.09.2026. | Ideja nastala iz ručnog audita adconnecta.com                                                                                      |
+| 12.09.2026. | Istraživanje konkurencije i troškova, dizajn ekrana                                                                                |
+| 13.09.2026. | Finansijski model i tri scenarija, postavljen ovaj folder                                                                          |
+| 13.09.2026. | Istraživanje kanala s 8 agenata, odluka: widget prvi                                                                               |
+| 13.09.2026. | Opseg widgeta i stack odlučeni, specifikacija napisana, faza 1 otvorena                                                            |
+| 13.09.2026. | Ime Tidywright, domene kupljene, folder i dizajn preimenovani                                                                      |
+| 14.09.2026. | Noćna sesija: 19 dokumenata (14 do 32), plan gradnje frontend prvo, drugo dizajn platno                                            |
+| 14.09.2026. | Promptovi modela (`docs/33`), odluka 0008 zatvara pet otvorenih pitanja                                                            |
+| 14.09.2026. | F0 napravljen i verifikovan: monorepo, dizajn sistem, mock podaci, Next.js                                                         |
+| 14.09.2026. | Katalog 29 -> 176 provjera, nova ocjena s težinama, šest filtera kvaliteta, 72 testa                                               |
+| 14.09.2026. | F1: embed obrazac, loader od 2,9 KB, izvještaj sa svim stanjima, 156 testova                                                       |
+| 14.09.2026. | Pregled F1 s Mumetom, primjedbe u `docs/34`, tri istraživanja (`35`, `36`, `37`)                                                   |
+| 15.09.2026. | F1 spojen u master. Backlog pretočen: odluka 0010, preduslov za B2, kaskada dohvata, oznaka uticaja po provjeri, pet novih pitanja |
