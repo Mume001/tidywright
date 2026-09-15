@@ -23,7 +23,7 @@ export function KpiCard({ label, value, sub, delta, tone = 'default', className 
   const good = delta ? (delta.inverted ? delta.value < 0 : delta.value > 0) : null
   return (
     <Card className={cn('flex-1 p-4.5', className)}>
-      <div className="text-[10px] font-semibold tracking-wider text-tx3 uppercase">{label}</div>
+      <div className="text-[10px] font-semibold tracking-wider text-tx2 uppercase">{label}</div>
       <div
         className={cn(
           'tabular my-2.5 font-display text-3xl font-semibold tracking-tight',

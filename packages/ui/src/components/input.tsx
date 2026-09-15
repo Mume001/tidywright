@@ -22,7 +22,7 @@ function FieldShell({ label, hint, error, aside, htmlFor, children }: FieldShell
               {label}
             </label>
           )}
-          {aside && <span className="ml-auto text-[11px] text-tx3">{aside}</span>}
+          {aside && <span className="ml-auto text-[11px] text-tx2">{aside}</span>}
         </div>
       )}
       {children}
@@ -31,7 +31,7 @@ function FieldShell({ label, hint, error, aside, htmlFor, children }: FieldShell
           {error}
         </p>
       ) : hint ? (
-        <p className="mt-1.5 text-xs text-tx3">{hint}</p>
+        <p className="mt-1.5 text-xs text-tx2">{hint}</p>
       ) : null}
     </div>
   )
@@ -56,7 +56,7 @@ export function Input({ label, hint, error, aside, prefix, className, id, ...pro
     <FieldShell label={label} hint={hint} error={error} aside={aside} htmlFor={inputId}>
       <div className="flex items-stretch">
         {prefix && (
-          <span className="flex items-center rounded-l-[var(--radius-field)] border border-r-0 border-line2 bg-panel2 px-3 text-[13px] text-tx3">
+          <span className="flex items-center rounded-l-[var(--radius-field)] border border-r-0 border-line2 bg-panel2 px-3 text-[13px] text-tx2">
             {prefix}
           </span>
         )}

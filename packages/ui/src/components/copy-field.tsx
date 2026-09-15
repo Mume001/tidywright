@@ -69,7 +69,17 @@ export function CodeBlock({
   }
   return (
     <div className={cn('relative', className)}>
-      <pre className="overflow-x-auto rounded-[var(--radius-card)] border border-line bg-bg p-4 font-mono text-[12.5px] leading-relaxed text-tx2">
+      {/*
+        Focusable, because it scrolls sideways. A region a mouse can scroll and
+        a keyboard cannot is a WCAG 2.1.1 failure, and a long embed snippet
+        always scrolls. Found by axe on the onboarding embed step.
+      */}
+      <pre
+        tabIndex={0}
+        role="region"
+        aria-label="Code"
+        className="overflow-x-auto rounded-[var(--radius-card)] border border-line bg-bg p-4 font-mono text-[12.5px] leading-relaxed text-tx2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+      >
         {code}
       </pre>
       {copyable && (
