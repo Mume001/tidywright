@@ -14,6 +14,23 @@ import { type NextRequest, NextResponse } from 'next/server'
  */
 const VISITOR_PATHS = ['/e/', '/r/', '/a/', '/u/', '/embed.js', '/embed/']
 
+/**
+ * What tidywright.com may serve before the marketing site exists.
+ *
+ * The bot page and the key directory have to be live long before F3, because a
+ * verification programme will not look at a submission whose public
+ * documentation 404s, and approval takes a quarter. Everything else on that host
+ * is unfinished, and an unfinished page on the company domain is worse than no
+ * page. So until TW_MARKETING_LIVE is set, this is the whole public site.
+ *
+ * docs/38-bot-verification.md.
+ */
+const BOT_PATHS = ['/bot', '/.well-known/http-message-signatures-directory']
+
+function isBotPath(pathname: string): boolean {
+  return BOT_PATHS.some((p) => pathname === p || pathname.startsWith(`${p}/`))
+}
+
 /** The token out of /r/<token>, and nothing from /r/gone. */
 function reportToken(pathname: string): string | null {
   if (!pathname.startsWith('/r/')) return null
@@ -39,6 +56,12 @@ export default async function proxy(request: NextRequest) {
       return new NextResponse(null, { status: 404 })
     }
     if (!isVisitorHost && isVisitorPath) {
+      return new NextResponse(null, { status: 404 })
+    }
+
+    // tidywright.com is the bot page and nothing else until F3 ships.
+    const isMarketingHost = host.startsWith('tidywright.') || host.startsWith('www.tidywright.')
+    if (isMarketingHost && !process.env.TW_MARKETING_LIVE && !isBotPath(pathname)) {
       return new NextResponse(null, { status: 404 })
     }
   }

@@ -49,6 +49,7 @@ popravke `docs/06-fixes.md`.
 | infrastruktura i deploy       | `docs/20-infrastructure.md`, `docs/25-observability-and-ops.md` |
 | kapacitet                     | `docs/21-capacity.md`                                           |
 | sigurnost                     | `docs/22-security.md`                                           |
+| verifikacija bota             | `docs/38-bot-verification.md`                                   |
 | pravo                         | `docs/23-compliance.md`                                         |
 | naplata                       | `docs/24-billing.md`                                            |
 | email                         | `docs/26-email.md`                                              |

@@ -329,7 +329,8 @@ Zaključak: verifikacija je najisplativija pojedinačna investicija, ali nije sr
 
 - **Bing / Microsoft**: objavi IP listu i podrži reverse DNS, isti mehanizam kao za Bingbot verifikaciju.
 - **AWS WAF Bot Control**: ima kategorije za verifikovane botove, ali nema javni program prijave analogan Cloudflare-ovom. Radi kroz reputaciju i ponašanje.
-- **Akamai, DataDome, HUMAN, Imperva**: imaju programe, ali su okrenuti enterprise partnerima i nemaju smisla za nas dok nemamo volumen. Preskoči.
+- **Akamai**: ~~okrenut enterprise partnerima, preskoči~~. **Ispravka 15.09.2026.:** Akamai je otvorio javnu prijavu (Bot or AI agent registration, Akamai Bot Directory) na istoj mehanici, RFC 9421 plus JWKS direktorij. Ista infrastruktura pokriva i njih, bez dodatnog koda. Vidi `docs/38-bot-verification.md`, korak 8.
+- **DataDome, HUMAN, Imperva**: provjereno 15.09.2026., nemaju javni program prijave za operatere. Allowlisting radi vlasnik svakog zaštićenog sajta u svom panelu. Za nas to znači verifikaciju vlasništva i uputstvo vlasniku, ne prijavu.
 - **Cloudflare Radar direktorijum**: automatski nakon verifikacije, i sam po sebi je marketinški koristan.
 
 ### 5.2 robots.txt: šta smijemo, a šta ne

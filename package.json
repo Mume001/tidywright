@@ -17,7 +17,8 @@
     "docs:checks": "node --experimental-strip-types scripts/gen-checks-doc.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "bot:keys": "node scripts/gen-bot-keys.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

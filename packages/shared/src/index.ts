@@ -1,4 +1,5 @@
 export * from './types'
+export * from './bot-identity'
 export * from './plans'
 export * from './checks-catalog'
 export * from './fix-guard'

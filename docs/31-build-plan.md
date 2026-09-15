@@ -45,49 +45,20 @@ radi ručno. Procjene su za 20 sati sedmično.
 | Tema | `data-theme="report"`, boja agencije s kontrast računanjem |
 | Gotovo kad | Mume otvori test-embed.html, pošalje obrazac, vidi mock izvještaj s tri popravke i Copy radi; na telefonu isto |
 
-### F2: aplikacija, ekrani (6 do 8 dana)
+### Preduslov za B2, a radi se prije F2: kako se deklarišemo prema Cloudflareu
 
-| Šta | Detalj |
-|---|---|
-| Auth ekrani | `/login`, `/signup`, `/forgot`, `/reset`, `/verify` (UI samo, mock) |
-| Onboarding | 3 koraka s Stepperom, embed kod, test audit dugme (mock) |
-| Shell | sidebar, top bar, birač agencije, ⌘K, 404, error boundary |
-| `/overview` | KPI kartice, graf 30 dana, zadnji leadovi, prazno stanje s uputstvom |
-| `/leads`, `/leads/[id]` | DataTable s filterima, statusi, Sheet s detaljem, Timeline, bilješke |
-| `/audits`, `/audits/[id]` | lista, detalj s ugrađenim izvještajem i tehničkim podacima (trošak vidi samo owner) |
-| `/embed` | ključevi, kod, allowed origins, EmbedPreview uživo |
-| `/branding` | obrazac, ColorPicker, FileUpload, živi pregled iframea |
-| `/settings` | profil, notifikacije, zadržavanje, webhook (UI), izvoz (UI), brisanje |
-| `/billing`, `/team` | UI s mockom, funkcionalnost u fazi 2, ali ekran postoji sada |
-| Admin | `/admin/agencies`, `/admin/audits`, `/admin/costs`, `/admin/abuse`, `/admin/flags`, s mockom |
-| Storybook | svaki ekran 4 priče, vizuelni snapshot |
-| Gotovo kad | Mume prođe sve ekrane u Storybooku i u `next dev` s MSW, i potpiše "ovo gradimo" |
-
-**Kontrolna tačka: pregled s Mumetom.** Sve ispravke dizajna se rade ovdje, prije
-backenda.
-
-### F3: marketing sajt (2 do 3 dana)
-
-Naslovna, cijene, docs za ugradnju (6 platformi), legal stranice iz `legal/*.md`, bot,
-changelog. Statičan. Može paralelno s B1 ako Mume piše tekstove.
-
-### B1: baza, auth, brendiranje, ključevi (3 do 4 dana)
-
-| Šta | Detalj |
-|---|---|
-| Supabase | projekat, Drizzle schema za faza 1 tabele iz `18-data-model.md`, migracija 0001, RLS politike, `audit_log` funkcija, trigger za JWT `agencies` |
-| **Dva oblika naloga** | `agencies.kind` (`agency`, `solo`), `site_limit`, nullable `slug`, i tabela `sites` sa trigger-om za limit. Odluka `0011` tačka 1: oblik vlasništva se postavlja u prvoj migraciji, jer je sada jedna kolona a za šest mjeseci migracija nad podacima. Sadržaj `sites` i dalje dolazi u fazi 3 |
-| Auth | `@supabase/ssr`, `getClaims()`, email potvrda kroz Resend SMTP, reset, novi uređaj email |
-| Rute | `agencies`, `branding`, `embed-keys`, `settings` iz `17-backend-spec.md`, zamjena MSW handlera pravim pozivima ekran po ekran |
-| Storage | `branding` bucket, upload logotipa, SVG sanitizer |
-| RLS test | prolazi za sve tabele |
-| Gotovo kad | Mume se registruje na stagingu, prođe onboarding, promijeni boju, vidi je u `/e/[key]` (koji sad čita pravu bazu). Uz to: nalog s `kind = 'solo'` upisan ručno u bazu ne može dobiti drugi sajt ni embed ključ, i to pada na bazi a ne na UI-u |
-
-### Preduslov za B2: kako se deklarišemo prema Cloudflareu
-
-**Ovo se pokreće odmah, ne kad B2 dođe na red.** Odobrenje traje od nekoliko sedmica do
+**Ovo ide ispred F2, ne paralelno s njim.** Odobrenje traje od nekoliko sedmica do
 nekoliko mjeseci i nema SLA, a rok je prvi audit uživo, dakle B2. Izvor za sve brojke i
 mehaniku je `docs/36-fetch-reliability.md`, sekcije 2 i 5.1.
+
+**Runbook je u `docs/38-bot-verification.md`**: korak po korak, sa tačnim vrijednostima za
+Cloudflare obrazac, za Akamai, i sa objašnjenjem zašto kod DataDomea nema šta da se
+prijavi. Kod je napisan i provjeren 15.09.2026.; ostalo su nalozi i DNS, što traži
+Mumetovu ruku.
+
+Prijava ne čeka samo Cloudflareov red nego prvo naš: traži ime bota, operatera, izlazne
+adrese, User-Agent i **živu javnu stranicu** koja bota objašnjava. Bez servera i bez
+deploya nema šta da se prijavi.
 
 **Zašto je hitno.** Od 15.09.2026. Cloudflare mijenja podrazumijevanu politiku i blokira
 kategorije `Training` i `Agent` na novim domenama, na novim sajtovima postojećih kupaca i
@@ -129,6 +100,44 @@ dokumentaciji ne može prilagoditi ni isključiti WAF pravilima, pa verifikovan 
 ne pomaže pouzdano. Under Attack Mode ne pravi izuzetke ni za koga. Vlastito WAF pravilo
 vlasnika sajta ima prednost nad svime. Zato verifikacija ide zajedno sa kaskadom dohvata
 i djelimičnim izvještajem iz `docs/17-backend-spec.md`, ne umjesto njih.
+
+### F2: aplikacija, ekrani (6 do 8 dana)
+
+| Šta | Detalj |
+|---|---|
+| Auth ekrani | `/login`, `/signup`, `/forgot`, `/reset`, `/verify` (UI samo, mock) |
+| Onboarding | 3 koraka s Stepperom, embed kod, test audit dugme (mock) |
+| Shell | sidebar, top bar, birač agencije, ⌘K, 404, error boundary |
+| `/overview` | KPI kartice, graf 30 dana, zadnji leadovi, prazno stanje s uputstvom |
+| `/leads`, `/leads/[id]` | DataTable s filterima, statusi, Sheet s detaljem, Timeline, bilješke |
+| `/audits`, `/audits/[id]` | lista, detalj s ugrađenim izvještajem i tehničkim podacima (trošak vidi samo owner) |
+| `/embed` | ključevi, kod, allowed origins, EmbedPreview uživo |
+| `/branding` | obrazac, ColorPicker, FileUpload, živi pregled iframea |
+| `/settings` | profil, notifikacije, zadržavanje, webhook (UI), izvoz (UI), brisanje |
+| `/billing`, `/team` | UI s mockom, funkcionalnost u fazi 2, ali ekran postoji sada |
+| Admin | `/admin/agencies`, `/admin/audits`, `/admin/costs`, `/admin/abuse`, `/admin/flags`, s mockom |
+| Storybook | svaki ekran 4 priče, vizuelni snapshot |
+| Gotovo kad | Mume prođe sve ekrane u Storybooku i u `next dev` s MSW, i potpiše "ovo gradimo" |
+
+**Kontrolna tačka: pregled s Mumetom.** Sve ispravke dizajna se rade ovdje, prije
+backenda.
+
+### F3: marketing sajt (2 do 3 dana)
+
+Naslovna, cijene, docs za ugradnju (6 platformi), legal stranice iz `legal/*.md`, bot,
+changelog. Statičan. Može paralelno s B1 ako Mume piše tekstove.
+
+### B1: baza, auth, brendiranje, ključevi (3 do 4 dana)
+
+| Šta | Detalj |
+|---|---|
+| Supabase | projekat, Drizzle schema za faza 1 tabele iz `18-data-model.md`, migracija 0001, RLS politike, `audit_log` funkcija, trigger za JWT `agencies` |
+| **Dva oblika naloga** | `agencies.kind` (`agency`, `solo`), `site_limit`, nullable `slug`, i tabela `sites` sa trigger-om za limit. Odluka `0011` tačka 1: oblik vlasništva se postavlja u prvoj migraciji, jer je sada jedna kolona a za šest mjeseci migracija nad podacima. Sadržaj `sites` i dalje dolazi u fazi 3 |
+| Auth | `@supabase/ssr`, `getClaims()`, email potvrda kroz Resend SMTP, reset, novi uređaj email |
+| Rute | `agencies`, `branding`, `embed-keys`, `settings` iz `17-backend-spec.md`, zamjena MSW handlera pravim pozivima ekran po ekran |
+| Storage | `branding` bucket, upload logotipa, SVG sanitizer |
+| RLS test | prolazi za sve tabele |
+| Gotovo kad | Mume se registruje na stagingu, prođe onboarding, promijeni boju, vidi je u `/e/[key]` (koji sad čita pravu bazu). Uz to: nalog s `kind = 'solo'` upisan ručno u bazu ne može dobiti drugi sajt ni embed ključ, i to pada na bazi a ne na UI-u |
 
 ### B2: radnik, provjere, ocjena (4 do 5 dana)
 
