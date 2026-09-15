@@ -106,3 +106,13 @@ od odluke.
 Svih pet stavki je razvrstano i ispravljeno u `decisions/0009`, u `docs/13`, `docs/15`,
 `docs/27`, `docs/32` i u dva nacrta. Ubuduće se ovakvo neslaganje ne prijavljuje kao
 pitanje nego se razriješi po pravilu.
+
+## 18. Čiji je poziv na akciju u izvještaju. ZATVORENO
+
+Pitanje je otvorio pregled F1: dugme u podnožju izvještaja vodi na razgovor s agencijom,
+a trebalo bi voditi na pretplatu i na poruku "spoji svoj sajt pa da mi to odradimo".
+
+Zatvoreno odlukom `decisions/0010`, tačka 1: **u izvještaju koji nosi brend agencije poziv
+ostaje agencijin. Pretplata ide samo na auditu s naše domene.** Agencija je widget
+stavila zbog tog leada i ne uzimamo joj ga na njenoj stranici. Naš lijevak je besplatni
+javni audit na tidywright.com, koji dolazi u F3 i ne košta agenciju ništa.

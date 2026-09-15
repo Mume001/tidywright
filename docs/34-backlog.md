@@ -12,7 +12,7 @@ ništa nije u planu gradnje dok se ne pretoči u odluku ili u zadatak.
 - ODLUČENO 14.09.2026: poziv u izvještaju kroz agencijin widget ostaje
   agencijin. Pretplata i poruka "spoji svoj sajt pa da mi to odradimo" idu samo
   na auditu koji ide s našeg sajta. Agencija dobija lead koji je platila, mi
-  imamo svoj lijevak. Pitanje 18 je time zatvoreno.
+  imamo svoj lijevak. Pitanje 18 je time zatvoreno. Zapisano u `decisions/0010`, tačka 1.
 - Pozadina odluke: čiji je taj poziv na akciju. U modelu iz
   `decisions/0004` izvještaj nosi brend agencije, posjetilac je njen lead i
   poziv vodi kod nje. Ako poziv vodi na našu pretplatu, uzimamo agenciji lead
@@ -50,13 +50,16 @@ ništa nije u planu gradnje dok se ne pretoči u odluku ili u zadatak.
   mjesec dana vidi da se ništa nije pomjerilo.
 - Treba istražiti koje od 176 provjera imaju mjerljiv uticaj na rangiranje i u
   kojem roku, i po čemu se rezultat mjeri. Rezultat ide u zaseban dokument.
+- URAĐENO: `35-fix-effectiveness.md`. Iz toga je izašla odluka o tome šta smijemo
+  obećati (`decisions/0010`, tačka 3) i oznaka uticaja po provjeri u `05-checks.md`.
 
 ## E. Vlastita vidljivost kroz kupčeve sajtove
 
 - ODBAČENO 14.09.2026. Ideja je bila koristiti rad na kupčevim sajtovima da se
   gura naša vidljivost. Ubacivanje linkova prema nama radi rangiranja je shema
   linkova po Googleovim pravilima o spamu i nosi kaznu i nama i kupcu. Mi
-  prodajemo SEO, pa bi nas to koštalo dvostruko. Ne radi se.
+  prodajemo SEO, pa bi nas to koštalo dvostruko. Ne radi se. Zapisano u `decisions/0010`,
+  tačka 2.
 - Ostaje dopušteno i nesporno: "Powered by" oznaka sa rel="nofollow sponsored",
   studije slučaja uz pristanak, javni popis agencija, recenzije.
 
