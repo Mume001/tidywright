@@ -1,6 +1,6 @@
 # Gdje smo
 
-Zadnja izmjena: 15. septembar 2026. (F1 spojen, backlog pretočen, odluke 0010 i 0011)
+Zadnja izmjena: 15. septembar 2026. (F2a gotov i čeka potvrdu, identitet bota spreman za prijavu)
 
 ## Faza 1 je OTVORENA: gradnja widgeta
 
@@ -204,19 +204,60 @@ kao fiksni set; izbor tri popravke po uticaju dolazi u B3.
 obrazac dobio drugu kvačicu. Na njima se vidi da je neobavezna kvačica neoznačena i da uz
 nju nema greške kad se obrazac pošalje prazan, dok prva i dalje ima.
 
+## Verifikacija bota: kod gotov, čeka naloge
+
+Prijava je pomjerena **ispred F2**, jer ne čeka samo Cloudflareov red nego prvo naš:
+obrazac traži ime bota, operatera, izlazne adrese, User-Agent i **živu javnu stranicu**.
+
+Urađeno 15.09.2026., provjereno protiv pokrenutog servera:
+
+- `packages/shared/src/bot-identity.ts`, jedan izvor za ime, UA, limite i kontakte
+- `/bot` javna stranica i `/bot/ips.json`
+- `/.well-known/http-message-signatures-directory`, potpisan po RFC 9421, Ed25519
+- `apps/web/lib/bot-auth.ts` sa 11 testova, i `pnpm bot:keys` koji ne upisuje nijedan fajl
+- `proxy.ts` servira samo bot putanje na tidywright.com dok `TW_MARKETING_LIVE` nije
+  postavljen, da nedovršena naslovna ne bude javno lice firme
+
+**Runbook sa tačnim vrijednostima za obrazac, polje po polje, je u
+`docs/38-bot-verification.md`.** Ostaje Mumetovo: Hetzner server sa Primary IP-om koji
+preživljava brisanje servera, reverse DNS u oba smjera, `pnpm bot:keys`, Vercel deploy, tri
+`curl` provjere, pa prijava. Oko 45 minuta, plus čekanje od kvartala.
+
+Dvije ispravke u odnosu na `36-fetch-reliability.md`: **Akamai** je u međuvremenu otvorio
+javnu prijavu na istoj mehanici (RFC 9421 plus JWKS), pa ista infrastruktura pokriva i
+njih. **DataDome** nema program za operatere, allowlisting radi vlasnik svakog sajta u
+svom panelu.
+
+## F2a je GOTOV, čeka potvrdu
+
+Prva trećina F2. Snimci su u `docs/review/f2a/` (folder je u `.gitignore`), 22 komada na
+1280 i 390 px, plus README koji kaže šta gledati na svakom.
+
+- **Auth**, pet ekrana. Nikad ne otkrivamo da li adresa ima nalog; lozinka je 10 znakova i
+  ništa drugo, jer provjeru protiv procurjelih baza radi B1.
+- **Onboarding**, tri koraka, korak po URL-u, izvan shella.
+- **Shell**: sidebar sa grupama, birač agencije, ⌘K, fioka ispod 1024 px, 404 i error
+  boundary sa `req_id` na ekranu.
+- **`/overview`**: četiri KPI kartice sa sparkline grafom, 30 dana audita, zadnjih osam
+  leadova, stanje widgeta, pilot brojke, i prazno stanje sa tri koraka.
+
+**axe: nijedan ozbiljan ni kritičan prekršaj** ni na jednom od 22 snimka. Prvi prolaz ih
+je imao 15, u dvije klase, i obje su bile stvarne. Najvažnija: `--tx3` je na app temi
+3,4:1 i smije samo za placeholder, a koristio sam ga za prave rečenice. **Dvije od tih
+popravki su u F1 komponentama** (`Input` hint i prefiks, `KpiCard` labela): F1 axe prolaz
+ih nije uhvatio jer F1 renderuje samo temu izvještaja, gdje je isti token 4,96:1.
+
 ## Sljedeći korak
 
-1. **Prijava u Cloudflare Verified Bots kreće odmah**, ne kad B2 dođe na red. Odobrenje
-   traje od nekoliko sedmica do nekoliko mjeseci i nema SLA, a rok je prvi audit uživo.
-   Vidi preduslov za B2 u `31-build-plan.md`.
-2. **F2, u dva dijela.** `F2a`: auth ekrani, onboarding u tri koraka, shell sa sidebarom i
-   biračem agencije, `/overview`. Onda **STOP**, snimci na 1280 i 390 px, i čeka se
-   potvrda. `F2b`: `/leads`, `/audits`, `/embed`, `/branding`, `/settings`, `/billing`,
-   `/team` i pet admin ekrana, bez zaustavljanja. Razlog za tačku na trećini: shell,
-   sidebar i birač agencije nose svaki ekran poslije njih, pa se greška tu množi sa
-   petnaest.
-3. Mume otvara naloge iz pitanja 15, redom kako trebaju.
-4. Otvoreno je i dalje pravno lice za Stripe (pitanje 9), smjer je Estonija, treba do
+1. **Mume potvrđuje F2a.** Otvori `docs/review/f2a/README.md`, prođi kroz 22 snimka.
+   **F2b ne kreće prije potvrde**, jer shell nosi svih petnaest ekrana poslije njega.
+2. **Prijava u Cloudflare Verified Bots**, po runbooku iz `docs/38-bot-verification.md`.
+   Ovo ne čeka F2a i ne treba mu ništa od mene.
+3. Poslije potvrde: **F2b** bez zaustavljanja. `/leads`, `/audits`, `/embed`, `/branding`,
+   `/settings` (sa prekidačem za analitiku), `/billing` i `/team` (sa godišnjim planom kao
+   ravnopravnim izborom), i pet admin ekrana.
+4. Mume otvara naloge iz pitanja 15, redom kako trebaju.
+5. Otvoreno je i dalje pravno lice za Stripe (pitanje 9), smjer je Estonija, treba do
    kraja F2.
 
 Jedino otvoreno pitanje koje ostaje je **19, sekvenca kanala**, i ono ne čeka odluku nego
@@ -235,7 +276,8 @@ Frontend s mock podacima:
 - [x] F0 monorepo, alati, dizajn sistem, mock sloj, CI
 - [x] F1 embed obrazac, `/embed.js`, izvještaj sa svim stanjima
 - [x] Kontrolna tačka: pregled s Mumetom, F1 prihvaćen i spojen u `master`
-- [ ] F2 aplikacija: auth, onboarding, svi ekrani, admin, Storybook
+- [x] F2a aplikacija, prva trećina: auth, onboarding, shell, `/overview` (čeka potvrdu)
+- [ ] F2b aplikacija, ostatak: leadovi, auditi, embed, brendiranje, podešavanja, admin
 - [ ] F3 marketing sajt
 
 Backend:
@@ -267,3 +309,5 @@ Backend:
 | 14.09.2026. | Pregled F1 s Mumetom, primjedbe u `docs/34`, tri istraživanja (`35`, `36`, `37`)                                                   |
 | 15.09.2026. | F1 spojen u master. Backlog pretočen: odluka 0010, preduslov za B2, kaskada dohvata, oznaka uticaja po provjeri, pet novih pitanja |
 | 15.09.2026. | Odluka 0011: pet odgovora. Model podataka nosi oba oblika i B1 je odblokiran, dva pristanka umjesto jednog, brend u tri sloja      |
+| 15.09.2026. | Identitet bota, potpisani direktorij ključeva i runbook za prijavu (`docs/38`). Akamai ima javnu prijavu, DataDome nema            |
+| 15.09.2026. | F2a: auth, onboarding, shell, `/overview`. 22 snimka, axe čist, dvije contrast greške iz F1 popravljene                            |
