@@ -14,6 +14,32 @@ agencije.
 | Boja naglaska | lime, fiksno | `branding.primary_color`, s automatskim kontrastom |
 | Fontovi | Space Grotesk, IBM Plex Sans, IBM Plex Mono | sistemski stack (posjetilac ne učitava naše fontove, brže i neutralnije) |
 
+## Čiji je brend, po sloju
+
+Odluka `0011`, tačka 5. **Tri sloja i nema četvrtog.** Ovo je pravilo o brendu, ne o
+tokenima, ali stoji ovdje jer se krši u dizajnu, a ne u bazi.
+
+| Sloj | Čiji brend | Šta to znači u praksi |
+|---|---|---|
+| Ono što vidi **posjetilac**: obrazac na `/e/[key]` i `/a/[slug]`, izvještaj na `/r/[token]`, email s izvještajem | **agencijin** | Njeno ime, njen logo, njena boja, njen poziv na akciju. Bijela etiketa nije funkcija nego proizvod. Naše ime se pojavljuje samo kao "Powered by Tidywright" na besplatnom paketu, i plaćeni ga uklanja |
+| Ono što vidi **agencija**: aplikacija, emailovi o leadovima, fakture, dokumentacija | **naš** | Tidywright, svugdje, bez izuzetka. Agencija zna s kim radi i to je u redu |
+| **Dobavljači**: model, hosting, Turnstile, email, bilo šta u lancu | **ne vide se nigdje** | Ni agenciji ni posjetiocu. Kupac kupuje ishod, ne lanac nabavke |
+
+Tri pravila koja iz ovoga slijede i koja se provjeravaju u pregledu:
+
+1. U posjetilačkom sloju **nema naše boje**. Lime je boja aplikacije. Sve akcentno u
+   izvještaju dolazi iz `branding.primary_color`.
+2. U posjetilačkom sloju **nema naših fontova**, i to nije samo brend nego i brzina.
+3. Ime dobavljača se ne pojavljuje ni u jednom tekstu koji korisnik vidi, ni u tooltipu,
+   ni u poruci greške, ni u `<title>`. Ako greška mora imati identifikator, to je naš
+   `request_id`, ne ime servisa koji je pao.
+
+**Zadatak koji ovo može oboriti, prije B6:** proći uslove korišćenja svakog vanjskog
+servisa koji dodirne izvještaj. Neki traže vidljivo navođenje izvora, i ako neki od naših
+to traži, ugovor pobjeđuje pravilo, pa se mijenja izbor dobavljača a ne treći red ove
+tabele. Vidi `docs/29-phase3-connectors.md` za fazu 3 i `docs/23-compliance.md` za listu
+podobrađivača.
+
 ## Tokeni boja, app
 
 ```css

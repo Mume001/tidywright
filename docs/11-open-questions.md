@@ -252,25 +252,23 @@ koje rade dvije različite osobe.
 
 Detalji u `docs/26-email.md` i `docs/24-billing.md`.
 
-## 23. Na koji sloj se odnosi "brend mora biti samo naš". OTVORENO
+## 23. Na koji sloj se odnosi "brend mora biti samo naš". ZATVORENO
 
 Iz backloga, tačka I: cijeli brend mora biti na naše ime, ime treće firme se ne spominje
 bez obzira što koristimo tuđe servise.
 
-Zahtjev je razuman, ali proizvod ima tri sloja s tri različita odgovora, i treba potvrditi
-da je ovo ono što je mišljeno:
+Zatvoreno odlukom `decisions/0011`, tačka 5: **tri sloja i nema četvrtog.**
 
-| Sloj | Čiji brend | Zašto |
-|---|---|---|
-| Izvještaj koji vidi posjetilac | **agencijin** | Bijela etiketa je cijeli proizvod, `decisions/0004`. Naše ime se pojavljuje samo kao "Powered by Tidywright" na besplatnom paketu, i plaćeni ga uklanja |
-| Aplikacija koju vidi agencija | **naš** | Agencija zna s kim radi |
-| Imena dobavljača (model, hosting, Turnstile, email) | **nigdje se ne vide** | Kupac kupuje ishod, ne lanac nabavke |
+| Sloj | Čiji brend |
+|---|---|
+| Posjetilac: obrazac, izvještaj, email s izvještajem | agencijin. To je bijela etiketa i to je proizvod |
+| Agencija: aplikacija, emailovi o leadovima, fakture | naš, Tidywright, svugdje |
+| Dobavljači: model, hosting, Turnstile, email | ne vide se nigdje, ni agenciji ni posjetiocu |
 
-Ako je mišljen treći red, to je već tako i nema šta da se radi osim jedne provjere. Ako je
-mišljen prvi red, to je u sukobu s `decisions/0004` i traži novu odluku, jer bi značilo
-kraj bijele etikete.
+Pravila su u `docs/27-design-system.md` (nema naše boje ni naših fontova u posjetilačkom
+sloju, ime dobavljača ni u tooltipu ni u poruci greške) i u `docs/29-phase3-connectors.md`
+(nikakav vidljiv trag na kupčevom sajtu kad pišemo u njega).
 
-**Šta treba uraditi u svakom slučaju, i to prije B6:** proći uslove korišćenja svakog
-vanjskog servisa koji dodirne izvještaj, jer neki traže vidljivo navođenje izvora. Ako
-neki od njih to traži, odluka "ime treće firme se ne spominje" se sudara s ugovorom i
-mijenja se izbor dobavljača, ne odluka.
+**Zadatak ostaje i može oboriti treći red:** prije B6 proći uslove korišćenja svakog
+vanjskog servisa u lancu. Neki traže vidljivo navođenje izvora. Ako neki od naših to
+traži, ugovor pobjeđuje pravilo, i mijenja se dobavljač, ne pravilo.

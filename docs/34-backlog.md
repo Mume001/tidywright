@@ -101,7 +101,8 @@ ništa nije u planu gradnje dok se ne pretoči u odluku ili u zadatak.
   nosi naš brend, a imena dobavljača se ne vide nigdje.
 - Provjeriti uslove korišćenja svakog vanjskog servisa, jer neki traže vidljivo
   navođenje izvora.
-- Otvoreno kao pitanje 23 u `11-open-questions.md`.
+- ZATVORENO 15.09.2026. odlukom `decisions/0011`, tačka 5: tri sloja i nema četvrtog.
+  Provjera ugovora dobavljača prije B6 ostaje kao zadatak. Pitanje 23.
 
 ## J. Dva segmenta umjesto samo agencija
 

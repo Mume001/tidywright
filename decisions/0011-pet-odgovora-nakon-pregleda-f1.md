@@ -202,6 +202,46 @@ preživljavanja, i vrijedi više od bilo čega ponuđenog na izlazu.
 
 ---
 
+## 5. Brend: tri sloja i nema četvrtog (pitanje 23)
+
+### Odluka
+
+| Sloj | Čiji brend |
+|---|---|
+| Posjetilac: obrazac, izvještaj, email s izvještajem | **agencijin.** To je bijela etiketa i to je proizvod |
+| Agencija: aplikacija, emailovi o leadovima, fakture, dokumentacija | **naš.** Tidywright, svugdje |
+| Dobavljači: model, hosting, Turnstile, email, sve u lancu | **ne vide se nigdje**, ni agenciji ni posjetiocu |
+
+### Zašto
+
+Backlog je tražio da cijeli brend bude na naše ime. Pročitano doslovno, to bi ukinulo
+bijelu etiketu, a bijela etiketa je razlog zbog kojeg agencija plaća. Pročitano kako je
+mišljeno, odnosi se na treći red: ime treće firme se ne spominje bez obzira što koristimo
+tuđe servise. Taj red je sada zapisan kao pravilo umjesto da bude pretpostavka.
+
+Agencija zna s kim radi i tu naš brend stoji bez ustezanja. Posjetilac ne treba znati ni
+nas ni naše dobavljače. Kupac kupuje ishod, ne lanac nabavke.
+
+### Posljedice
+
+`docs/27-design-system.md` dobija tabelu i tri pravila koja se provjeravaju u pregledu:
+u posjetilačkom sloju nema naše boje (lime je boja aplikacije), nema naših fontova, i ime
+dobavljača se ne pojavljuje ni u jednom tekstu koji korisnik vidi, ni u tooltipu, ni u
+poruci greške, ni u `<title>`. Ako greška mora imati identifikator, to je naš `request_id`.
+
+`docs/29-phase3-connectors.md` dobija strožu verziju za jedino mjesto gdje naš kod piše po
+tuđem sajtu: nikakav vidljiv trag našeg brenda u markupu, nikakav link prema nama (već
+zabranjeno odlukom `0010`, tačka 2), nikakvo ime dobavljača u tekstu popravke. Trag u
+`wp_tidywright_log` i u `audit_log` ostaje, jer bez njega nema vraćanja unazad, ali to je
+zapis u bazi a ne oznaka na stranici. Ime plugina u WordPress adminu ostaje Tidywright,
+jer ga vidi onaj ko ga je instalirao, dakle drugi sloj.
+
+**Zadatak ostaje, i može oboriti treći red.** Prije B6 se prolaze uslovi korišćenja svakog
+vanjskog servisa u lancu. Neki traže vidljivo navođenje izvora. Ako neki od naših to
+traži, ugovor pobjeđuje pravilo, i tada se mijenja dobavljač, ne pravilo.
+
+---
+
 ## Šta ovo ne rješava
 
 Sekvenca kanala. Ona ostaje otvorena kao pitanje 19 i traži mjerenje, ne sastanak.

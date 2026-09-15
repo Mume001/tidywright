@@ -144,6 +144,34 @@ naše dozvoljene liste (`Organization`, `LocalBusiness`, `Product`, `Article`, `
   stanje jednako našem `after` (inače upozorenje "changed since, roll back anyway?").
 - Sve u `audit_log` s ko je odobrio i ko je primijenio.
 
+## Brend na kupčevom sajtu i u lancu dobavljača
+
+Odluka `0011`, tačka 5. Tri sloja i nema četvrtog, vidi `docs/27-design-system.md`. Faza 3
+je jedino mjesto gdje naš kod piše po tuđem sajtu, pa je pravilo ovdje strože i
+konkretnije.
+
+**Šta plugin i konektori ne smiju upisati na kupčev sajt:**
+
+- Nikakav vidljiv trag našeg brenda. Ni komentar u HTML-u, ni `<meta generator>`, ni
+  klasa u markupu, ni ime u `wp_head`.
+- Nikakav link prema nama. To je već zabranjeno odlukom `0010`, tačka 2, i tamo je razlog:
+  shema linkova po Googleovim pravilima o spamu, sa kaznom i za kupca.
+- Nikakvo ime dobavljača. Tekst popravke koji je napisao model ne spominje model, ni u
+  sadržaju ni u komentaru uz izmjenu.
+
+**Šta smije, i mora, ostati:** trag u `wp_tidywright_log` i u našem `audit_log`, jer bez
+njega nema vraćanja unazad i nema odgovora na pitanje ko je šta promijenio. To je zapis u
+bazi, ne oznaka na stranici.
+
+**Ime plugina je izuzetak koji nije izuzetak.** Plugin se u WordPress admin listi zove
+Tidywright, jer ga instalira agencija ili vlasnik, dakle drugi sloj, gdje je naš brend na
+mjestu. Posjetilac sajta ga ne vidi nigdje.
+
+**Zadatak prije B6, i može oboriti treći red pravila:** proći uslove korišćenja svakog
+vanjskog servisa u lancu (model, hosting, Turnstile, email, i sve iz liste podobrađivača u
+`docs/23-compliance.md`). Neki traže vidljivo navođenje izvora. Ako neki od naših to
+traži, ugovor pobjeđuje pravilo, i tada se mijenja dobavljač, ne pravilo.
+
 ## Šta faza 1 mora ostaviti spremno
 
 - `audits.site_id` nullable kolona postoji od početka.
