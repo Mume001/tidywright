@@ -159,6 +159,72 @@ crypto...". Model ga vidi.
 - Radnik ima memorijski limit u Dockeru (2 GB), Node `--max-old-space-size=1536`. Kad
   padne, Coolify ga restartuje, pg-boss vraća posao u red.
 
+## Kako se predstavljamo tuđim sajtovima
+
+Ovo nije prijetnja nama nego naša obaveza prema tuđem serveru, i istovremeno uslov da
+audit uopšte dobije HTML. Puno obrazloženje i brojke su u `docs/36-fetch-reliability.md`,
+sekcija 5.1. Redoslijed i rok su u `docs/31-build-plan.md`, kao preduslov za B2.
+
+**Identitet je jedan, imenovan i nepromjenljiv.**
+
+```
+User-Agent: Mozilla/5.0 (compatible; TidywrightBot/1.0; +https://tidywright.com/bot)
+From: bot@tidywright.com
+```
+
+Taj string je u `safeFetch` od prvog commita i nigdje drugo. Nikad se ne šalje
+podrazumijevani `User-Agent` HTTP biblioteke (`node-fetch`, `undici`, `curl`), jer ga
+mnogi sajtovi blokiraju po tom imenu. Nikad se ne tvrdi da smo Chrome kad nismo. Kad
+radi headless sloj, tada zaista jesmo Chrome i to je jedina situacija u kojoj šaljemo
+Chrome zaglavlja.
+
+**Stranica `/bot` je javna i obavezna.** Na njoj stoji:
+
+- šta bot radi i zašto
+- da se pokreće isključivo na zahtjev korisnika, jedan URL po zahtjevu
+- da ne radi dubok crawl: najviše 20 zahtjeva po sajtu za jedan audit, najviše 1 zahtjev
+  u sekundi po hostu
+- da ne čuvamo sadržaj za treniranje modela
+- kako vlasnik sajta zabranjuje pristup (sekcija za `TidywrightBot` u `robots.txt`)
+- kako traži dozvolu ili prijavljuje zloupotrebu
+- lista izlaznih IP adresa, u JSON formatu, na stalnom URL-u
+- granica koju ne prelazimo, doslovno, niže u ovoj sekciji
+
+**Izlazne adrese su ekskluzivne.** Fetch radnik ne dijeli izlazne IP adrese s ostatkom
+aplikacije. To je i sigurnosno ispravno (blok na naš crawler ne obara aplikaciju) i uslov
+Cloudflare programa, koji izbacuje servise zbog IP-ova koji nisu ekskluzivno njihovi i
+zbog opsega koji nisu prijavljeni pri onboardingu. Svaka izlazna adresa ima reverse DNS
+na `*.tidywright.com` koji se forward potvrđuje nazad.
+
+**Web Bot Auth, i ključ koji ide uz njega.** Potpisujemo zahtjeve po RFC 9421, Ed25519,
+sa `tag="web-bot-auth"` i zaglavljem `Signature-Agent` koje pokazuje na naš JWKS na
+`/.well-known/http-message-signatures-directory`. Javni ključ je javan. Privatni je tajna
+kao svaka druga iz tačke 4:
+
+- samo u env varijabli radnika, nikad u bazi, nikad u repozitoriju, `gitleaks` pravilo za
+  `BEGIN PRIVATE KEY` u pre-commit
+- rotacija jednom godišnje ili odmah pri sumnji, sa prelaznim periodom u kojem JWKS nosi
+  oba ključa
+- kompromitovan ključ znači da neko može slati zahtjeve u naše ime i potrošiti našu
+  reputaciju, što je najskuplji resurs koji imamo, pa ide u istu klasu kao KEK
+
+**Granica koju ne prelazimo.** Ovo je politika, ne preporuka, i objavljena je na `/bot`
+jer nas drži poštenim i jer je uslov za ostanak u programu verifikovanih botova:
+
+- ne falsifikujemo TLS ni HTTP/2 otisak (`curl-impersonate` i slično)
+- ne instaliramo stealth patch-eve koji kriju `navigator.webdriver`
+- ne rješavamo CAPTCHA-e i ne koristimo servise koji ih rješavaju
+- ne koristimo rezidencijalne ni rotirajuće proxije, bez obzira na cijenu i korist
+- ne mijenjamo identitet nakon što nas neko blokira
+- `Disallow` koji imenuje `TidywrightBot` poštujemo bez izuzetka, uvijek, uključujući i
+  verifikovanog vlasnika sajta
+
+Pravi Chrome sa autentičnim otiskom nije prelazak te granice, jer tada zaista jesmo
+browser koji renderuje jednu stranicu po nalogu korisnika i tako se i deklarišemo.
+
+Politika prema `robots.txt` ima tri režima (vlasnik, treće lice, naš demo) i zapisana je
+u `docs/17-backend-spec.md`.
+
 ## Zaglavlja i opšte
 
 - HSTS, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-
@@ -198,3 +264,7 @@ crypto...". Model ga vidi.
 - [ ] Sve tajne u env, `git secrets` ili `gitleaks` u pre-commit
 - [ ] Backup restore vježba urađena jednom
 - [ ] Incident dokument i kontakt lista dobavljača postoje
+- [ ] `/bot` stranica živa, sa listom izlaznih IP adresa u JSON-u
+- [ ] Reverse DNS sa forward potvrdom za svaku izlaznu adresu radnika
+- [ ] Web Bot Auth potpis prolazi verifikaciju, privatni ključ samo u env radnika
+- [ ] Prijava u Cloudflare Verified Bots poslana, kategorija SEO

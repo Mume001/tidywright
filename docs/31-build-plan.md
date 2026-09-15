@@ -82,6 +82,53 @@ changelog. Statičan. Može paralelno s B1 ako Mume piše tekstove.
 | RLS test | prolazi za sve tabele |
 | Gotovo kad | Mume se registruje na stagingu, prođe onboarding, promijeni boju, vidi je u `/e/[key]` (koji sad čita pravu bazu) |
 
+### Preduslov za B2: kako se deklarišemo prema Cloudflareu
+
+**Ovo se pokreće odmah, ne kad B2 dođe na red.** Odobrenje traje od nekoliko sedmica do
+nekoliko mjeseci i nema SLA, a rok je prvi audit uživo, dakle B2. Izvor za sve brojke i
+mehaniku je `docs/36-fetch-reliability.md`, sekcije 2 i 5.1.
+
+**Zašto je hitno.** Od 15.09.2026. Cloudflare mijenja podrazumijevanu politiku i blokira
+kategorije `Training` i `Agent` na novim domenama, na novim sajtovima postojećih kupaca i
+na **postojećim free zonama**. Kategorije `SEO`, `Monitoring & Operations` i
+`Ads Verification` nisu obuhvaćene tim blokom. Naša publika su mali poslovni sajtovi, a
+oni su upravo na free planu.
+
+**Odluka koja iz toga slijedi: deklarišemo se kao `SEO`.** Nikad kao `Agent`, nikad kao
+`Training`. To nije kozmetika nego jedna od dvije stvari koje odlučuju hoće li audit
+uopšte imati HTML za rad. Druga je verifikacija: po Cloudflare Radar podacima
+neverifikovani botovi dobiju HTTP 200 u 33,3 posto slučajeva, verifikovani u 73,0 posto.
+Nijedno podešavanje HTTP klijenta ne proizvodi taj skok.
+
+Naš radnik je na Hetzneru, a Hetzner opsezi imaju lošu reputaciju kod anti-bot sistema
+(`docs/20-infrastructure.md`). Jedini izlaz iz toga nije skrivanje nego to da prestanemo
+biti anoniman datacentar i postanemo imenovan, verifikovan servis.
+
+| Šta | Detalj |
+|---|---|
+| Imenovani agent | `TidywrightBot/1.0` sa URL-om politike u `User-Agent`, od prvog commita `safeFetch`. Nikad podrazumijevani UA biblioteke. Vidi `docs/22-security.md` |
+| `/bot` stranica | Javna, na tidywright.com, sa svim iz `docs/22-security.md`. Može biti jedna ruta u `apps/web` prije nego što F3 donese marketing sajt |
+| Ekskluzivne izlazne IP adrese | Fetch radnik dobija vlastite adrese koje ne dijeli s ostatkom aplikacije. Cloudflare izbacuje iz programa zbog IP-ova koji nisu ekskluzivni za servis |
+| Objavljena IP lista | JSON na stalnom URL-u, održavan |
+| Reverse DNS | Za svaku izlaznu IP, razrješava se na `*.tidywright.com` i forward potvrđuje nazad |
+| Web Bot Auth | Ed25519 par, JWKS na `/.well-known/http-message-signatures-directory` (sam odgovor potpisan, `tag="http-message-signatures-directory"`), potpis po RFC 9421 sa `created`, `expires`, `keyid`, `tag="web-bot-auth"` i `@authority`, plus zaglavlje `Signature-Agent` |
+| Prijava | Cloudflare Bot Submission Form, kategorija **SEO**, metod verifikacije "Request Signature" |
+| Bing | Ista mehanika (objavljena IP lista plus reverse DNS), javni proces, prijaviti u istom potezu |
+| robots.txt politika | Tri režima iz `docs/17-backend-spec.md`, sa RFC 9309 semantikom za 5xx i kešom do 24 h |
+
+Web Bot Auth je preporučeni put umjesto same IP liste, jer nas ne vezuje za fiksne
+adrese, pa možemo mijenjati hosting i dodavati regije bez ponovne prijave.
+
+**Gotovo kad:** `/bot` stranica je živa, JWKS odgovara i validno je potpisan, jedan
+potpisan zahtjev prolazi verifikaciju na test zoni, prijava je poslana i potvrđen je
+prijem. Samo odobrenje se prati zasebno u `STATUS.md` jer ne zavisi od nas.
+
+**Šta ovo ne rješava, i treba reći naglas.** Cloudflare Bot Fight Mode se po njihovoj
+dokumentaciji ne može prilagoditi ni isključiti WAF pravilima, pa verifikovan status tu
+ne pomaže pouzdano. Under Attack Mode ne pravi izuzetke ni za koga. Vlastito WAF pravilo
+vlasnika sajta ima prednost nad svime. Zato verifikacija ide zajedno sa kaskadom dohvata
+i djelimičnim izvještajem iz `docs/17-backend-spec.md`, ne umjesto njih.
+
 ### B2: radnik, provjere, ocjena (4 do 5 dana)
 
 | Šta | Detalj |

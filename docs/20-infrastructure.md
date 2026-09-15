@@ -118,10 +118,14 @@ ovom poslu, prodaja jeste.
 - **Portovi 25 i 465 su blokirani** na novim cloud nalozima. Zato se email ne šalje sa
   servera nego kroz Resend API (port 443). Ne tražiti otključavanje.
 - **Hetzner IP opsezi Cloudflare često izaziva.** Kad naš radnik dohvaća tuđe sajtove iza
-  Cloudflarea, dio će vratiti 403 ili challenge. Plan: pristojan `User-Agent`
-  (`TidywrightBot/1.0 (+https://tidywright.com/bot)`), poštovanje `robots.txt`, retry s
-  Playwrightom, pa `failed:blocked` s porukom posjetiocu. Za fazu 3 (sajt klijenta) se
-  klijenta uputi da doda naš UA u dozvoljene. Ne kupujemo proxy mrežu.
+  Cloudflarea, dio će vratiti 403 ili challenge. Hetzner i OVH imaju posebno lošu
+  reputaciju kod anti-bot sistema, pa počinjemo s negativnim skorom prije prvog paketa.
+  Ne kupujemo proxy mrežu, i to ostaje. Plan je prošireniji nego što je ovdje prvobitno
+  pisalo: imenovani `User-Agent`, ekskluzivne izlazne adrese s objavljenom listom i
+  reverse DNS-om, Web Bot Auth potpis i prijava u Cloudflare Verified Bots kao kategorija
+  SEO, pa tek onda kaskada dohvata i djelimičan izvještaj. Rok je prije B2. Vidi
+  `docs/31-build-plan.md` (preduslov za B2), `docs/22-security.md` (identitet agenta) i
+  `docs/36-fetch-reliability.md` (brojke).
 - **Firewall** kroz Hetzner Cloud Firewall: ulaz samo 22 (samo s naše IP liste), 80, 443
   (samo Cloudflare IP opsezi). Sve ostalo zatvoreno. Radnik nema ni 80 ni 443, samo
   odlazni promet.
