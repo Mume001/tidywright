@@ -193,30 +193,23 @@ self-serve ekonomija radi bez čekanja od 12 do 24 mjeseca na organski saobraća
 
 Do tada ovo pitanje nema šta da čeka od Mumeta.
 
-## 20. Kolačići i pristanak. OTVORENO
+## 20. Kolačići i pristanak. ZATVORENO
 
 Iz backloga, tačka F: treba dodati traku za kolačiće i evidenciju pristanka.
 
-Prije nego što se to uradi, treba razriješiti jedno neslaganje. `docs/23-compliance.md`
-kaže da widget **namjerno ne postavlja nijedan kolačić**, da Turnstile ne postavlja
-kolačić za praćenje, da se analitika vodi kroz naš `events` na serveru bez klijentskog
-praćenja, i da je to prodajna tačka: agencija ne mora dirati svoj cookie banner da bi nas
-ugradila. Marketing sajt koristi analitiku bez kolačića i takođe nema banner.
+Zatvoreno odlukom `decisions/0011`, tačka 2: **nema trake u widgetu, ali se slojevi
+razdvajaju.**
 
-Dakle traka za kolačiće trenutno nema šta da traži. Ako je uvedemo bez potrebe, gubimo
-prodajnu tačku i dobijamo klik koji nikome ne treba.
+- **Widget i izvještaj**: nula kolačića, nikakva traka. To što ih ne postavljamo je
+  prodajna tačka i piše se naglas: agencija ne mora dirati svoj cookie banner da bi nas
+  ugradila. U podnožju obrasca stoji "this form sets no cookies".
+- **Aplikacija**: sesija i CSRF su neophodni i ne traže pristanak. Analitika proizvoda
+  traži pristanak, nudi se jednom poslije onboardinga, mijenja u `/settings`, i dok nije
+  data se ne učitava.
+- **Marketinški sajt**: analitika bez kolačića, pa bez trake. Traka i `legal/cookie.md`
+  dolaze u istom PR-u kao i prvi piksel koji postavlja kolačić, ne poslije njega.
 
-Evidencija pristanka je druga stvar i ona postoji: `leads.consent` čuva tekst, verziju,
-vrijeme, URL stranice i heš IP adrese.
-
-**Pitanje za Mumeta:** je li traka tražena zato što negdje stvarno postavljamo kolačić za
-koji ja ne znam, ili zato što je to uobičajeno pa se očekuje. Ako je drugo, prijedlog je
-da se ne radi, i da umjesto trake stoji rečenica u podnožju "this form sets no cookies"
-koja je tačna i korisna.
-
-**Uslov koji važi u svakom slučaju:** ako ikad uvedemo bilo kakav kolačić koji nije nužan
-za rad obrasca, traka postaje obavezna, a ne stvar ukusa. Tada se mijenja i
-`docs/23-compliance.md` i `legal/cookie.md`.
+Detalji u `docs/23-compliance.md`, sekcija "Kolačići i pristanak".
 
 ## 21. Newsletter kao zasebna prijava. OTVORENO
 

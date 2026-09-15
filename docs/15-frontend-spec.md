@@ -86,7 +86,7 @@ Jedna stranica, pet stanja. Stil iz brendiranja agencije: boja dugmeta, tekst po
 
 | Stanje | Šta se vidi | Akcije |
 |---|---|---|
-| `form` | naslov (podesiv, podrazumijevano "Get a free SEO check of your website"), polje URL, polje email, kvačica pristanka s linkom na politiku privatnosti agencije, Turnstile, dugme (podrazumijevano "Check my site") | submit |
+| `form` | naslov (podesiv, podrazumijevano "Get a free SEO check of your website"), polje URL, polje email, kvačica pristanka s linkom na politiku privatnosti agencije, Turnstile, dugme (podrazumijevano "Check my site"), i sitna linija "This form sets no cookies." u podnožju kartice | submit |
 | `validating` | dugme u spinneru, polja zaključana | ništa |
 | `queued` | "Checking your site…" s animacijom, tekst "Usually takes 5 to 10 seconds" | ništa; u `mode=redirect` se odmah otvara izvještaj u novom tabu |
 | `done` | ocjena u krugu, jedna rečenica, dugme "See your full report" koje otvara `/r/<token>` | otvori izvještaj |

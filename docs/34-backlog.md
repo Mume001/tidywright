@@ -71,7 +71,8 @@ ništa nije u planu gradnje dok se ne pretoči u odluku ili u zadatak.
 - Treba dodati traku za kolačiće i evidenciju pristanka.
 - Veže se na `docs/23-compliance.md` i na to da widget danas namjerno ne pravi
   kolačiće.
-- Otvoreno kao pitanje 20 u `11-open-questions.md`.
+- ZATVORENO 15.09.2026. odlukom `decisions/0011`, tačka 2: nema trake u widgetu, ali
+  aplikacija i marketinški sajt dobijaju svoja pravila. Pitanje 20.
 
 ## G. Newsletter
 
@@ -130,8 +131,9 @@ Test koji mijenja preporuku, i koji je jeftin: ako besplatni audit na našem
 domenu pretvori više od 25 posto korisnika u povezan sajt, ide se self-serve
 prvo. Treba samo audit stranica i oko 2.000 posjetilaca.
 
-Otvoreno kao pitanje 19 u `11-open-questions.md`. Jedini dio koji blokira je
-model podataka, i on mora biti riješen prije B1.
+Pitanje 19 u `11-open-questions.md`. Model podataka je ODLUČEN 15.09.2026.
+(`decisions/0011`, tačka 1) i B1 je odblokiran. Sekvenca kanala ostaje otvorena
+i čeka mjerenje, ne odluku: prag od 25 posto, mjerljiv tek poslije F3.
 
 ## K. Vezano istraživanje
 

@@ -112,14 +112,50 @@ sakrivanje, jer tada email izgleda kao da ga agencija šalje.
   (BiH, ili Estonija e-Residency, ili Delaware LLC preko Stripe Atlas 500 $). Za Stripe
   i za DPA treba pravno lice. Odluka prije prve naplate, ne prije lansiranja besplatnog.
 
-## Cookies
+## Kolačići i pristanak
 
-- app.tidywright.com: samo neophodni (sesija, CSRF). Bez bannera.
-- siteauditserver.com iframe: nula kolačića treće strane. Turnstile ne postavlja
-  kolačić za praćenje. Analitika kroz naš `events` na serveru, bez klijentskog
-  praćenja. Ovo je važna prodajna tačka: agencija ne mora mijenjati svoj cookie banner
-  zbog nas.
-- tidywright.com: Plausible ili Umami (bez kolačića), bez bannera.
+Odlučeno 15.09.2026., `decisions/0011`, tačka 2. Tri domene, tri različita odgovora, i
+razlika među njima je namjerna.
+
+### siteauditserver.com, widget i izvještaj: nula kolačića, nikakva traka
+
+Ovo je jedini dio proizvoda koji živi na tuđoj stranici i zato ima najstrožije pravilo.
+
+- Nula kolačića, ni vlastitih ni trećih strana. Turnstile ne postavlja kolačić za
+  praćenje.
+- Analitika ide kroz naš `events` na serveru, bez ijednog klijentskog praćenja.
+- **Trake za kolačiće nema i neće je biti.** Traka koja ne pristaje ni na šta je klik koji
+  nikome ne treba, a agenciji bi rekla da smo mi nešto što treba objašnjavati.
+- Ovo je prodajna tačka i piše se naglas: **agencija ne mora dirati svoj cookie banner da
+  bi nas ugradila.** U podnožju obrasca stoji "this form sets no cookies", i to je tačno.
+
+Uslov koji ovo drži: ako ikad uvedemo bilo kakav kolačić koji nije nužan za rad obrasca,
+traka postaje obavezna i ovo pravilo pada. Zato se ne uvodi.
+
+### app.tidywright.com, aplikacija: neophodni bez pristanka, analitika s pristankom
+
+- Sesija i CSRF su neophodni kolačići i za njih pristanak ne treba, po ePrivacy izuzetku
+  za ono bez čega usluga koju je korisnik tražio ne radi.
+- **Analitika proizvoda traži pristanak**, jer nije neophodna. Prijavljen korisnik dobija
+  izbor jednom, pri prvom ulasku poslije onboardinga, i mijenja ga u `/settings`. Izbor
+  se čuva uz korisnika, ne u kolačiću, pa prati nalog kroz uređaje.
+- Dok pristanak nije dat, analitika se ne učitava. Ne učitava se pa gasi, nego se ne
+  učitava.
+
+### tidywright.com, marketinški sajt: analitika bez kolačića, pa bez trake
+
+- Plausible ili Umami, bez kolačića i bez otiska uređaja. Za takvu analitiku pristanak po
+  ePrivacy ne treba, jer se ništa ne sprema na korisnikov uređaj.
+- **Ako se ikad pređe na analitiku s kolačićima** (Google Analytics, Meta pixel, bilo
+  kakav oglasni piksel radi mjerenja kampanja), traka postaje obavezna prije prvog takvog
+  piksela, ne poslije. To je vjerovatna potreba kad self-serve lijevak krene, pa je
+  zapisana unaprijed: `legal/cookie.md` i traka se prave u istom PR-u kao i prvi piksel.
+
+### Evidencija pristanka, odvojeno od kolačića
+
+Pristanak posjetioca na obrascu je druga stvar od kolačića i on postoji od F1:
+`leads.consent` čuva tekst, verziju, vrijeme, URL stranice i heš IP adrese. Marketinški
+pristanak je zasebno polje, vidi `decisions/0011`, tačka 3.
 
 ## Osiguranje
 
@@ -142,3 +178,6 @@ Markdown, verzija se čuva uz prihvatanje u `audit_log`.
 - [ ] `/bot` stranica i `robots.txt` poštovanje
 - [ ] podobrađivači svi pod DPF ili SCC (provjeriti Supabase, Vercel, Resend, Cloudflare, Stripe, model dobavljač)
 - [ ] kontakt email za privatnost (privacy@tidywright.com) prima poštu
+- [ ] widget i izvještaj ne postavljaju nijedan kolačić, provjereno u DevTools na
+      `test-embed.html` s drugog porta
+- [ ] analitika aplikacije se ne učitava dok pristanak nije dat

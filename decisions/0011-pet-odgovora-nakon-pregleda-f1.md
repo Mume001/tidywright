@@ -71,6 +71,49 @@ Zapisano u `docs/18-data-model.md` i u B1 u `docs/31-build-plan.md`:
 
 ---
 
+## 2. Nema trake za kolačiće u widgetu, ali slojevi se razdvajaju (pitanje 20)
+
+### Odluka
+
+**Widget i izvještaj ne postavljaju nijedan kolačić i nemaju traku.** To što ne
+postavljamo nijedan kolačić je prodajna tačka i piše se naglas.
+
+**Aplikacija i marketinški sajt su drugi sloj.** Tamo hoćemo analitiku, i tamo pristanak
+treba, po pravilima koja su sada zapisana unaprijed umjesto da se improvizuju kad zatreba.
+
+### Zašto
+
+Traka koja ne pristaje ni na šta je klik koji nikome ne treba. Gore od toga, agenciji bi
+rekla da smo mi nešto što treba objašnjavati njenim posjetiocima, a cijela vrijednost
+ugradnje je u tome što ne treba: agencija ne mora dirati svoj cookie banner da bi nas
+stavila na sajt.
+
+Ali proizvod ima tri domene i one nemaju isti odgovor. Aplikacija hoće analitiku proizvoda
+i ona nije neophodna, pa traži pristanak. Marketinški sajt danas koristi analitiku bez
+kolačića, za koju pristanak ne treba, ali čim self-serve lijevak krene doći će potreba za
+oglasnim pikselom, i tada traka postaje obavezna. Bolje je to zapisati sada nego se
+sjetiti poslije prvog piksela.
+
+### Posljedice
+
+Zapisano u `docs/23-compliance.md`, sekcija "Kolačići i pristanak":
+
+- **siteauditserver.com**: nula kolačića, nikakva traka, u podnožju obrasca rečenica
+  "this form sets no cookies". Ako ikad uvedemo kolačić koji nije nužan za rad obrasca,
+  traka postaje obavezna i ovo pravilo pada, pa se zato ne uvodi.
+- **app.tidywright.com**: sesija i CSRF su neophodni i ne traže pristanak. Analitika
+  proizvoda traži pristanak, izbor se nudi jednom poslije onboardinga i mijenja u
+  `/settings`, čuva se uz korisnika a ne u kolačiću. Dok pristanak nije dat, analitika se
+  **ne učitava**, ne učitava pa gasi.
+- **tidywright.com**: analitika bez kolačića, pa bez trake. Traka i `legal/cookie.md` se
+  prave u istom PR-u kao i prvi piksel koji postavlja kolačić, ne poslije njega.
+- Dvije stavke dodane u checklist prije lansiranja.
+
+Evidencija pristanka je odvojena tema i ona već postoji: `leads.consent` čuva tekst,
+verziju, vrijeme, URL i heš IP adrese.
+
+---
+
 ## Šta ovo ne rješava
 
 Sekvenca kanala. Ona ostaje otvorena kao pitanje 19 i traži mjerenje, ne sastanak.
