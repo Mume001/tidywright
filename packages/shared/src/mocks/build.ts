@@ -306,11 +306,23 @@ export function buildMockData(seed = 42): MockData {
       sourceUrl: `https://${agency.slug}.com/free-seo-check`,
       utm: { source: rng.pick(UTM_SOURCES), medium: 'organic' },
       consent: {
-        text: `I agree to receive my report and follow-up from ${agency.name} by email.`,
-        version: '2026-09-01',
-        checked: true,
-        ts: minutesAgo(minutes),
-        formUrl: `https://${agency.slug}.com/free-seo-check`,
+        service: {
+          text: `I agree to receive my report and follow-up from ${agency.name} by email.`,
+          version: '2026-09-01',
+          checked: true,
+          ts: minutesAgo(minutes),
+          formUrl: `https://${agency.slug}.com/free-seo-check`,
+        },
+        // Every third lead, chosen by index rather than by rng: the generator's
+        // random stream has to keep producing the same scores and the same three
+        // fixes it did before this field existed.
+        marketing: {
+          text: `Also send me occasional SEO tips from ${agency.name}.`,
+          version: '2026-09-01',
+          checked: i % 3 === 0,
+          ts: i % 3 === 0 ? minutesAgo(minutes) : null,
+          formUrl: `https://${agency.slug}.com/free-seo-check`,
+        },
       },
       country: rng.pick(COUNTRIES),
       firstViewedAt: rng.chance(0.7) ? minutesAgo(Math.max(1, minutes - 20)) : null,

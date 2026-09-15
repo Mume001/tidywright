@@ -114,6 +114,47 @@ verziju, vrijeme, URL i heš IP adrese.
 
 ---
 
+## 3. Newsletter da, ali pristanak razdvojen (pitanje 21)
+
+### Odluka
+
+**Dva polja u obrascu.** Jedno obavezno, bez kojeg se izvještaj ne šalje. Jedno
+neobavezno i **neoznačeno po defaultu**, za newsletter.
+
+**Zasebna prijava samo na newsletter ide na našu domenu**, ne u agencijin widget.
+
+### Zašto
+
+Jedno polje za oboje je bundling. Pristanak po GDPR-u mora biti specifičan i dobrovoljan
+za svaku svrhu, a "pošalji mi izvještaj koji sam upravo tražio" i "šalji mi reklame" nisu
+ista svrha. Kvačica koja pokriva oboje pada na prvoj provjeri, i pada zasluženo.
+
+Neoznačeno, a ne unaprijed označeno, jer unaprijed označena kvačica nije pristanak nego
+propust da se odznači.
+
+Zasebna prijava ne ide u agencijin widget iz istog razloga kao poziv na akciju u odluci
+`0010`, tačka 1: posjetilac koji je došao kroz agencijin widget je **agencijin lead**. Naš
+newsletter na tu adresu je isto uzimanje leada, samo sporije i teže primjetno.
+
+### Posljedice
+
+- `leads.consent` više nije jedan zapis nego dva: `service` i `marketing`, svaki sa svojim
+  tekstom, verzijom, vremenom i stanjem. `checked: false` je jednako valjan dokaz kao i
+  `true`, jer dokazuje da je izbor postojao. Upisano u `docs/18-data-model.md`.
+- `types.ts` prati model u istom PR-u po svom pravilu: `ConsentRecord` i `Consent` s dva
+  polja.
+- Obrazac dobija drugu kvačicu, neobaveznu i neoznačenu, sa vlastitim tekstom.
+  `docs/15-frontend-spec.md`.
+- **Popravljena greška koju je ovo otkrilo:** `apps/web/components/audit-form.tsx` je slao
+  `consent_marketing: true` kao konstantu, dakle svi su bili prijavljeni bez pitanja. Sada
+  šalje ono što je posjetilac označio.
+- Test u `packages/shared/src/__tests__/mocks.test.ts` pada ako dva pristanka ikad krenu
+  zajedno, jer tada jedan od njih više nije izbor.
+- Zasebna prijava na newsletter je stranica na tidywright.com i dolazi s F3. U agencijin
+  widget ne ide nikad.
+
+---
+
 ## Šta ovo ne rješava
 
 Sekvenca kanala. Ona ostaje otvorena kao pitanje 19 i traži mjerenje, ne sastanak.

@@ -50,6 +50,24 @@ describe('mock data', () => {
     const ids = new Set(data.agencies.map((a) => a.id))
     for (const audit of data.audits) expect(ids.has(audit.agencyId)).toBe(true)
   })
+
+  it('records the two consents separately, and never bundles them', () => {
+    for (const lead of data.leads) {
+      // Nobody gets a report without asking for one.
+      expect(lead.consent.service.checked, lead.id).toBe(true)
+      expect(lead.consent.service.ts, lead.id).not.toBeNull()
+      // The marketing record exists either way. A false record is still a record.
+      expect(typeof lead.consent.marketing.checked, lead.id).toBe('boolean')
+      if (!lead.consent.marketing.checked) expect(lead.consent.marketing.ts, lead.id).toBeNull()
+      // Different purposes need different words next to the tick.
+      expect(lead.consent.marketing.text, lead.id).not.toBe(lead.consent.service.text)
+    }
+
+    // If the two ever move together, one of them stopped being a real choice.
+    const optedIn = data.leads.filter((l) => l.consent.marketing.checked).length
+    expect(optedIn).toBeGreaterThan(0)
+    expect(optedIn).toBeLessThan(data.leads.length)
+  })
 })
 
 describe('plans', () => {

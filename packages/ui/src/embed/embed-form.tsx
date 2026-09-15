@@ -25,6 +25,12 @@ export interface EmbedSubmitValues {
   url: string
   email: string
   turnstileToken: string
+  /**
+   * The second, optional consent. Unchecked by default and never bundled with
+   * the first: one tick covering both purposes is bundling and fails the first
+   * GDPR look. False is as valid a record as true. decisions/0011, point 3.
+   */
+  consentMarketing: boolean
 }
 
 export type EmbedFormState =
@@ -96,6 +102,7 @@ export function EmbedForm({
   const [url, setUrl] = useState('')
   const [email, setEmail] = useState('')
   const [consent, setConsent] = useState(false)
+  const [consentMarketing, setConsentMarketing] = useState(false)
   const [turnstile, setTurnstile] = useState<string | null>(null)
   const [errors, setErrors] = useState<{
     url?: string
@@ -126,6 +133,7 @@ export function EmbedForm({
       url: checkedUrl.ok ? checkedUrl.value.url : url,
       email: checkedEmail.ok ? checkedEmail.value : email,
       turnstileToken: turnstile ?? '',
+      consentMarketing,
     })
   }
 
@@ -216,6 +224,25 @@ export function EmbedForm({
                 {errors.consent}
               </p>
             )}
+          </div>
+
+          {/*
+            The second consent. Separate box, optional, and unchecked: sending
+            the report is what the visitor asked for, the newsletter is not, and
+            one tick for both purposes is bundling. decisions/0011, point 3.
+          */}
+          <div className="mb-3.5">
+            <Checkbox
+              checked={consentMarketing}
+              disabled={busy}
+              onChange={(e) => setConsentMarketing(e.target.checked)}
+              label={
+                <span>
+                  Also send me occasional SEO tips from {agencyName}.{' '}
+                  <span className="text-tx2">Optional.</span>
+                </span>
+              }
+            />
           </div>
 
           <TurnstilePlaceholder

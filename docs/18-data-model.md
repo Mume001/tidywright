@@ -199,8 +199,30 @@ bez diranja ostatka reda.
 Isti razlog stoji iza `audits.token`, koji je već zasebna kolona, i tu je ulog veći jer
 izvještaj sadrži podatke o kupčevom sajtu.
 
-`consent` sadrži: `{text: "puni tekst pristanka", version: "2026-09-01", checked: true,
-ts: "...", form_url: "...", ip_hash: "..."}`. Ovo je dokaz za GDPR, ne mijenja se.
+**`consent` nosi dva odvojena pristanka, nikad jedan.** Odluka `0011`, tačka 3. Oblik:
+
+```json
+{
+  "service": {
+    "text": "puni tekst pristanka",
+    "version": "2026-09-01",
+    "checked": true,
+    "ts": "...",
+    "form_url": "...",
+    "ip_hash": "..."
+  },
+  "marketing": { "text": "...", "version": "...", "checked": false, "ts": null }
+}
+```
+
+`service` je obavezan i bez njega se obrazac ne šalje: to je pristanak da pošaljemo
+izvještaj koji je posjetilac tražio. `marketing` je neobavezan, **neoznačen po
+defaultu**, i njegov `checked: false` je jednako valjan zapis kao i `true`. Jedno polje za
+oboje je bundling i pada na prvoj GDPR provjeri, jer pristanak mora biti specifičan i
+dobrovoljan za svaku svrhu.
+
+Ovo je dokaz za GDPR i ne mijenja se poslije upisa. Stari oblik s jednim nivoom polja se
+ne koristi.
 
 Indeksi: `(agency_id, created_at desc)`, `(agency_id, status)`, `(agency_id, email)`,
 `(agency_id, site_host)`, jedinstveni `(unsubscribe_token)` gdje nije null, GIN na

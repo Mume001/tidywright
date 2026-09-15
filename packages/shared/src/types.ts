@@ -144,12 +144,26 @@ export interface EmbedKey {
 }
 
 /** Proof the visitor agreed. Written once, never edited. docs/23-compliance.md. */
-export interface Consent {
+/** One tick, with the exact words that were next to it. Evidence, not a flag. */
+export interface ConsentRecord {
   text: string
   version: string
   checked: boolean
-  ts: string
+  /** Null when it was never ticked. A false record is still a record. */
+  ts: string | null
   formUrl: string
+}
+
+/**
+ * Two consents, never one. `service` is required and is permission to send the
+ * report the visitor asked for. `marketing` is optional, unchecked by default,
+ * and its own record. One tick covering both purposes is bundling, and consent
+ * has to be specific and freely given per purpose. decisions/0011 point 3,
+ * docs/18-data-model.md.
+ */
+export interface Consent {
+  service: ConsentRecord
+  marketing: ConsentRecord
 }
 
 export interface Lead {

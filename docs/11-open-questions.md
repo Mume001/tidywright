@@ -211,29 +211,27 @@ razdvajaju.**
 
 Detalji u `docs/23-compliance.md`, sekcija "Kolačići i pristanak".
 
-## 21. Newsletter kao zasebna prijava. OTVORENO
+## 21. Newsletter kao zasebna prijava. ZATVORENO
 
 Iz backloga, tačka G: kad posjetilac pošalje obrazac, prijava ide i na newsletter, i uz
 to treba postojati zasebna prijava samo na newsletter, bez audita.
 
-Dva dijela, i samo je drugi jednostavan.
+Zatvoreno odlukom `decisions/0011`, tačka 3: **newsletter da, ali pristanak razdvojen.**
 
-**Zasebna prijava na newsletter** je mali posao i nije sporan. Pitanje je samo gdje živi
-(marketing sajt, F3) i ko šalje.
+- **Dva polja u obrascu.** Jedno obavezno, bez kojeg se izvještaj ne šalje. Jedno
+  neobavezno i neoznačeno po defaultu, za newsletter. Jedno polje za oboje je bundling i
+  pada na GDPR provjeri, jer pristanak mora biti specifičan po svrsi. Unaprijed označena
+  kvačica nije pristanak nego propust da se odznači.
+- **Zasebna prijava samo na newsletter ide na našu domenu**, ne u agencijin widget. Isti
+  razlog kao poziv na akciju u `0010`, tačka 1: posjetilac koji je došao kroz agencijin
+  widget je njen lead.
+- `leads.consent` sada nosi dva zapisa, `service` i `marketing`, i `checked: false` je
+  jednako valjan dokaz kao i `true`.
 
-**Automatska prijava svih koji pošalju obrazac je sporna**, iz dva razloga:
+Usput je nađeno da je `audit-form.tsx` slao `consent_marketing: true` kao konstantu, dakle
+svi su bili prijavljeni bez pitanja. Popravljeno.
 
-1. Marketinški pristanak mora biti odvojen od slanja izvještaja. Izvještaj je ono što je
-   posjetilac tražio, newsletter nije. Obrazac već ima `consent_marketing` kao zasebno
-   polje upravo zbog toga.
-2. Čiji je to newsletter. Po odluci `0010`, tačka 1, posjetilac koji dođe kroz agencijin
-   widget je **agencijin lead**. Naš newsletter na tu adresu je isto uzimanje leada kao i
-   naš poziv na akciju u njenom izvještaju, samo sporije.
-
-**Prijedlog:** na auditima s naše domene, prijava na newsletter uz zaseban i neoznačen
-checkbox. Na agencijinom widgetu, nikad mi. Agencija dobija adresu i svoj pristanak.
-
-Treba Mumetovo da ili ne. Ne blokira ništa u fazi 1.
+Detalji u `docs/15-frontend-spec.md`, `docs/18-data-model.md` i `docs/26-email.md`.
 
 ## 22. Popust na odjavi. OTVORENO
 

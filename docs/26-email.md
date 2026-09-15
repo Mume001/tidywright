@@ -115,6 +115,25 @@ saobraćajem beta agencija 4 sedmice.
 - Po agenciji: bounce > 5% ili complaint > 0,3% u 7 dana → ključ pauziran, email
   owneru, staff pregled. Ovo štiti dijeljenu domenu.
 
+## Newsletter i marketinški email
+
+Odluka `0011`, tačka 3. Dvije stvari koje se lako pobrkaju, a ne smiju se pomiješati.
+
+**Izvještaj nije marketing.** Email s izvještajem ide svakome ko je označio pristanak za
+uslugu, jer je to ono što je tražio. On se šalje i kad marketinški pristanak nije dat.
+
+**Marketinški email ide samo na adrese sa `consent.marketing.checked = true`.** Provjera
+je uz postojeće (`suppressions`, sintaksa, MX, blocklist) i pada zatvoreno: ako zapisa
+nema, ne šalje se.
+
+**Čiji je newsletter.** Adresa koja je došla kroz agencijin widget je agencijin lead
+(`0010`, tačka 1). Marketinški pristanak koji je ta osoba dala odnosi se na agenciju i
+njen tekst stoji uz kvačicu. **Mi na te adrese ne šaljemo vlastiti newsletter.**
+
+**Naš newsletter** ima vlastitu prijavu na tidywright.com, dolazi s F3, i puni se samo
+odatle i sa audita na našoj domeni. Odjava je ista mehanika: `List-Unsubscribe`,
+jednoklik, `suppressions`.
+
 ## Sadržaj emaila posjetiocu, pravila
 
 - Predmet: "Your SEO report for {host} is ready" (bez "FREE", bez velikih slova, bez

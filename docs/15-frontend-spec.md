@@ -86,11 +86,23 @@ Jedna stranica, pet stanja. Stil iz brendiranja agencije: boja dugmeta, tekst po
 
 | Stanje | Šta se vidi | Akcije |
 |---|---|---|
-| `form` | naslov (podesiv, podrazumijevano "Get a free SEO check of your website"), polje URL, polje email, kvačica pristanka s linkom na politiku privatnosti agencije, Turnstile, dugme (podrazumijevano "Check my site"), i sitna linija "This form sets no cookies." u podnožju kartice | submit |
+| `form` | naslov (podesiv, podrazumijevano "Get a free SEO check of your website"), polje URL, polje email, **dvije odvojene kvačice pristanka** (vidi ispod), Turnstile, dugme (podrazumijevano "Check my site"), i sitna linija "This form sets no cookies." u podnožju kartice | submit |
 | `validating` | dugme u spinneru, polja zaključana | ništa |
 | `queued` | "Checking your site…" s animacijom, tekst "Usually takes 5 to 10 seconds" | ništa; u `mode=redirect` se odmah otvara izvještaj u novom tabu |
 | `done` | ocjena u krugu, jedna rečenica, dugme "See your full report" koje otvara `/r/<token>` | otvori izvještaj |
 | `error` | poruka po kodu greške (vidi ispod), dugme "Try again" | vrati na `form` |
+
+**Dvije kvačice, nikad jedna.** Odluka `0011`, tačka 3.
+
+| Kvačica | Obavezna | Označena unaprijed | Tekst |
+|---|---|---|---|
+| Usluga | da, bez nje se obrazac ne šalje | ne | "I agree to receive my report and follow-up from [agencija] by email." plus link na politiku privatnosti agencije |
+| Marketing | ne | **ne** | "Also send me occasional SEO tips from [agencija]. Optional." |
+
+Jedno polje za oboje je bundling i pada na GDPR provjeri, jer pristanak mora biti
+specifičan po svrsi. Unaprijed označena kvačica nije pristanak nego propust da se
+odznači. Oba zapisa idu u `leads.consent`, i `checked: false` je jednako valjan dokaz kao
+i `true`.
 
 Kodovi grešaka i poruke korisniku:
 

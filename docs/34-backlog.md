@@ -80,7 +80,8 @@ ništa nije u planu gradnje dok se ne pretoči u odluku ili u zadatak.
 - Treba postojati i zasebna prijava samo na newsletter, bez audita.
 - Veže se na pristanak iz F, jer marketinški pristanak mora biti odvojen od
   slanja izvještaja.
-- Otvoreno kao pitanje 21 u `11-open-questions.md`.
+- ZATVORENO 15.09.2026. odlukom `decisions/0011`, tačka 3: dva odvojena polja pristanka,
+  zasebna prijava samo na našoj domeni. Pitanje 21.
 
 ## H. Zadržavanje na odjavi
 

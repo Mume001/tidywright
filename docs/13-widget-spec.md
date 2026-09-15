@@ -89,6 +89,8 @@ Redoslijed, i svaki korak odbija s jasnim kodom greške:
    i to se ponovo provjerava na svakom preusmjerenju
 6. Isti host za isti embed key: najviše 1 audit dnevno na free, 5 na paid
 7. Blokirana naša domena i domene agencija na listi izuzetaka
+8. Pristanak za uslugu je označen. Marketinški pristanak se ne provjerava jer je
+   neobavezan, ali se zapisuje i kad je `false`. Odluka `0011`, tačka 3
 
 ## Dohvat stranice
 

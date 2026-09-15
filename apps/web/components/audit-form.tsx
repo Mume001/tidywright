@@ -74,7 +74,8 @@ export function AuditForm({
             key: publicKey,
             url: values.url,
             email: values.email,
-            consent_marketing: true,
+            // What the visitor ticked, never a constant. decisions/0011 point 3.
+            consent_marketing: values.consentMarketing,
             turnstile_token: values.turnstileToken,
             host: typeof window === 'undefined' ? '' : window.location.hostname,
             variant,
