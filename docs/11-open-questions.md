@@ -272,3 +272,24 @@ sloju, ime dobavljača ni u tooltipu ni u poruci greške) i u `docs/29-phase3-co
 **Zadatak ostaje i može oboriti treći red:** prije B6 proći uslove korišćenja svakog
 vanjskog servisa u lancu. Neki traže vidljivo navođenje izvora. Ako neki od naših to
 traži, ugovor pobjeđuje pravilo, i mijenja se dobavljač, ne pravilo.
+
+## 24. Ponderisanje ocjene po sloju uticaja. ZATVORENO BEZ OTVARANJA
+
+Ovo pitanje se zatvara u istom dahu u kojem je moglo biti otvoreno, da se ne vuče kao dug.
+
+`docs/35-fix-effectiveness.md` predlaže da se ocjena ponderiše po sloju uticaja, tako da
+blokatori nose oko 50 posto. Argument je dobar: klijent koji popravi 140 od 176 stavki i
+vidi skok sa 42 na 88 bez ijedne promjene u pretrazi ima pravo da se osjeća prevarenim.
+
+Odlučeno 15.09.2026. (`decisions/0011`, tačka 6): **ocjena se ne dira.** Ostaje ponderisani
+prosjek grupa, kako jeste.
+
+Razlog nije da je prijedlog loš nego da mijenja **svaki broj koji smo ikom pokazali**:
+mock podatke, snimke iz pregleda, primjere u dokumentaciji i sve što ide na marketinški
+sajt. To je zasebna odluka, ne usputna izmjena.
+
+Ono najvrednije iz tog prijedloga je već uzeto: oznaka uticaja mijenja **redoslijed** onoga
+što izvještaj ističe (`prioritise()`, vidi `docs/05-checks.md`). Redoslijed je ono što
+klijent čita, ocjena je ono što pamti. Prvo je popravljeno, drugo čeka svoju odluku.
+
+Ako se ikad otvori, otvara ga nova odluka, a ne ovaj dokument.

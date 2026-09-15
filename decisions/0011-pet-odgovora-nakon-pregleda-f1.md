@@ -242,6 +242,36 @@ traži, ugovor pobjeđuje pravilo, i tada se mijenja dobavljač, ne pravilo.
 
 ---
 
+## 6. Ocjena se ne dira (napomena uz pitanja, zatvoreno bez otvaranja)
+
+### Odluka
+
+Ponderisanje ocjene po sloju uticaja se **ne radi**. Ocjena ostaje ponderisani prosjek
+grupa, kako jeste.
+
+### Zašto
+
+`docs/35-fix-effectiveness.md` predlaže da blokatori nose oko 50 posto ocjene. Argument je
+dobar: klijent koji popravi 140 od 176 stavki i vidi skok sa 42 na 88 bez ijedne promjene
+u pretrazi ima pravo da se osjeća prevarenim.
+
+Ali ta izmjena mijenja **svaki broj koji smo ikom pokazali**, uključujući mock podatke,
+snimke iz pregleda, primjere u dokumentaciji i sve što ide na marketinški sajt. To je
+zasebna odluka i donosi se kad za nju bude vremena i razloga, ne usput uz oznaku uticaja.
+
+Oznaka uticaja je već uzela ono najvrednije iz tog prijedloga: **redoslijed** onoga što
+izvještaj ističe. Redoslijed je ono što klijent čita, ocjena je ono što pamti. Prvo je
+popravljeno, drugo čeka.
+
+### Posljedice
+
+- `prioritise()` vodi po uticaju puta ozbiljnost. To je već urađeno.
+- `scoreChecks()` i `GROUP_WEIGHTS` ostaju netaknuti.
+- Zapisano u `docs/11-open-questions.md` kao **zatvoreno** pitanje, ne otvoreno, da se ne
+  vuče kao dug. Ako se ikad otvori, otvara ga nova odluka.
+
+---
+
 ## Šta ovo ne rješava
 
 Sekvenca kanala. Ona ostaje otvorena kao pitanje 19 i traži mjerenje, ne sastanak.
