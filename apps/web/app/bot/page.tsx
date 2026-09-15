@@ -85,13 +85,40 @@ export default function BotPage() {
         </p>
         <Pre>{BOT.keyDirectoryUrl}</Pre>
         <p>
-          Our egress addresses are published as JSON at{' '}
+          Every address we own is listed here and in JSON at{' '}
           <a href="/bot/ips.json" className="text-lime underline underline-offset-2">
             {BOT.ipListUrl}
           </a>
           . Each one has reverse DNS that resolves into our domain and forward-confirms back to the
-          same address. If a request claims to be us and its address is not on that list, it is not
+          same address. If a request claims to be us and its address is not on this list, it is not
           us.
+        </p>
+
+        <div className="overflow-x-auto rounded-lg border border-line">
+          <table className="w-full text-left text-[13px]">
+            <thead className="border-b border-line text-[11px] text-tx2 uppercase">
+              <tr>
+                <th className="px-3 py-2 font-semibold">Address</th>
+                <th className="px-3 py-2 font-semibold">Reverse DNS</th>
+                <th className="px-3 py-2 font-semibold">What it does</th>
+              </tr>
+            </thead>
+            <tbody>
+              {BOT.addresses.map((address) => (
+                <tr key={address.ip} className="border-b border-line last:border-0">
+                  <td className="px-3 py-2.5 font-mono text-tx">{address.ip}</td>
+                  <td className="px-3 py-2.5 font-mono text-tx2">{address.reverseDns}</td>
+                  <td className="px-3 py-2.5 text-tx2">{address.note}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p className="text-[13px] text-tx2">
+          One of them is not in use yet. It is listed anyway, because an address we start using
+          without having announced it is exactly the thing a verification programme removes people
+          for.
         </p>
       </Section>
 

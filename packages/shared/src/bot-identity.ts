@@ -48,13 +48,41 @@ export const BOT = {
   },
 
   /**
-   * Egress addresses of the fetch worker, exclusive to it and published.
-   * Empty until the box exists; docs/38-bot-verification.md step 1 fills it, and
-   * the same list is served from ipListUrl. Adding an address here without
-   * telling Cloudflare is itself grounds for removal, so the two move together.
+   * Every address we own, both of them, whatever they are doing today.
+   *
+   * The list we publish and the list we declare to Cloudflare have to be the
+   * same list. An address that appears in one and not the other is a listed
+   * ground for removal from the programme, in both directions: an unannounced
+   * block of IPs, and traffic that does not match the declared purpose. So the
+   * rule here is that nothing gets left out for being idle, and `role` carries
+   * the difference rather than absence from the list.
+   *
+   * Both are Hetzner Primary IPs in Falkenstein with delete protection on, so
+   * the address survives the server being replaced and this list does not have
+   * to change when the box does. docs/39-server-setup.md.
    */
-  egressIps: [] as readonly string[],
+  addresses: [
+    {
+      ip: '49.13.83.98',
+      reverseDns: 'web.tidywright.com',
+      role: 'app',
+      note: 'Serves the application, the /bot page and the key directory.',
+      active: true,
+    },
+    {
+      ip: '188.245.170.86',
+      reverseDns: 'crawler.tidywright.com',
+      role: 'fetch',
+      note: 'Reserved for the audit worker. Declared now, first used in B2.',
+      active: false,
+    },
+  ],
 } as const
+
+export type BotAddressRole = (typeof BOT.addresses)[number]['role']
+
+/** Just the addresses, for a WAF rule or a firewall someone is pasting into. */
+export const BOT_IPS: readonly string[] = BOT.addresses.map((a) => a.ip)
 
 /** The robots.txt stanza we ask site owners to use when they want us gone. */
 export const BOT_ROBOTS_EXAMPLE = `User-agent: ${BOT.robotsToken}\nDisallow: /`
