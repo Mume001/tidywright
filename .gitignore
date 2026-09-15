@@ -27,3 +27,8 @@ pnpm-debug.log*
 test-results/
 playwright-report/
 blob-report/
+
+# Screenshots and notes for a review round. Regenerated from a running app,
+# never committed: they are large, they go stale the moment a colour changes,
+# and a screenshot in git is a screenshot somebody will trust after it is wrong.
+docs/review/

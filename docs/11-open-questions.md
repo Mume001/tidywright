@@ -77,3 +77,32 @@ Nije pitanje nego lista radnji koje niko osim njega ne može uraditi:
 5. **Cijene.** Prijedlog je Free, 39, 99, 249. On ih može promijeniti u jednoj datoteci
    (`packages/shared/plans.ts`), ali treba da ih pogleda prije nego što odu na marketing
    stranicu.
+
+## 16. Koji je token u `/u/[token]`. ZATVORENO
+
+Kolona `unsubscribe_token` na `leads`: 32 nasumična bajta kao base64url (43 znaka),
+jedinstveni indeks, nullable dok se ne pošalje prvi email. Upisana u
+`docs/18-data-model.md`, u tip `Lead`, u mock i u rutu.
+
+Vlastita vrijednost, nikad izvedena iz `id`, ni hešom ni potpisom. Link ide u email i
+prolazi kroz tuđe mail servere, log fajlove i automatski pretpregled odjave koji neki
+klijenti pokreću, pa ko god ga na kraju ima ne smije time imati i primarni ključ reda.
+Pošto je vlastita kolona, jedan link se povlači jednim `UPDATE`-om.
+
+Uz to provjereno: `audits.token` je već zasebna kolona s jedinstvenim indeksom i
+`/r/[token]` je koristi svuda, nigdje ne pada na `audit.id`. Popravljeno je jedino to
+što je mock sloj pravio `id` iz tokena, pa je ko vidi id u aplikaciji mogao izračunati
+javni link.
+
+## 17. Pet mjesta gdje se specifikacija i nacrtani dizajn ne slažu. ZATVORENO
+
+Nije trebalo ni biti pitanje. Odluke su već bile donesene u kodu, samo nezapisane.
+
+Pravilo je sada u `decisions/0009`: kad se dokument i nacrt ne slažu oko toga kako nešto
+izgleda, nacrt pobjeđuje i dokument se ispravlja u istom PR-u. Za činjenice (ime, brojka,
+pravilo pristupačnosti) pravilo ne važi, jer nacrt o njima ne odlučuje i zna biti stariji
+od odluke.
+
+Svih pet stavki je razvrstano i ispravljeno u `decisions/0009`, u `docs/13`, `docs/15`,
+`docs/27`, `docs/32` i u dva nacrta. Ubuduće se ovakvo neslaganje ne prijavljuje kao
+pitanje nego se razriješi po pravilu.

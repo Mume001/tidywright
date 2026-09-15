@@ -137,8 +137,13 @@ that are holding it back. We've written the fixes for the top 3 below."
 **Tri popravke.** Svaka kao kartica:
 - naslov nalaza (npr. "Your page title isn't working for you")
 - oznaka ozbiljnosti
-- dva bloka jedan ispod drugog: "Now" (postojeće, monospace, sivo) i "Suggested" (novo,
-  monospace, istaknuto), s dugmetom "Copy" na prijedlogu
+- dva bloka, **jedno pored drugog od 768 px naviše, jedno ispod drugog ispod toga**:
+  "Now" (postojeće, monospace, na crvenkastoj podlozi) i "Suggested" (novo, monospace, na
+  zelenkastoj), s dugmetom "Copy" na vrhu kartice. Pored je zato što je ovo poređenje, a
+  poređenje se čita u paru. Tako je i nacrtano u `design/phase1/Report.dc.html`. Vidi
+  `decisions/0009`.
+- blokovi se poravnavaju po vrhu, ne rastežu na istu visinu, da jednoredni "Now" ne
+  postane prazna kutija pored deset redova JSON-LD-a
 - "Why this works": dva do tri razloga kao lista
 - za JSON-LD: blok koda sa sintaksom, sklopiv
 

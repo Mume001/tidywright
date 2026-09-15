@@ -27,14 +27,18 @@ const LABEL: Record<CheckStatus, string> = {
 export function CheckRow({ check }: { check: CheckResult }) {
   const Icon = ICON[check.status]
   return (
-    <div className="flex items-center gap-3 border-t border-line px-4.5 py-2.5 text-[13px] first:border-t-0">
+    // Wraps on a phone, where the report has to be readable at 360 px, and sits
+    // on one line from the small breakpoint up, which is every app screen.
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-line px-4.5 py-2.5 text-[13px] first:border-t-0">
       <Badge tone={TONE[check.status]}>
         <Icon className="size-3" aria-hidden />
         {LABEL[check.status]}
       </Badge>
-      <span className="w-56 shrink-0 font-semibold">{check.title}</span>
-      <span className="min-w-0 flex-1 truncate text-tx2">{check.detail}</span>
-      <code className="ml-auto shrink-0 font-mono text-[11px] text-tx3">{check.code}</code>
+      <span className="font-semibold sm:w-56 sm:shrink-0">{check.title}</span>
+      <span className="min-w-0 basis-full text-tx2 sm:flex-1 sm:basis-auto sm:truncate">
+        {check.detail}
+      </span>
+      <code className="shrink-0 font-mono text-[11px] text-tx3 sm:ml-auto">{check.code}</code>
     </div>
   )
 }

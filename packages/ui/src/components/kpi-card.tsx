@@ -14,9 +14,9 @@ export interface KpiCardProps {
 
 const TONE_CLASS = {
   default: 'text-tx',
-  good: 'text-score-good',
-  mid: 'text-score-mid',
-  bad: 'text-score-bad',
+  good: 'text-score-good-ink',
+  mid: 'text-score-mid-ink',
+  bad: 'text-score-bad-ink',
 } as const
 
 export function KpiCard({ label, value, sub, delta, tone = 'default', className }: KpiCardProps) {
@@ -34,7 +34,7 @@ export function KpiCard({ label, value, sub, delta, tone = 'default', className 
       </div>
       <div className="flex items-center gap-2 text-xs text-tx2">
         {delta && (
-          <span className={good ? 'text-score-good' : 'text-score-bad'}>
+          <span className={good ? 'text-score-good-ink' : 'text-score-bad-ink'}>
             {delta.value > 0 ? '▲' : '▼'} {Math.abs(delta.value)}%
           </span>
         )}

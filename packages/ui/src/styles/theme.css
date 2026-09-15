@@ -27,15 +27,30 @@
   --color-lime-l: #c9ee72;
   --color-on-lime: #16200a;
 
+  /* Accent used as text. On the dark app that is the accent itself; the report
+   * theme swaps in the agency colour darkened until it reads on white. */
+  --color-ink: #b6e24a;
+
   --color-amber: #e7a33c;
   --color-coral: #e2705a;
   --color-violet: #9b8cf4;
   --color-on-violet: #17131f;
 
-  /* Score bands. Used by ScoreRing, ScoreBar and every score badge. */
+  /* Score bands. Rings, bars and the filled part of a meter. */
   --color-score-good: #b6e24a;
   --color-score-mid: #e7a33c;
   --color-score-bad: #e2705a;
+
+  /*
+   * The same three as text. A colour that is legible as a 14px bar is not
+   * necessarily legible as 10px type: a bar has to clear 3:1 and a word has to
+   * clear 4.5:1. On the dark app they are the same colour; on the white report
+   * they are darker. Never put --color-score-* on a letter.
+   */
+  --color-score-good-ink: #b6e24a;
+  --color-score-mid-ink: #e7a33c;
+  --color-score-bad-ink: #e2705a;
+  --color-violet-ink: #9b8cf4;
 
   --font-display: 'Space Grotesk Variable', 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
   --font-sans: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
@@ -57,7 +72,13 @@
  */
 [data-theme='report'] {
   --color-bg: #ffffff;
-  --color-panel: #f7f7f8;
+  /*
+   * A card is --panel in both themes. On the dark app that is a surface lifted
+   * off the page; on the white report it is the page colour with a border, which
+   * is what the drawn design uses. Keeping one name for "card" is what lets
+   * FixCard and ScoreRing render in both without knowing where they are.
+   */
+  --color-panel: #ffffff;
   --color-panel2: #efeff3;
   --color-raise: #ffffff;
   --color-line: #e6e6ea;
@@ -65,7 +86,13 @@
 
   --color-tx: #16161a;
   --color-tx2: #5b5b66;
-  --color-tx3: #8e8e99;
+  /*
+   * Darker than the #8e8e99 in docs/27-design-system.md, which is 3.2:1 on
+   * white. That is fine for a placeholder, which is all the app uses tx3 for,
+   * but the report puts real sentences in it: the date, the line under each
+   * group bar, the footer. 4.96:1, so it can be read.
+   */
+  --color-tx3: #6f6f7a;
 
   /* The accent is the agency's, with our lime as the fallback while loading. */
   --color-lime: var(--agency-primary, #16161a);
@@ -73,9 +100,23 @@
   --color-lime-l: var(--agency-primary, #16161a);
   --color-on-lime: var(--agency-on-primary, #ffffff);
 
+  /*
+   * The same brand colour, darkened on the server until it reads as text on
+   * white. Use this for links and for any coloured word, never --color-lime,
+   * which is sized for a filled button where the text sits on top of it.
+   */
+  --color-ink: var(--agency-ink, #16161a);
+
   --color-score-good: #2e9e5b;
   --color-score-mid: #d9822b;
   --color-score-bad: #d64545;
+
+  /* The same bands, dark enough to be read as words on white and on their own
+   * tinted badge. Close to the pill colours in design/phase1/Report.dc.html. */
+  --color-score-good-ink: #1e7042;
+  --color-score-mid-ink: #985716;
+  --color-score-bad-ink: #b33636;
+  --color-violet-ink: #5a49c8;
 
   --color-amber: #d9822b;
   --color-coral: #d64545;

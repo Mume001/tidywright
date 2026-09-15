@@ -6,9 +6,15 @@ export type BannerTone = 'info' | 'warning' | 'danger' | 'success'
 
 const CONFIG: Record<BannerTone, { icon: typeof Info; classes: string }> = {
   info: { icon: Info, classes: 'border-violet/40 bg-violet/10 text-violet' },
-  warning: { icon: AlertTriangle, classes: 'border-score-mid/40 bg-score-mid/10 text-score-mid' },
-  danger: { icon: XCircle, classes: 'border-score-bad/40 bg-score-bad/10 text-score-bad' },
-  success: { icon: CheckCircle2, classes: 'border-score-good/40 bg-score-good/10 text-score-good' },
+  warning: {
+    icon: AlertTriangle,
+    classes: 'border-score-mid/40 bg-score-mid/10 text-score-mid-ink',
+  },
+  danger: { icon: XCircle, classes: 'border-score-bad/40 bg-score-bad/10 text-score-bad-ink' },
+  success: {
+    icon: CheckCircle2,
+    classes: 'border-score-good/40 bg-score-good/10 text-score-good-ink',
+  },
 }
 
 export interface BannerProps {

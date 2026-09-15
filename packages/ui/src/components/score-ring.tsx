@@ -1,4 +1,4 @@
-import { scoreBand, SCORE_COLOR } from '../lib/score'
+import { scoreBand, SCORE_COLOR, SCORE_INK } from '../lib/score'
 import { cn } from '../lib/cn'
 
 export interface ScoreRingProps {
@@ -78,7 +78,7 @@ export function ScoreRing({ score, size = 160, showCaption = true, className }: 
 export function ScoreNumber({ score }: { score: number }) {
   const band = scoreBand(score)
   return (
-    <span className="tabular font-mono font-semibold" style={{ color: SCORE_COLOR[band] }}>
+    <span className="tabular font-mono font-semibold" style={{ color: SCORE_INK[band] }}>
       {score}
     </span>
   )

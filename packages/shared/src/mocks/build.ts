@@ -37,15 +37,33 @@ export interface MockData {
 
 const FIXABLE_CODES = new Set(PHASE_1_CHECKS.filter((c) => c.fixable).map((c) => c.code))
 
+/**
+ * Three agencies, deliberately different: one paid with everything filled in,
+ * one free with the badge and no booking link, one paid on a colour that fails
+ * contrast on white so the report has to darken it.
+ */
 const AGENCY_SEEDS = [
   {
     slug: 'northwind-digital',
     name: 'Northwind Digital',
     plan: 'starter' as Plan,
     color: '#1F5AF6',
+    calendar: true,
   },
-  { slug: 'atlas-web-studio', name: 'Atlas Web Studio', plan: 'free' as Plan, color: '#C2410C' },
-  { slug: 'meridian-seo', name: 'Meridian SEO', plan: 'agency' as Plan, color: '#0F766E' },
+  {
+    slug: 'atlas-web-studio',
+    name: 'Atlas Web Studio',
+    plan: 'free' as Plan,
+    color: '#C2410C',
+    calendar: false,
+  },
+  {
+    slug: 'meridian-seo',
+    name: 'Meridian SEO',
+    plan: 'agency' as Plan,
+    color: '#0F766E',
+    calendar: true,
+  },
 ]
 
 function buildChecks(rng: Rng, quality: number): CheckResult[] {
@@ -194,6 +212,7 @@ export function buildMockData(seed = 42): MockData {
         'We read your homepage the way Google does. Below are the three changes we would make first, ready to paste.',
       ctaLabel: 'Book a free 20 minute call',
       ctaUrl: `https://${seedAgency.slug}.com/call`,
+      calendarUrl: seedAgency.calendar ? `https://cal.com/${seedAgency.slug}/20min` : null,
       footerText: null,
       companyAddress: '1200 NW Naito Pkwy, Portland OR',
       hidePoweredBy: seedAgency.plan !== 'free',
@@ -296,6 +315,9 @@ export function buildMockData(seed = 42): MockData {
       country: rng.pick(COUNTRIES),
       firstViewedAt: rng.chance(0.7) ? minutesAgo(Math.max(1, minutes - 20)) : null,
       notes: null,
+      // Written when the first email goes out. See below: the newest lead is
+      // left without one on purpose.
+      unsubscribeToken: rng.secret(),
       unsubscribedAt: null,
       createdAt: minutesAgo(minutes),
     }
@@ -373,6 +395,15 @@ export function buildMockData(seed = 42): MockData {
 
   leads.sort((a, b) => b.createdAt.localeCompare(a.createdAt))
   audits.sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+
+  /*
+   * The newest lead has no unsubscribe token: it is written when the first email
+   * is sent, and that job has not run yet. Set here rather than left to a dice
+   * roll, because a fixture that only sometimes contains a state is a fixture
+   * that only sometimes tests it.
+   */
+  const newest = leads[0]
+  if (newest) newest.unsubscribeToken = null
 
   const stats: StatsDaily[] = []
   for (const agency of agencies) {

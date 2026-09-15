@@ -19,7 +19,7 @@ kodu, bosanski u dokumentaciji.
 | Embed ključ (embed key) | javni `pk_live_...` string koji veže obrazac za agenciju. |
 | Hostovani obrazac | ista forma na `/a/<slug>`, bez ugradnje, za agencije koje ne mogu dodati skriptu. |
 | Brendiranje (branding) | logo, boja, tekstovi agencije koje posjetilac vidi. |
-| Powered by | mali natpis "powered by SiteAuditServer" na free planu. Nestaje na plaćenom. |
+| Powered by | mali natpis "Powered by Tidywright" na free planu. Nestaje na plaćenom. |
 | siteauditserver.com | domena bez našeg brenda za sve što posjetilac vidi. |
 | Radnik (worker) | Node proces na Hetzneru koji izvršava audite iz reda. |
 | Red (queue) | pg-boss lista poslova u Postgresu. `audit.run` je glavni posao. |

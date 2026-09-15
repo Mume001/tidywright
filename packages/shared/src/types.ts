@@ -81,6 +81,8 @@ export interface Branding {
   reportIntro: string
   ctaLabel: string
   ctaUrl: string
+  /** Booking link. When set, the report shows "Book a call" in its header. */
+  calendarUrl: string | null
   footerText: string | null
   companyAddress: string | null
   hidePoweredBy: boolean
@@ -125,6 +127,14 @@ export interface Lead {
   country: string | null
   firstViewedAt: string | null
   notes: string | null
+  /**
+   * The secret in the /u/<token> link, 32 random bytes as base64url. Its own
+   * value, never derived from the id: this link travels through mail servers,
+   * log files and the automatic unsubscribe preview some clients run, and
+   * whoever ends up holding it must not thereby hold a primary key. Null until
+   * the first email to this lead is sent. docs/18-data-model.md.
+   */
+  unsubscribeToken: string | null
   unsubscribedAt: string | null
   createdAt: string
 }

@@ -15,6 +15,21 @@ const config: NextConfig = {
           { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
         ],
       },
+      /*
+       * The two halves of the embed, cached very differently on purpose.
+       * docs/15-frontend-spec.md 1.1: the tag an agency pastes points at a file
+       * we can replace within five minutes, and that file points at one that is
+       * never edited, so the bytes on the critical path of their page are
+       * fetched once a year rather than revalidated on every view.
+       */
+      {
+        source: '/embed.js',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=300, must-revalidate' }],
+      },
+      {
+        source: '/embed/:version/frame.js',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+      },
     ]
   },
 }

@@ -14,13 +14,20 @@ import { Button } from './button'
  * Works in both themes: the app shows it inside an audit, the report shows it to
  * the visitor on the agency's white page.
  */
-export function FixCard({ fix }: { fix: Fix }) {
+export interface FixCardProps {
+  fix: Fix
+  /** Reported so the pilot can count which fixes people actually take. */
+  onCopy?: (kind: Fix['kind']) => void
+}
+
+export function FixCard({ fix, onCopy }: FixCardProps) {
   const [copied, setCopied] = useState(false)
 
   async function copy() {
     try {
       await navigator.clipboard.writeText(fix.after)
       setCopied(true)
+      onCopy?.(fix.kind)
       setTimeout(() => setCopied(false), 1600)
     } catch {
       /* blocked clipboard, the text is selectable */
@@ -43,15 +50,21 @@ export function FixCard({ fix }: { fix: Fix }) {
         </Button>
       </div>
 
-      <div className="mt-3.5 grid gap-3.5 md:grid-cols-2">
+      {/*
+        items-start, so a one line "Now" does not stretch into a tall empty box
+        beside ten lines of suggested JSON-LD.
+      */}
+      <div className="mt-3.5 grid items-start gap-3.5 md:grid-cols-2">
         <div>
           <div className="text-[10.5px] font-bold tracking-wider text-tx3 uppercase">Now</div>
           <p className="mt-1.5 rounded-lg bg-score-bad/10 p-3 font-mono text-[12.5px] leading-relaxed break-words text-tx2">
-            {fix.before ?? <span className="text-tx3 italic">(missing)</span>}
+            {/* tx2, not tx3: "nothing is there" is the finding, not a
+                placeholder, and it sits on a tint that eats the lighter grey. */}
+            {fix.before ?? <span className="italic">(missing)</span>}
           </p>
         </div>
         <div>
-          <div className="text-[10.5px] font-bold tracking-wider text-score-good uppercase">
+          <div className="text-[10.5px] font-bold tracking-wider text-score-good-ink uppercase">
             Suggested
           </div>
           <p
