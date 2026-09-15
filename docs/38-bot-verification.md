@@ -1,10 +1,10 @@
-# Verifikacija bota: šta je urađeno i šta ti ostaje
+# Verifikacija bota: šta je urađeno i šta ostaje
 
 Datum: 15.09.2026.
-Status: čeka Mumetove naloge, sve ostalo je gotovo
+Status: **server je živ, ostaje poslati prijave**
 
 Ovo je najduži štap u rasporedu. Odobrenje traje kvartal, a rok je prvi audit uživo,
-dakle prije B2. Zato ide ispred F2, ne paralelno s njim.
+dakle prije B2. Zato je i otišlo ispred F2.
 
 Brojke koje opravdavaju sav ovaj trud su u `docs/36-fetch-reliability.md`: neverifikovan
 bot dobije HTTP 200 u **33,3 posto** slučajeva, verifikovan u **73,0 posto**, a Cloudflare
@@ -12,152 +12,124 @@ stoji ispred četvrtine weba. Nijedno podešavanje HTTP klijenta ne proizvodi ta
 
 ---
 
-## Gdje smo
+## Gdje smo, 15.09.2026.
 
-**Gotovo (u kodu, radi lokalno, provjereno curl-om):**
+**Živo na tidywright.com:**
+
+| Šta | Provjereno |
+|---|---|
+| `https://tidywright.com/bot` | 200 |
+| `https://tidywright.com/bot/ips.json` | obje adrese |
+| `https://tidywright.com/.well-known/http-message-signatures-directory` | 200, `content-type: application/http-message-signatures-directory+json`, oba zaglavlja `signature` i `signature-input` |
+
+**U kodu:**
 
 | Šta | Gdje |
 |---|---|
-| Identitet bota na jednom mjestu | `packages/shared/src/bot-identity.ts` |
+| Identitet bota na jednom mjestu | `packages/shared/src/bot-identity.ts`, 12 testova |
 | Javna stranica `/bot` | `apps/web/app/bot/page.tsx` |
-| Lista izlaznih adresa `/bot/ips.json` | `apps/web/app/bot/ips.json/route.ts` |
+| Lista adresa `/bot/ips.json` | `apps/web/app/bot/ips.json/route.ts` |
 | Potpisani direktorij ključeva | `apps/web/app/.well-known/http-message-signatures-directory/route.ts` |
 | RFC 9421 potpisivanje i provjera | `apps/web/lib/bot-auth.ts`, 11 testova |
 | Generator ključeva | `pnpm bot:keys` |
-| Zaštita da tidywright.com ne pokaže ništa osim `/bot` prije F3 | `apps/web/proxy.ts` |
+| Zaštita da tidywright.com ne pokaže ništa osim bot putanja prije F3 | `apps/web/proxy.ts`, `TW_MARKETING_LIVE` |
 
-**Ostaje tebi, i ništa od toga ja ne mogu:** Hetzner nalog i kartica, DNS zapisi,
-Cloudflare nalog, i pritisak na dugme u Vercelu. Koraci su niže, redom.
+**Infrastruktura:** jedan Hetzner server, Caddy, systemd, bez Vercela. Kompletan popis
+kako je postavljeno i šta nije urađeno je u **`docs/39-server-setup.md`**.
 
-Procjena tvog vremena: **oko 45 minuta**, plus čekanje.
-
----
-
-## Korak 1: server sa stalnom adresom
-
-Cloudflare i Akamai gledaju adresu s koje dolazimo. Treba nam adresa koja je **naša,
-ekskluzivna i nepromjenljiva**, jer je dodavanje adrese koja nije prijavljena pri
-onboardingu razlog za izbacivanje iz programa.
-
-**Ključna stvar koju treba uraditi kako treba iz prvog puta: adresa je imovina, ne
-server.** U Hetzneru napravi **Primary IP** sa opcijom da preživi brisanje servera, pa je
-zakači na server. Tada možeš mijenjati, gasiti i povećavati server koliko hoćeš, a
-prijavljena adresa ostaje ista i prijava se ne radi ponovo.
-
-1. Hetzner Cloud projekat `tidywright-prod`, lokacija **Nürnberg (nbg1)** ili
-   **Falkenstein (fsn1)**. Ista lokacija za sve kasnije servere, jer je privatna mreža
-   besplatna samo unutar lokacije (`docs/20-infrastructure.md`).
-2. Napravi Primary IPv4, uključi **"Auto-delete: off"** (ili "Keep after server delete"),
-   nazovi ga `tw-fetch-1`.
-3. Napravi server i zakači taj Primary IP:
-   - **CX33** (4 vCPU, 8 GB, 80 GB), 8,49 € mjesečno. To je tačno server iz stepenice A
-     koji ti ionako treba za radnika u B2, pa nema druge selidbe.
-   - Jeftinija međuvarijanta ako hoćeš odgoditi trošak: **CX22**, oko 3,79 €. Pošto je
-     adresa odvojena, kasnija zamjena na CX33 ne dira prijavu. Ovo je jedina stvar koju
-     smiješ mijenjati kasnije bez posljedica.
-   - Slika: Ubuntu 24.04. SSH ključ dodaj pri kreiranju, root lozinku ne koristi.
-4. Hetzner Cloud Firewall na tom serveru: ulaz samo 22 s tvoje adrese. Radniku ne trebaju
-   ni 80 ni 443 na ulazu, samo odlazni promet (`docs/20-infrastructure.md`).
-
-Zapiši adresu. Zovem je dalje `<IZLAZNA_IP>`.
+**Ostaje:** poslati dvije prijave (koraci 6 i 8) i napraviti `bot@tidywright.com`
+(korak 5). Pola sata.
 
 ---
 
-## Korak 2: DNS i reverse DNS, oba smjera
+## Šta je već postavljeno, za slučaj da se ponavlja
 
-Verifikacija u oba smjera (forward-confirmed reverse DNS) je ono što Google i Bing traže
-od svojih crawlera i ono što Cloudflare prihvata kao jednu od tri metode. Bez oba smjera
-ne vrijedi ništa.
+Ovo više nije uputstvo nego zapis. Ako server ikad treba ponovo, detalji su u
+`docs/39-server-setup.md`; ovdje je samo ono što dodiruje prijavu.
 
-1. U DNS-u za `tidywright.com` dodaj A zapis:
+### Adrese
 
-   ```
-   fetch1.tidywright.com.   A   <IZLAZNA_IP>
-   ```
+Dvije Hetzner Primary IP adrese u Falkensteinu, obje sa uključenom zaštitom od brisanja.
+To je ono što čini da prijava preživi zamjenu servera: **adresa je imovina, ne server.**
 
-2. U Hetzner Cloud konzoli, na tom Primary IP-u, postavi **reverse DNS**:
+| Adresa | Reverse DNS | Uloga |
+|---|---|---|
+| `49.13.83.98` | `web.tidywright.com` | aplikacija, `/bot`, direktorij ključeva |
+| `188.245.170.86` | `crawler.tidywright.com` | izlaz radnika, rezervisana, prvi put u upotrebi u B2 |
 
-   ```
-   <IZLAZNA_IP>   ->   fetch1.tidywright.com
-   ```
+**Obje idu u prijavu, iako druga još ništa ne radi.** Ono što objavljujemo i ono što
+prijavljujemo mora biti ista lista. Adresa koju počnemo koristiti a nismo je prijavili je
+tačno ono zbog čega se izbacuje iz programa.
 
-3. Provjeri oba smjera, i ne nastavljaj dok oba ne prolaze:
-
-   ```bash
-   dig +short -x <IZLAZNA_IP>          # mora vratiti fetch1.tidywright.com.
-   dig +short fetch1.tidywright.com    # mora vratiti <IZLAZNA_IP>
-   ```
-
-4. Javi mi adresu. Upisujem je u `BOT.egressIps` u
-   `packages/shared/src/bot-identity.ts`, čime se pojavi i na `/bot` i u
-   `/bot/ips.json`. **To mora biti u istom danu kad je prijavljuješ Cloudflareu**, jer
-   neprijavljena adresa na listi i prijavljena adresa koje nema na listi su oba problem.
-
----
-
-## Korak 3: ključevi
+Provjera u oba smjera, i to je ono što Cloudflare i Bing gledaju:
 
 ```bash
-pnpm bot:keys
+dig +short -x 49.13.83.98        # web.tidywright.com.
+dig +short web.tidywright.com    # 49.13.83.98
+dig +short -x 188.245.170.86     # crawler.tidywright.com.
+dig +short crawler.tidywright.com # 188.245.170.86
 ```
 
-Ispisuje tri stvari i **ne upisuje nijedan fajl**, namjerno: privatni ključ koji se upiše
-u fajl završi u backupu, na snimku ekrana ili u commitu.
+**`crawler` A zapis mora zauvijek ostati sivi oblak u Cloudflareu** (DNS only). Ako se
+proxira, forward provjera vraća Cloudflareovu adresu umjesto naše i verifikacija po
+reverse DNS-u pada. Isto piše i u `docs/39-server-setup.md`, jer je to greška koju je
+lako napraviti jednim klikom godinama kasnije.
 
-- **Privatni ključ** ide u `TW_BOT_SIGNING_KEY`, u Vercel env (Production) i kasnije u env
-  radnika. Nigdje drugo. Ista klasa tajne kao KEK iz `docs/22-security.md`.
-- **Javni ključ** ne moraš nigdje kopirati. Direktorij ga izvodi iz privatnog u trenutku
-  odgovora, pa se ta dva ne mogu raziću.
-- **Key ID** (JWK thumbprint) zapiši. To je `keyid` u svakom potpisu i njime te programi
-  prepoznaju.
+### Ključ
 
-Poslije ispisa očisti scrollback terminala.
+Ed25519 par napravljen sa `pnpm bot:keys`. Privatni ključ je u `.env.local` na serveru,
+kao `TW_BOT_SIGNING_KEY`, vlasnik `tw`, prava `600`. Nigdje drugo, nikad u repozitoriju.
 
----
+**Key ID (JWK thumbprint, RFC 7638):**
 
-## Korak 4: objavi `/bot` i direktorij
+```
+2YUz85xnujZQsp0sGtAklW2vKsCI56PKo1ooakp_0oQ
+```
 
-Prijava neće biti pogledana ako javna dokumentacija bota vraća 404.
+To je `keyid` u svakom potpisu koji šaljemo. Izveden je iz javnog ključa, pa se mijenja
+samo kad se ključ mijenja. Javni ključ se ne kopira nigdje ručno: direktorij ga izvodi iz
+privatnog u trenutku odgovora, pa se ta dva ne mogu raziću.
 
-**Preporuka: Vercel**, jer je već odlučen za fazu 1 (`decisions/0008`) i jer je ovo jedan
-deploy umjesto postavljanja web servera.
+### Objava
 
-1. Vercel projekat iz repozitorija, `main` grana, Production.
-2. Env varijable: `TW_BOT_SIGNING_KEY` (iz koraka 3). **`TW_MARKETING_LIVE` ne postavljaj.**
-3. Domena `tidywright.com` na taj projekat.
+Bez Vercela. `apps/web` se gradi na samom serveru i servira ga Caddy preko systemd
+servisa. Deploy je `sudo tw-deploy`. Detalji u `docs/39-server-setup.md`.
 
-Dok `TW_MARKETING_LIVE` nije postavljen, `tidywright.com` servira **samo** `/bot`,
-`/bot/ips.json` i direktorij ključeva. Sve ostalo vraća 404. To je namjerno: bot stranica
-mora biti živa mjesecima prije F3, a nedovršena naslovna na firminoj domeni je gora od
-nikakve. Kad F3 dođe, postavi `TW_MARKETING_LIVE=1` i sajt proradi cijeli.
-
-**Alternativa ako ne želiš Vercel sada:** Caddy na istom Hetzner serveru koji servira te
-tri putanje. Više posla i drugo mjesto za održavanje, ali radi.
+`TW_MARKETING_LIVE` **nije** postavljen, pa `tidywright.com` servira samo `/bot`,
+`/bot/ips.json` i direktorij ključeva, a sve ostalo vraća 404. To je namjerno: bot
+stranica mora biti živa mjesecima prije F3, a nedovršena naslovna na firminoj domeni je
+gora od nikakve. Kad F3 dođe, postavi varijablu i sajt proradi cijeli.
 
 ---
 
-## Korak 5: provjeri prije nego išta prijaviš
+## Korak 5: provjeri prije nego išta pošalješ
+
+Sve tri su prošle 15.09.2026. Ponovi ih ako se bilo šta dirne prije prijave.
 
 ```bash
-curl -si https://tidywright.com/.well-known/http-message-signatures-directory
+curl -si https://tidywright.com/.well-known/http-message-signatures-directory | head -20
+curl -s  https://tidywright.com/bot/ips.json
+curl -sI https://tidywright.com/bot
 ```
 
-Mora dati, sve četiri stvari:
+Direktorij mora dati, sve četiri stvari:
 
 - `HTTP/2 200`
 - `content-type: application/http-message-signatures-directory+json`
 - zaglavlje `signature-input` koje sadrži `tag="http-message-signatures-directory"`
-- tijelo oblika `{"keys":[{"kty":"OKP","crv":"Ed25519","x":"...","kid":"..."}]}`
+- tijelo oblika `{"keys":[{"kty":"OKP","crv":"Ed25519","x":"...","kid":"..."}]}`, gdje se
+  `kid` poklapa sa key ID-om gore
 
-Pa još dvije:
+### Jedna stvar koja fali prije prijave: mejl
 
-```bash
-curl -s https://tidywright.com/bot/ips.json     # mora sadržati <IZLAZNA_IP>
-curl -sI https://tidywright.com/bot             # 200
-```
+`bot@tidywright.com` i `abuse@tidywright.com` stoje i na `/bot` stranici i u obrascu kao
+kontakt. **Moraju primati poštu prije nego što se prijava pošalje.** Kontakt koji odbija
+poštu je loš prvi utisak kod onoga ko pregleda prijavu, i gore od toga, vlasnik sajta
+kojeg smo naljutili nema kome pisati.
 
-Ako bilo šta od ovoga ne prolazi, prijava se odbija i čekaš ponovo od nule. Ovo je
-najskuplji trenutak za nestrpljenje u cijelom dokumentu.
+Plan: **Cloudflare Email Routing** na `tidywright.com`, preusmjerenje oba na Mumetov lični
+mail. Besplatno je, traži dva MX zapisa koje Cloudflare sam upiše, i gotovo je za pet
+minuta. Kad Resend dođe u B5, ovo ostaje kako jeste: Resend šalje, Email Routing prima.
 
 ---
 
@@ -184,11 +156,17 @@ značenje je isto i vrijednost se ne mijenja.
 | User Agents | `Mozilla/5.0 (compatible; TidywrightBot/1.0; +https://tidywright.com/bot)` |
 | User Agent match pattern | Ako traži obrazac a ne tačan string: `*TidywrightBot/*` |
 | IP list URL | `https://tidywright.com/bot/ips.json` |
-| IP ranges / ASN | `<IZLAZNA_IP>/32`. ASN ne navodi, jer je Hetznerov a ne naš |
+| IP ranges | `49.13.83.98/32` i `188.245.170.86/32`, obje |
+| ASN | **ne navoditi.** AS24940 je Hetznerov, ne naš, i prijaviti ga značilo bi tvrditi da je svaka adresa u njemu naša |
+| Key ID, ako ga traži | `2YUz85xnujZQsp0sGtAklW2vKsCI56PKo1ooakp_0oQ` |
 | Contact email | `bot@tidywright.com` |
 | Abuse contact | `abuse@tidywright.com` |
 | Respects robots.txt | Da |
 | Used for AI training | **Ne** |
+
+**Obje adrese, i ona koja još ništa ne radi.** Ako se prijavi samo `web`, prvi audit koji
+izađe sa `crawler` adrese dolazi sa neprijavljene adrese, a to je jedna od navedenih
+stavki zbog kojih se servis izbacuje iz programa. Prijaviti obje sada ne košta ništa.
 
 **Kategorija je SEO i nikad Agent ni Training.** Od 15.09.2026. Cloudflare po defaultu
 blokira Training i Agent na novim domenama i na postojećim free zonama, a naša publika su
@@ -276,26 +254,36 @@ dobrih botova vraća **HTTP 403** našem alatu dok sam pisao ovaj dokument.
 
 ---
 
-## Šta ostaje da uradim ja, kad javiš adresu
+## Šta ostaje da uradim ja
 
-1. `BOT.egressIps` dobija `<IZLAZNA_IP>`, jedan commit, pa se pojavi na `/bot` i u
-   `/bot/ips.json`.
-2. U B2, `safeFetch` počinje slati potpis na svakom zahtjevu (`apps/web/lib/bot-auth.ts`
+1. U B2, `safeFetch` počinje slati potpis na svakom zahtjevu (`apps/web/lib/bot-auth.ts`
    se seli u `packages/crawler`), sa `Signature-Agent` zaglavljem i `@authority` u
    pokrivenim komponentama.
-3. Politika prema `robots.txt` u tri režima, koja je već opisana u
+2. Politika prema `robots.txt` u tri režima, koja je već opisana u
    `docs/17-backend-spec.md`.
+3. U B2, vezati izlaz radnika na `188.245.170.86` i **zatvoriti IPv6 izlaz**. Danas bi
+   radnik izašao sa IPv6 adrese koju nismo prijavili, što ruši cijelu poentu prijave.
+   Zapisano i u `docs/39-server-setup.md` kao poznata rupa.
 
 ## Checklist
 
-- [ ] Hetzner projekat, Primary IP koji preživljava server, server, firewall
-- [ ] A zapis `fetch1.tidywright.com`
-- [ ] Reverse DNS, i `dig` prolazi u oba smjera
-- [ ] `pnpm bot:keys`, privatni ključ u Vercel env kao `TW_BOT_SIGNING_KEY`
-- [ ] Vercel projekat, domena `tidywright.com`, `TW_MARKETING_LIVE` nije postavljen
-- [ ] Tri `curl` provjere iz koraka 5 prolaze
-- [ ] Adresa javljena meni, upisana u `bot-identity.ts`, deployano
-- [ ] Cloudflare Bot Submission Form poslan, kategorija SEO, metoda Request Signature
+Urađeno:
+
+- [x] Hetzner projekat, dvije Primary IP sa zaštitom od brisanja, server, ufw
+- [x] A zapisi `@`, `www`, `web`, `crawler`, svi sivi oblak
+- [x] Reverse DNS, `dig` prolazi u oba smjera za obje adrese
+- [x] `pnpm bot:keys`, privatni ključ u `.env.local` na serveru kao `TW_BOT_SIGNING_KEY`
+- [x] Caddy, systemd, `tw-deploy`, `TW_MARKETING_LIVE` nije postavljen
+- [x] Tri `curl` provjere iz koraka 5 prolaze
+- [x] Obje adrese upisane u `bot-identity.ts`, žive na `/bot` i u `/bot/ips.json`
+
+Ostaje:
+
+- [ ] **`bot@tidywright.com` i `abuse@tidywright.com` primaju poštu.** Cloudflare Email
+      Routing, preusmjerenje na lični mail. **Prije prijave**, jer ih obrazac i stranica
+      navode kao kontakt
+- [ ] Cloudflare Bot Submission Form poslan, kategorija SEO, metoda Request Signature,
+      **obje adrese**
 - [ ] Akamai Bot Directory prijava poslana
 - [ ] Datum prijave zapisan u `STATUS.md`, da se zna od kad se čeka
 
