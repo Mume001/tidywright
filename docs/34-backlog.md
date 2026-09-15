@@ -43,6 +43,9 @@ ništa nije u planu gradnje dok se ne pretoči u odluku ili u zadatak.
 - Zadatak: popisati sve razloge zbog kojih audit može pasti ili biti blokiran,
   i za svaki naći način da se izvještaj ipak isporuči. Rezultat ide u zaseban
   dokument, ne ovdje.
+- URAĐENO: `36-fetch-reliability.md`. Iz toga su izašla dva zadatka: preduslov za
+  B2 u `31-build-plan.md` (kategorija prema Cloudflareu i Verified Bots), i
+  kaskada dohvata s djelimičnim izvještajem u `17-backend-spec.md`.
 
 ## D. Djelotvornost popravki
 
@@ -68,6 +71,7 @@ ništa nije u planu gradnje dok se ne pretoči u odluku ili u zadatak.
 - Treba dodati traku za kolačiće i evidenciju pristanka.
 - Veže se na `docs/23-compliance.md` i na to da widget danas namjerno ne pravi
   kolačiće.
+- Otvoreno kao pitanje 20 u `11-open-questions.md`.
 
 ## G. Newsletter
 
@@ -75,6 +79,7 @@ ništa nije u planu gradnje dok se ne pretoči u odluku ili u zadatak.
 - Treba postojati i zasebna prijava samo na newsletter, bez audita.
 - Veže se na pristanak iz F, jer marketinški pristanak mora biti odvojen od
   slanja izvještaja.
+- Otvoreno kao pitanje 21 u `11-open-questions.md`.
 
 ## H. Zadržavanje na odjavi
 
@@ -82,6 +87,7 @@ ništa nije u planu gradnje dok se ne pretoči u odluku ili u zadatak.
 - Cilj koji je naveden: zadržati mogućnost slanja reklama na te adrese.
 - Napomena: popust pri odjavi je u redu, ali odjava mora ostati moguća u jednom
   koraku i bez uslova. Ovo treba provjeriti uz `docs/23-compliance.md`.
+- Otvoreno kao pitanje 22 u `11-open-questions.md`.
 
 ## I. Brending
 
@@ -92,6 +98,7 @@ ništa nije u planu gradnje dok se ne pretoči u odluku ili u zadatak.
   nosi naš brend, a imena dobavljača se ne vide nigdje.
 - Provjeriti uslove korišćenja svakog vanjskog servisa, jer neki traže vidljivo
   navođenje izvora.
+- Otvoreno kao pitanje 23 u `11-open-questions.md`.
 
 ## J. Dva segmenta umjesto samo agencija
 
@@ -122,6 +129,9 @@ neuspjeha ispod praga. Vidi "Preporuka" u `37-self-serve-segment.md`.
 Test koji mijenja preporuku, i koji je jeftin: ako besplatni audit na našem
 domenu pretvori više od 25 posto korisnika u povezan sajt, ide se self-serve
 prvo. Treba samo audit stranica i oko 2.000 posjetilaca.
+
+Otvoreno kao pitanje 19 u `11-open-questions.md`. Jedini dio koji blokira je
+model podataka, i on mora biti riješen prije B1.
 
 ## K. Vezano istraživanje
 
