@@ -1,6 +1,6 @@
 # Gdje smo
 
-Zadnja izmjena: 15. septembar 2026. (F1 prihvaćen i spojen, backlog pretočen)
+Zadnja izmjena: 15. septembar 2026. (F1 spojen, backlog pretočen, odluke 0010 i 0011)
 
 ## Faza 1 je OTVORENA: gradnja widgeta
 
@@ -160,7 +160,7 @@ tački, svaki uz pun krug provjera.
       `kvalitet`, `higijena`. `prioritise()` sada vodi po uticaju puta ozbiljnost, ne po
       težini grupe. `pnpm docs:checks` regeneriše dokument iz koda.
 - [x] **Pet novih pitanja** (19 do 23) u `11-open-questions.md`, plus pitanje 18 zatvoreno
-      odlukom `0010`.
+      odlukom `0010`. **Sva su odgovorena istog dana, vidi ispod.**
 - [x] Usput ispravljeno: `20-infrastructure.md` je imao stariji plan za Cloudflare,
       `17-backend-spec.md` je tvrdio da faza 1 ne renderuje JavaScript dok je `31` imao
       Playwright u B2, `18-data-model.md` je imao stari rječnik za `failure_code`, a
@@ -172,18 +172,53 @@ Tačka B, dizajn: podnožje izvještaja treba bolje izgledati, a `/a/[slug]` i m
 sajt trebaju ozbiljnije zaglavlje i burger meni na telefonu. To je posao za F2 i F3 i
 stoji u `34-backlog.md`. Nije pitanje, nema šta da se odluči.
 
+## Odluka `0011`: pet odgovora, istog dana
+
+Mume je odgovorio na svih pet pitanja. Šest commita, jedan po tački, svaki uz pun krug
+provjera. Sve je u `decisions/0011-pet-odgovora-nakon-pregleda-f1.md`.
+
+| #   | Odgovor                                                                                                                                      | Gdje je upisano                                                                    |
+| --- | -------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| 1   | **Model podataka nosi oba oblika**, `agencies.kind` (`agency`, `solo`), solo ima tačno jedan sajt kroz ograničenje u bazi. **B1 odblokiran** | `18-data-model.md`, `31-build-plan.md` (B1), `16-access-control.md`                |
+| 2   | **Nema trake za kolačiće u widgetu**, ali aplikacija i marketinški sajt dobijaju svoja pravila                                               | `23-compliance.md`, `15-frontend-spec.md`                                          |
+| 3   | **Dvije odvojene kvačice pristanka**, druga neobavezna i neoznačena. Zasebna prijava na newsletter samo na našoj domeni                      | `18-data-model.md`, `15-frontend-spec.md`, `26-email.md`, `13-widget-spec.md`, kod |
+| 4   | **Odjava ostaje jedan klik bez uslova.** Popust samo na otkazivanju pretplate, faza 2. Godišnji plan se nudi pri kupovini                    | `26-email.md`, `24-billing.md`                                                     |
+| 5   | **Brend: tri sloja i nema četvrtog.** Posjetilac vidi agenciju, agencija vidi nas, dobavljači se ne vide nigdje                              | `27-design-system.md`, `29-phase3-connectors.md`                                   |
+| 6   | **Ocjena se ne dira.** Zapisano kao zatvoreno pitanje 24, ne otvoreno, da se ne vuče kao dug                                                 | `11-open-questions.md`                                                             |
+
+**Greška koju je tačka 3 otkrila:** `apps/web/components/audit-form.tsx` je slao
+`consent_marketing: true` kao konstantu, dakle svi su bili prijavljeni na newsletter bez
+pitanja. Popravljeno, i sada postoji test koji pada ako dva pristanka ikad krenu zajedno.
+
+**Zadatak koji ostaje i može oboriti tačku 5:** prije B6 proći uslove korišćenja svakog
+vanjskog servisa u lancu, jer neki traže vidljivo navođenje izvora.
+
+### Snimci
+
+`report-done-1280.png` i `report-done-paid-agency-1280.png` u `docs/review/f1/` su
+obnovljeni. Promjena od `prioritise()` se vidi u redu "Fix this first": blokatori istiskuju
+higijenu. Tri kartice popravki se **nisu** promijenile, jer ih u mocku pravi `buildFixes()`
+kao fiksni set; izbor tri popravke po uticaju dolazi u B3.
+
+Zastarjela su dva snimka koja nisu tražena: `form-1-idle-*` i `form-x-field-errors-*`,
+jer obrazac sada ima drugu kvačicu.
+
 ## Sljedeći korak
 
-1. **Mume odgovara na pitanja 19 do 23** u `11-open-questions.md`. Jedino koje ima rok je
-   19, tačka 3: model podataka mora podržavati i agenciju s više sajtova i vlasnika s
-   jednim sajtom **prije B1**, jer je to jeftino sada i skupo za šest mjeseci.
-2. **Prijava u Cloudflare Verified Bots kreće odmah**, ne kad B2 dođe na red. Odobrenje
+1. **Prijava u Cloudflare Verified Bots kreće odmah**, ne kad B2 dođe na red. Odobrenje
    traje od nekoliko sedmica do nekoliko mjeseci i nema SLA, a rok je prvi audit uživo.
    Vidi preduslov za B2 u `31-build-plan.md`.
-3. F2: auth ekrani, onboarding, shell, i svi ekrani aplikacije.
-4. Mume otvara naloge iz pitanja 15, redom kako trebaju.
-5. Otvoreno je i dalje pravno lice za Stripe (pitanje 9), smjer je Estonija, treba do
+2. **F2: aplikacija, ekrani** (6 do 8 dana po `31-build-plan.md`). Auth ekrani, onboarding
+   u tri koraka, shell sa sidebarom i biračem agencije, `/overview`, `/leads`, `/audits`,
+   `/embed`, `/branding`, `/settings`, `/billing`, `/team`, i pet admin ekrana. Svaki ekran
+   četiri priče u Storybooku. **Gotovo kad Mume prođe sve ekrane i potpiše "ovo gradimo".**
+3. Mume otvara naloge iz pitanja 15, redom kako trebaju.
+4. Otvoreno je i dalje pravno lice za Stripe (pitanje 9), smjer je Estonija, treba do
    kraja F2.
+
+Jedino otvoreno pitanje koje ostaje je **19, sekvenca kanala**, i ono ne čeka odluku nego
+mjerenje: koliko posto ljudi koji dobiju besplatan izvještaj na našoj domeni poveže svoj
+sajt, prag 25 posto. Mjerljivo tek poslije F3.
 
 Za pokretanje lokalno: `corepack enable && pnpm install`, pa `pnpm dev`, pa
 `http://localhost:3000/test-embed.html`. Za pravi test ugradnje, u drugom terminalu
@@ -228,3 +263,4 @@ Backend:
 | 14.09.2026. | F1: embed obrazac, loader od 2,9 KB, izvještaj sa svim stanjima, 156 testova                                                       |
 | 14.09.2026. | Pregled F1 s Mumetom, primjedbe u `docs/34`, tri istraživanja (`35`, `36`, `37`)                                                   |
 | 15.09.2026. | F1 spojen u master. Backlog pretočen: odluka 0010, preduslov za B2, kaskada dohvata, oznaka uticaja po provjeri, pet novih pitanja |
+| 15.09.2026. | Odluka 0011: pet odgovora. Model podataka nosi oba oblika i B1 je odblokiran, dva pristanka umjesto jednog, brend u tri sloja      |
