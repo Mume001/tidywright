@@ -42,6 +42,17 @@ keširaju na Cloudflareu, pa Vercel funkcije rade samo API i izvještaje. Ako Ve
 pređe 100 $ mjesečno, Next.js se seli na Hetzner pored radnika (Docker slika već postoji
 jer radnik ima istu).
 
+## Šta je stvarno postavljeno, 15.09.2026.
+
+Ovaj dokument je plan. Trenutno postoji **jedan** server, `tw-app-1` (CPX12, Falkenstein),
+koji servira `tidywright.com` kroz Caddy i systemd, bez Vercela i bez Coolifyja. Podignut
+je prije reda jer prijava u Cloudflare Verified Bots traži živu javnu stranicu i stalnu
+adresu, a odobrenje traje kvartal.
+
+Postavka i, važnije, popis onoga što na njemu **nije** urađeno (backup, monitoring,
+staging, IPv6 izlaz) su u **`docs/39-server-setup.md`**. Izbor gdje aplikacija živi u B4 je
+i dalje otvoren i i dalje se vodi po `decisions/0008`.
+
 ## Tri stepenice
 
 ### Stepenica A: do 1.000 agencija (faza 1 i 2)

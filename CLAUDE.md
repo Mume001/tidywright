@@ -50,6 +50,7 @@ popravke `docs/06-fixes.md`.
 | kapacitet                     | `docs/21-capacity.md`                                           |
 | sigurnost                     | `docs/22-security.md`                                           |
 | verifikacija bota             | `docs/38-bot-verification.md`                                   |
+| server                        | `docs/39-server-setup.md`                                       |
 | pravo                         | `docs/23-compliance.md`                                         |
 | naplata                       | `docs/24-billing.md`                                            |
 | email                         | `docs/26-email.md`                                              |
