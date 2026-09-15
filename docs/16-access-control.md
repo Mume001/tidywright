@@ -18,6 +18,11 @@ baza odbije red. Ako bilo koje od ta tri pukne, druga dva drže.
 Jedan korisnik može imati uloge u više agencija (npr. freelancer koji radi za dvije).
 Aktivna agencija se bira u gornjoj traci i čuva u sesiji.
 
+**Uloge se ne mijenjaju zbog self-serve naloga.** Po odluci `0011`, tačka 1, nalog s
+`kind = 'solo'` je jedna agencija s tačno jednim članstvom u ulozi `owner` i jednim
+sajtom. Dozvole su isti red u matrici ispod, samo što `admin`, `member` i `client` nikad
+ne postoje. Zato se vrijednost zove `solo`, a ne `owner`: ime uloge je već zauzeto.
+
 ## Matrica
 
 Legenda: R čita, W piše, D briše, prazno nema pristupa.

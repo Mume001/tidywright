@@ -33,7 +33,9 @@ Drizzle, ključevi UUIDv7.
 | Kolona | Tip | Napomena |
 |---|---|---|
 | id | uuid pk | |
-| slug | text unique | 3 do 40 znakova, `[a-z0-9-]`, rezervisane riječi zabranjene |
+| kind | text | `agency` ili `solo`; CHECK, default `agency`. Vidi "Dva oblika naloga" ispod |
+| site_limit | smallint | 1 za `solo`, po planu za `agency`; sprovodi trigger na `sites` |
+| slug | text unique null | 3 do 40 znakova, `[a-z0-9-]`, rezervisane riječi zabranjene. Null na `solo` nalogu, koji nema hostovani obrazac |
 | name | text | |
 | plan | text | `free`, `starter`, `agency`, `pro`; CHECK |
 | status | text | `active`, `suspended`, `deleted`; CHECK |
@@ -45,6 +47,41 @@ Drizzle, ključevi UUIDv7.
 | deleted_at | timestamptz null | meko brisanje, tvrdo poslije 30 dana |
 
 Indeksi: `slug`, `stripe_customer_id`, `(status, deleted_at)`.
+
+#### Dva oblika naloga
+
+Odluka `0011`, tačka 1. Proizvod ima dvije publike i jedno jezgro, i oblik vlasništva nad
+sajtom je jedino mjesto gdje se razilaze u bazi. Postavlja se sada jer baza još ne
+postoji, a migracija kasnije je bolna.
+
+| | `agency` | `solo` |
+|---|---|---|
+| Ko je to | organizacija koja radi SEO za tuđe sajtove | vlasnik koji uređuje svoj sajt |
+| Sajtova | do limita plana | **tačno jedan**, ograničenje u bazi |
+| `slug` | obavezan, koristi ga `/a/[slug]` | null |
+| Embed ključevi | da, to je proizvod | ne |
+| Brendiranje, bijela etiketa | da | ne, `branding` red ne postoji i izvještaj nosi naš brend |
+| Uloge | `owner`, `admin`, `member`, `client` | samo `owner`, jedno članstvo |
+| Planovi | `free`, `starter`, `agency`, `pro` | vlastiti cjenovnik, faza 2 |
+
+Zakupac je i dalje red u `agencies` i strani ključ je i dalje `agency_id`. Preimenovanje u
+`accounts` je razmotreno i odbačeno u `decisions/0011`: ne donosi nijednu strukturnu
+sposobnost, a košta 343 pojave u 53 fajla koda plus JWT claim plus svaku RLS politiku.
+Riječ "agencija" je tačna u proizvodu koji prvi naplaćuje.
+
+`solo` nalog je zato jedna agencija s jednim članstvom u ulozi `owner`. Vrijednost se zove
+`solo` a ne `owner` da se ne sudari s imenom uloge iz `16-access-control.md`.
+
+Ograničenja koja idu u istu migraciju kao kolona:
+
+- `CHECK (kind = 'agency' OR slug IS NULL)`
+- `agencies.site_limit smallint`, default 1 za `solo` i po planu za `agency`, uz
+  `BEFORE INSERT` trigger na `sites` koji broji i odbija preko limita. Trigger a ne
+  parcijalni unique indeks, jer indeks na `sites` ne može čitati `agencies.kind`. Isti
+  trigger nosi i limit sajtova po agencijskom planu, pa solo nije poseban slučaj nego
+  limit od jedan.
+- `embed_keys` i `branding` se ne prave za `solo` nalog, i RLS to ne mora znati jer
+  jednostavno nema redova
 
 ### `users`
 
@@ -350,6 +387,15 @@ Samo za prikaz na `/billing`, puni se iz webhooka.
 | Kolona |
 |---|
 | id, agency_id, url, host, name, verified_at, verify_method (`dns`, `file`, `gsc`, `meta`), cms (`wordpress`, `shopify`, `static`, `unknown`), status, client_can_approve (bool), crawl_limit (default 500), schedule (`manual`, `weekly`, `monthly`), created_at, deleted_at |
+
+**Oblik ove tabele je fiksiran u B1, iako se sadržaj puni u fazi 3.** Razlog je odluka
+`0011`, tačka 1: o njoj ovisi da li `solo` nalog uopšte ima gdje da stane. `BEFORE INSERT`
+trigger koji poredi broj sajtova sa `agencies.site_limit` piše se odmah, jer se poslije
+piše nad podacima.
+
+`verify_method` nosi i metode iz `17-backend-spec.md`: DNS TXT zapis, fajl na
+`/.well-known`, meta tag, i OAuth kroz Search Console. Prva radi i kad je sajt potpuno
+nedostupan, što je razlog zašto je prva.
 
 ### `site_members`
 

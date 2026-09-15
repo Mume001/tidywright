@@ -38,3 +38,4 @@ Ako se promijeni, stari fajl ostaje i dobija status "zamijenjeno".
 | 0008 | Pet otvorenih tehničkih pitanja: Vercel, model, izvještaj odmah, Cloudflare Free, marketing tekstovi |
 | 0009 | Kad se dokument i nacrt ne slažu, nacrt pobjeđuje i dokument se ispravlja |
 | 0010 | Čiji je poziv na akciju, vlastita vidljivost, i šta smijemo obećati |
+| 0011 | Pet odgovora na pitanja iz backloga F1 |

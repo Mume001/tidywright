@@ -117,7 +117,7 @@ ostaje agencijin. Pretplata ide samo na auditu s naše domene.** Agencija je wid
 stavila zbog tog leada i ne uzimamo joj ga na njenoj stranici. Naš lijevak je besplatni
 javni audit na tidywright.com, koji dolazi u F3 i ne košta agenciju ništa.
 
-## 19. Sekvenca: agencije prvo ili self-serve prvo. OTVORENO, ČEKA MUMETA
+## 19. Sekvenca: agencije prvo ili self-serve prvo. OTVORENO, ČEKA MJERENJE
 
 Mume 14.09.2026: fokus ne smiju biti samo agencije, treba i vlasnici sajtova koji hoće
 sami sebi urediti sajt, jer ih ima daleko više.
@@ -150,18 +150,48 @@ devetom mjesecu, uz uslov da je stopa neuspjelih primjena ispod 1 posto i stopa 
 unazad ispod 5 posto. Rupa na tržištu je stvarna i tačno tamo gdje smo mi (19 do 39
 dolara, upisuje u CMS, sa pregledom i vraćanjem unazad), ali dugoročno, ne sada.
 
-**Šta treba odlučiti, konkretno tri stvari:**
+### Šta je odlučeno 15.09.2026.
 
-1. Prihvata li se ta sekvenca. Ako da, ništa se u planu gradnje ne mijenja.
-2. Radi li se test koji bi je oborio. Test je jeftin: besplatni javni audit na našoj
-   domeni i oko 2.000 posjetilaca. Ako više od 25 posto korisnika koji dobiju izvještaj
-   zaista poveže svoj sajt, ide se self-serve prvo. Traje 4 do 6 sedmica.
-3. Model podataka. Istraživanje traži da od početka podržava i organizaciju s više sajtova
-   i korisnika s jednim sajtom, jer je to jeftino sada i skupo za šest mjeseci. To dira
-   `docs/18-data-model.md` i mora biti riješeno **prije B1**, dakle ranije od svega
-   ostalog u ovom pitanju.
+**Model podataka je odlučen i više nije dio ovog pitanja.** Od prve migracije nosi oba
+oblika: organizaciju s više sajtova i korisnika s jednim sajtom. Vidi `decisions/0011`,
+tačka 1, i `docs/18-data-model.md`. **B1 je time odblokiran.**
 
-Tačka 3 je jedina koja blokira. Tačke 1 i 2 mogu čekati.
+**Do mjerenja: agencije naplaćuju, self-serve se gradi u istom kodu.** To nije odluka o
+sekvenci nego stanje mirovanja. Ništa u planu gradnje se ne mijenja, i ništa se ne gradi
+dvaput, jer je jezgro zajedničko po `docs/37`, sekcija 6.
+
+### Šta ovo pitanje sada traži: jedan broj, ne sastanak
+
+Sekvenca kanala se ne može odlučiti mišljenjem, jer obje strane imaju jak argument i
+nijedna nema podatak. Podatak koji ih razdvaja je jedan:
+
+> **Koliko posto ljudi koji dobiju besplatan izvještaj na našoj domeni zaista poveže svoj
+> sajt.**
+
+| | |
+|---|---|
+| Prag | **25 posto** |
+| Iznad praga | ide se self-serve prvo, cijela računica CAC-a se mijenja |
+| Ispod praga | ostaje agencijska sekvenca, self-serve naplata u šestom do devetom mjesecu |
+| Šta treba | audit stranica na tidywright.com i oko 2.000 posjetilaca |
+| Kad je moguće | **poslije F3**, jer audit stranica dolazi s marketinškim sajtom |
+| Koliko traje | 4 do 6 sedmica prikupljanja |
+
+Prag od 25 posto nije proizvoljan. Na 137 dolara dozvoljenog CAC-a i pet plaćenih kupaca
+na hiljadu posjetilaca, self-serve ne podnosi nijedan plaćeni kanal. Konverzija iznad 25
+posto znači da besplatni audit sam nosi akviziciju, a to je jedina okolnost u kojoj
+self-serve ekonomija radi bez čekanja od 12 do 24 mjeseca na organski saobraćaj.
+
+**Šta treba instrumentirati kad F3 dođe**, inače se broj ne može izračunati:
+
+1. Događaj po koraku lijevka: posjeta, pokrenut audit, ostavljen email, kreiran nalog,
+   **povezan sajt**, odobrena prva ispravka.
+2. Brojilac se računa **samo na auditima gdje je korisnik vlasnik domena**. Veliki dio
+   ljudi audituje tuđi sajt, iz radoznalosti ili konkurenciju, i te adrese ne konvertuju
+   nikad. Bez tog filtera broj je besmislen i previsok.
+3. Imenilac je "dobio izvještaj", ne "posjetio stranicu".
+
+Do tada ovo pitanje nema šta da čeka od Mumeta.
 
 ## 20. Kolačići i pristanak. OTVORENO
 

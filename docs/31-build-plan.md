@@ -76,11 +76,12 @@ changelog. Statičan. Može paralelno s B1 ako Mume piše tekstove.
 | Šta | Detalj |
 |---|---|
 | Supabase | projekat, Drizzle schema za faza 1 tabele iz `18-data-model.md`, migracija 0001, RLS politike, `audit_log` funkcija, trigger za JWT `agencies` |
+| **Dva oblika naloga** | `agencies.kind` (`agency`, `solo`), `site_limit`, nullable `slug`, i tabela `sites` sa trigger-om za limit. Odluka `0011` tačka 1: oblik vlasništva se postavlja u prvoj migraciji, jer je sada jedna kolona a za šest mjeseci migracija nad podacima. Sadržaj `sites` i dalje dolazi u fazi 3 |
 | Auth | `@supabase/ssr`, `getClaims()`, email potvrda kroz Resend SMTP, reset, novi uređaj email |
 | Rute | `agencies`, `branding`, `embed-keys`, `settings` iz `17-backend-spec.md`, zamjena MSW handlera pravim pozivima ekran po ekran |
 | Storage | `branding` bucket, upload logotipa, SVG sanitizer |
 | RLS test | prolazi za sve tabele |
-| Gotovo kad | Mume se registruje na stagingu, prođe onboarding, promijeni boju, vidi je u `/e/[key]` (koji sad čita pravu bazu) |
+| Gotovo kad | Mume se registruje na stagingu, prođe onboarding, promijeni boju, vidi je u `/e/[key]` (koji sad čita pravu bazu). Uz to: nalog s `kind = 'solo'` upisan ručno u bazu ne može dobiti drugi sajt ni embed ključ, i to pada na bazi a ne na UI-u |
 
 ### Preduslov za B2: kako se deklarišemo prema Cloudflareu
 
