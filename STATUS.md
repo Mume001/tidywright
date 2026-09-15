@@ -200,8 +200,9 @@ obnovljeni. Promjena od `prioritise()` se vidi u redu "Fix this first": blokator
 higijenu. Tri kartice popravki se **nisu** promijenile, jer ih u mocku pravi `buildFixes()`
 kao fiksni set; izbor tri popravke po uticaju dolazi u B3.
 
-Zastarjela su dva snimka koja nisu tražena: `form-1-idle-*` i `form-x-field-errors-*`,
-jer obrazac sada ima drugu kvačicu.
+`form-1-idle-*` i `form-x-field-errors-*` su takođe obnovljeni, na 1280 i 390 px, jer je
+obrazac dobio drugu kvačicu. Na njima se vidi da je neobavezna kvačica neoznačena i da uz
+nju nema greške kad se obrazac pošalje prazan, dok prva i dalje ima.
 
 ## Sljedeći korak
 
