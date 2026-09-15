@@ -89,7 +89,8 @@ ništa nije u planu gradnje dok se ne pretoči u odluku ili u zadatak.
 - Cilj koji je naveden: zadržati mogućnost slanja reklama na te adrese.
 - Napomena: popust pri odjavi je u redu, ali odjava mora ostati moguća u jednom
   koraku i bez uslova. Ovo treba provjeriti uz `docs/23-compliance.md`.
-- Otvoreno kao pitanje 22 u `11-open-questions.md`.
+- ZATVORENO 15.09.2026. odlukom `decisions/0011`, tačka 4: odjava ostaje jedan klik bez
+  uslova, popust ide na otkazivanje pretplate u fazi 2. Pitanje 22.
 
 ## I. Brending
 

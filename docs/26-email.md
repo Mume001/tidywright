@@ -115,6 +115,21 @@ saobraćajem beta agencija 4 sedmice.
 - Po agenciji: bounce > 5% ili complaint > 0,3% u 7 dana → ključ pauziran, email
   owneru, staff pregled. Ovo štiti dijeljenu domenu.
 
+### Odjava je jedan klik, bez uslova i bez ponude
+
+Odluka `0011`, tačka 4. Ovo je pravilo, ne stvar ukusa, i ne pregovara se.
+
+- `/u/[token]` odjavljuje **jednim klikom**. Nema koraka prije, nema "jesi li siguran",
+  nema ankete zašto odlazite, i **nema ponude popusta**.
+- Ista ruta prima i `POST` za jednoklik iz mail klijenta, po `List-Unsubscribe-Post`.
+- Traže to GDPR, CASL i CAN-SPAM, a CAN-SPAM izričito čini odgovornim i platformu i
+  agenciju. Ponuda na toj stranici nije prilika nego izloženost.
+- Adresa koja se odjavila ide u `suppressions` i više se ne koristi. To nije podešavanje
+  koje agencija može isključiti.
+- Ponuda da korisnik ostane postoji, ali na sasvim drugom mjestu: pri **otkazivanju
+  pretplate**, faza 2, vidi `docs/24-billing.md`. Odjava s emailova i otkazivanje
+  pretplate su dvije različite radnje dvije različite osobe.
+
 ## Newsletter i marketinški email
 
 Odluka `0011`, tačka 3. Dvije stvari koje se lako pobrkaju, a ne smiju se pomiješati.

@@ -155,6 +155,53 @@ newsletter na tu adresu je isto uzimanje leada, samo sporije i teže primjetno.
 
 ---
 
+## 4. Odjava ostaje jedan klik, popust ide na otkazivanje pretplate (pitanje 22)
+
+### Odluka
+
+**Odjava s emailova je jedan klik, bez uslova i bez ponude.** Nikakav popust, nikakva
+anketa, nikakav korak prije.
+
+**Popust ide samo na otkazivanje pretplate**, i to je faza 2 uz Stripe.
+
+**Godišnji plan se nudi pri kupovini, ne pri otkazivanju.**
+
+### Zašto
+
+U backlogu su bile pomiješane dvije radnje koje rade dvije različite osobe. Posjetilac se
+odjavljuje s emailova. Kupac otkazuje pretplatu. Nemaju isti odnos prema nama i nemaju
+ista pravila.
+
+Odjava: traže je GDPR, CASL i CAN-SPAM, a CAN-SPAM izričito čini odgovornim i platformu i
+agenciju. Ponuda na toj stranici nije prilika nego izloženost, i to naša i agencijina
+istovremeno. Uz to, cilj koji je bio naveden, zadržati mogućnost slanja reklama na te
+adrese, nije izvodiv ni sa najboljom ponudom: odjavljena adresa ide u `suppressions` i
+više se ne koristi. To nije podešavanje nego obaveza.
+
+Otkazivanje pretplate: ponuda je tu uobičajena i dozvoljena, i to je vjerovatno i bila
+namjera.
+
+Godišnji plan pri kupovini, a ne pri otkazivanju, iz jednostavnog razloga: ko je došao do
+dugmeta za otkazivanje već je odlučio, i popust u tom trenutku je naplata pažnje koju više
+nemamo. Mjesto gdje godišnja naplata stvarno radi je Checkout. Po
+`docs/37-self-serve-segment.md`, za proizvode ispod 25 dolara mjesečno ona daje **62 posto
+godišnjeg zadržavanja naspram 41 posto kod mjesečne**, razlika od 21 procentnog poena.
+Kod viših cijena ta prednost ne postoji. Dakle godišnji plan nije popust nego mehanizam
+preživljavanja, i vrijedi više od bilo čega ponuđenog na izlazu.
+
+### Posljedice
+
+- `docs/26-email.md`: `/u/[token]` odjavljuje jednim klikom, prima i `POST` za jednoklik
+  iz mail klijenta, nema ponude ni ankete, adresa ide u `suppressions`. Zapisano kao
+  pravilo koje se ne pregovara.
+- `docs/24-billing.md`: ponuda pri otkazivanju je jedan ekran prije potvrde, jedna ponuda,
+  dugme za otkazivanje uvijek vidljivo i nikad sivo, i ne pita se ponovo u istom periodu
+  ako je odbijena.
+- `docs/24-billing.md`: godišnja opcija stoji na ekranu cijena i u Checkoutu kao
+  ravnopravan izbor, ne kao sitni prekidač.
+
+---
+
 ## Šta ovo ne rješava
 
 Sekvenca kanala. Ona ostaje otvorena kao pitanje 19 i traži mjerenje, ne sastanak.

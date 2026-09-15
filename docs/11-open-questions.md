@@ -233,31 +233,24 @@ svi su bili prijavljeni bez pitanja. Popravljeno.
 
 Detalji u `docs/15-frontend-spec.md`, `docs/18-data-model.md` i `docs/26-email.md`.
 
-## 22. Popust na odjavi. OTVORENO
+## 22. Popust na odjavi. ZATVORENO
 
 Iz backloga, tačka H: na stranici odjave ponuditi popust da korisnik ostane još mjesec ili
-dva. Cilj koji je naveden: zadržati mogućnost slanja reklama na te adrese.
+dva, radi zadržavanja mogućnosti slanja reklama na te adrese.
 
-Ovdje se miješaju dvije različite odjave i to treba razdvojiti prije odluke.
+Zatvoreno odlukom `decisions/0011`, tačka 4. U pitanju su bile pomiješane dvije radnje
+koje rade dvije različite osobe.
 
-**Odjava s emailova (`/u/[token]`).** Mora ostati jedan klik, bez uslova, bez ponude,
-bez pitanja zašto. To traže i GDPR i CAN-SPAM i CASL, a CAN-SPAM izričito kaže da
-odgovaraju i platforma i agencija. Ponuda popusta na ovoj stranici nije opcija, nego
-rizik. Ovdje nema šta da se odlučuje.
+- **Odjava s emailova ostaje jedan klik, bez uslova i bez ponude.** Traže je GDPR, CASL i
+  CAN-SPAM, a CAN-SPAM čini odgovornim i platformu i agenciju. Odjavljena adresa ide u
+  `suppressions` i više se ne koristi, pa navedeni cilj ionako nije izvodiv.
+- **Popust ide samo na otkazivanje pretplate**, faza 2 uz Stripe: jedan ekran, jedna
+  ponuda, dugme za otkazivanje uvijek vidljivo.
+- **Godišnji plan se nudi pri kupovini, ne pri otkazivanju.** Ko je došao do dugmeta za
+  otkazivanje već je odlučio. Godišnja naplata daje 62 posto zadržavanja naspram 41 kod
+  mjesečne u ovoj cjenovnoj klasi, pa vrijedi više od bilo čega ponuđenog na izlazu.
 
-**Otkazivanje pretplate (faza 2, Stripe).** Ovdje je ponuda popusta uobičajena i
-dozvoljena, i vjerovatno je to i bila namjera. Uz to je istraživanje našlo tvrd argument
-za susjednu stvar: za proizvode ispod 25 dolara mjesečno **godišnja naplata daje 62 posto
-godišnjeg zadržavanja naspram 41 posto kod mjesečne**. Dvadeset jedan procentni poen.
-Godišnji plan nije popust nego mehanizam preživljavanja, i vrijedi više od popusta na
-izlazu.
-
-**Pitanje za Mumeta:** je li tačka H mislila na otkazivanje pretplate. Ako jeste, ide u
-fazu 2 uz Stripe. Ako je stvarno mislila na odjavu s emailova, odgovor je ne, i razlog je
-gore.
-
-Napomena o cilju "zadržati mogućnost slanja reklama": adresa koja se odjavila ide u
-suppression listu i više je ne koristimo. To nije podešavanje nego obaveza.
+Detalji u `docs/26-email.md` i `docs/24-billing.md`.
 
 ## 23. Na koji sloj se odnosi "brend mora biti samo naš". OTVORENO
 

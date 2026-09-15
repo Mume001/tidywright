@@ -123,6 +123,25 @@ Traka u app-u od dana 0: "Payment failed. Update your card to keep your features
   dashboarda. Godišnji plan proporcionalno u prvih 30 dana. Piše u uslovima.
 - Promjena plana kroz portal: proration uključen, Stripe računa razliku.
 
+### Ponuda pri otkazivanju
+
+Odluka `0011`, tačka 4. Ovdje se lako pobrkaju dvije različite stvari, pa stoje razdvojeno.
+
+**Otkazivanje pretplate** je jedino mjesto gdje ponuda uopšte dolazi u obzir, i to je faza
+2 uz Stripe. Jedan ekran prije potvrde, jedna ponuda, dugme za otkazivanje uvijek vidljivo
+i nikad sivo. Ako korisnik odbije, ne pita se ponovo u istom periodu.
+
+**Odjava s emailova nije ovdje i nikad neće biti.** Ona ostaje jedan klik bez uslova i bez
+ponude, vidi `docs/26-email.md`.
+
+**Godišnji plan se nudi pri kupovini, ne pri otkazivanju.** Ko je došao do dugmeta za
+otkazivanje već je odlučio, i popust u tom trenutku je naplata pažnje koju više nemamo.
+Mjesto gdje godišnji plan stvarno radi je Checkout: po `docs/37-self-serve-segment.md`,
+za proizvode ispod 25 dolara mjesečno godišnja naplata daje **62 posto godišnjeg
+zadržavanja naspram 41 posto kod mjesečne**, razlika od 21 procentnog poena. To nije
+popust nego mehanizam preživljavanja, i zato godišnja opcija stoji na ekranu cijena i u
+Checkoutu kao ravnopravan izbor, a ne kao sitni prekidač.
+
 ## Porez
 
 - Stripe Tax uključen, naplaćuje PDV/GST po lokaciji kupca kad pređemo prag registracije
