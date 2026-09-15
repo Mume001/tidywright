@@ -209,10 +209,12 @@ nju nema greške kad se obrazac pošalje prazan, dok prva i dalje ima.
 1. **Prijava u Cloudflare Verified Bots kreće odmah**, ne kad B2 dođe na red. Odobrenje
    traje od nekoliko sedmica do nekoliko mjeseci i nema SLA, a rok je prvi audit uživo.
    Vidi preduslov za B2 u `31-build-plan.md`.
-2. **F2: aplikacija, ekrani** (6 do 8 dana po `31-build-plan.md`). Auth ekrani, onboarding
-   u tri koraka, shell sa sidebarom i biračem agencije, `/overview`, `/leads`, `/audits`,
-   `/embed`, `/branding`, `/settings`, `/billing`, `/team`, i pet admin ekrana. Svaki ekran
-   četiri priče u Storybooku. **Gotovo kad Mume prođe sve ekrane i potpiše "ovo gradimo".**
+2. **F2, u dva dijela.** `F2a`: auth ekrani, onboarding u tri koraka, shell sa sidebarom i
+   biračem agencije, `/overview`. Onda **STOP**, snimci na 1280 i 390 px, i čeka se
+   potvrda. `F2b`: `/leads`, `/audits`, `/embed`, `/branding`, `/settings`, `/billing`,
+   `/team` i pet admin ekrana, bez zaustavljanja. Razlog za tačku na trećini: shell,
+   sidebar i birač agencije nose svaki ekran poslije njih, pa se greška tu množi sa
+   petnaest.
 3. Mume otvara naloge iz pitanja 15, redom kako trebaju.
 4. Otvoreno je i dalje pravno lice za Stripe (pitanje 9), smjer je Estonija, treba do
    kraja F2.

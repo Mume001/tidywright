@@ -101,7 +101,14 @@ ne pomaže pouzdano. Under Attack Mode ne pravi izuzetke ni za koga. Vlastito WA
 vlasnika sajta ima prednost nad svime. Zato verifikacija ide zajedno sa kaskadom dohvata
 i djelimičnim izvještajem iz `docs/17-backend-spec.md`, ne umjesto njih.
 
-### F2: aplikacija, ekrani (6 do 8 dana)
+### F2: aplikacija, ekrani (6 do 8 dana), u dva dijela
+
+**Dvije trećine ovog miljokaza stoje na prvoj.** Shell, sidebar i birač agencije nose
+svaki ekran poslije njih. Ako se poslije petnaest ekrana ispostavi da shell nije to, ide
+nazad i ono što je na njemu građeno. Zato F2 ima kontrolnu tačku na trećini, dodanu
+15.09.2026.
+
+#### F2a: temelj aplikacije, pa STOP
 
 | Šta | Detalj |
 |---|---|
@@ -109,12 +116,18 @@ i djelimičnim izvještajem iz `docs/17-backend-spec.md`, ne umjesto njih.
 | Onboarding | 3 koraka s Stepperom, embed kod, test audit dugme (mock) |
 | Shell | sidebar, top bar, birač agencije, ⌘K, 404, error boundary |
 | `/overview` | KPI kartice, graf 30 dana, zadnji leadovi, prazno stanje s uputstvom |
+| Gotovo kad | Snimci na 1280 i 390 px poslani Mumetu, **pa se čeka potvrda.** Ništa iz F2b ne kreće prije nje |
+
+#### F2b: ostali ekrani, bez zaustavljanja
+
+| Šta | Detalj |
+|---|---|
 | `/leads`, `/leads/[id]` | DataTable s filterima, statusi, Sheet s detaljem, Timeline, bilješke |
 | `/audits`, `/audits/[id]` | lista, detalj s ugrađenim izvještajem i tehničkim podacima (trošak vidi samo owner) |
 | `/embed` | ključevi, kod, allowed origins, EmbedPreview uživo |
 | `/branding` | obrazac, ColorPicker, FileUpload, živi pregled iframea |
-| `/settings` | profil, notifikacije, zadržavanje, webhook (UI), izvoz (UI), brisanje |
-| `/billing`, `/team` | UI s mockom, funkcionalnost u fazi 2, ali ekran postoji sada |
+| `/settings` | profil, notifikacije, zadržavanje, webhook (UI), izvoz (UI), brisanje, **prekidač za analitiku proizvoda** (`decisions/0011` tačka 2) |
+| `/billing`, `/team` | UI s mockom, funkcionalnost u fazi 2, ali ekran postoji sada. **Ekran cijena nosi godišnji plan kao ravnopravan izbor, ne kao popust u sitnom tekstu** (`decisions/0011` tačka 4) |
 | Admin | `/admin/agencies`, `/admin/audits`, `/admin/costs`, `/admin/abuse`, `/admin/flags`, s mockom |
 | Storybook | svaki ekran 4 priče, vizuelni snapshot |
 | Gotovo kad | Mume prođe sve ekrane u Storybooku i u `next dev` s MSW, i potpiše "ovo gradimo" |
