@@ -47,6 +47,25 @@ export const REFUSED_CODES: readonly FailureCode[] = ['blocked', 'challenge', 'r
 
 export type AuditVariant = 'full' | 'score_only'
 
+/**
+ * What a check is actually worth to search, as opposed to how loud it looks.
+ *
+ * A group weight says how much a whole area matters. This says how much one
+ * check matters, and the two are not the same: page tags holds both a missing
+ * title and a shouting one. Evidence per label is in docs/35-fix-effectiveness.md,
+ * the label per check is in docs/05-checks.md.
+ *
+ *   blocker   if it is wrong the page may not be crawled, indexed or served at
+ *             all. Binary. This is the only class we may call costly.
+ *   serp      changes how the page looks in results or when shared. Moves
+ *             clicks, not position.
+ *   quality   a real ranking factor that is neither binary nor a click lever:
+ *             thin content, duplicates, internal links, speed, trust signals.
+ *   hygiene   tidy, accessible, compliant, and with no measurable effect on
+ *             search. Still worth doing, never sold as SEO.
+ */
+export type CheckImpact = 'blocker' | 'serp' | 'quality' | 'hygiene'
+
 /** The groups the score is broken into. docs/05-checks.md. */
 export type CheckGroup =
   | 'indexing'

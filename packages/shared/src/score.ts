@@ -1,4 +1,10 @@
-import { GROUP_WEIGHTS, SEVERITY_WEIGHT } from './checks-catalog'
+import {
+  CHECK_IMPACT,
+  DEFAULT_IMPACT,
+  GROUP_WEIGHTS,
+  IMPACT_RANK,
+  SEVERITY_WEIGHT,
+} from './checks-catalog'
 import type { CheckGroup, CheckResult, Severity } from './types'
 
 /**
@@ -68,9 +74,18 @@ export function scoreChecks(checks: CheckResult[]): ScoreBreakdown {
 }
 
 /**
- * What the report leads with. Severity first, then group weight, so a broken
- * title outranks a missing skip link, and a fixable problem outranks one we can
- * only report. Nobody reads 176 rows; they read the first six.
+ * What the report leads with. Nobody reads 176 rows; they read the first six.
+ *
+ * Impact times severity decides the band, then group weight, then whether we can
+ * hand over a finished fix, then failure over warning. The first term is the one
+ * that changed after docs/35-fix-effectiveness.md: ordering by group weight alone
+ * put a shouting title above lorem ipsum, because page tags is a heavy group and
+ * content is a lighter one. Group weight says how much an area matters, which is
+ * not the same question as how much this one check is worth.
+ *
+ * Multiplied rather than added, on purpose. Adding would let a cosmetic SERP
+ * notice outrank a critical quality problem, which is the same mistake in a new
+ * coat. A missing title still leads. A shouting one no longer does.
  */
 export function prioritise(checks: CheckResult[], fixableCodes: ReadonlySet<string>): string[] {
   return checks
@@ -78,7 +93,7 @@ export function prioritise(checks: CheckResult[], fixableCodes: ReadonlySet<stri
     .map((c) => ({
       code: c.code,
       rank:
-        SEVERITY_WEIGHT[c.severity] * 100 +
+        IMPACT_RANK[CHECK_IMPACT[c.code] ?? DEFAULT_IMPACT] * SEVERITY_WEIGHT[c.severity] * 100 +
         (GROUP_WEIGHTS[c.group] ?? 0) +
         (fixableCodes.has(c.code) ? 10 : 0) +
         (c.status === 'fail' ? 5 : 0),

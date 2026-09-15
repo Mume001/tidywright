@@ -1,4 +1,4 @@
-import type { CheckGroup, Severity } from './types'
+import type { CheckGroup, CheckImpact, Severity } from './types'
 
 /**
  * The check catalogue. docs/05-checks.md.
@@ -33,7 +33,12 @@ export interface CheckDefinition {
   needs: ('html' | 'headers' | 'robots' | 'sitemap' | 'probe' | 'render' | 'crawl')[]
   /** 1 runs in the widget today. 3 needs the full site crawl. */
   phase: 1 | 3
+  /** What it is worth to search. Attached from CHECK_IMPACT, never typed twice. */
+  impact: CheckImpact
 }
+
+/** A row as it is written below, before the impact table is joined onto it. */
+type CheckSpec = Omit<CheckDefinition, 'impact'>
 
 const def = (
   code: string,
@@ -44,13 +49,13 @@ const def = (
   fixable: boolean,
   needs: CheckDefinition['needs'] = ['html'],
   phase: 1 | 3 = 1,
-): CheckDefinition => ({ code, group, severity, title, failText, fixable, needs, phase })
+): CheckSpec => ({ code, group, severity, title, failText, fixable, needs, phase })
 
 // ---------------------------------------------------------------------------
 // 1. Indexing. Can a search engine reach this page, read it, and know it is the
 //    one true copy. Everything else is worthless if this fails.
 // ---------------------------------------------------------------------------
-const INDEXING: CheckDefinition[] = [
+const INDEXING: CheckSpec[] = [
   def(
     'page_status',
     'indexing',
@@ -296,7 +301,7 @@ const INDEXING: CheckDefinition[] = [
 // 2. Page tags. The words Google shows in results. This is where most small
 //    sites lose their clicks, and where our fixes do the most obvious good.
 // ---------------------------------------------------------------------------
-const TAGS: CheckDefinition[] = [
+const TAGS: CheckSpec[] = [
   def(
     'title_present',
     'tags',
@@ -511,7 +516,7 @@ const TAGS: CheckDefinition[] = [
 // 3. Structured data. What turns a plain result into one with stars, hours, a
 //    map pin or a price. The single biggest untapped item on small sites.
 // ---------------------------------------------------------------------------
-const SCHEMA: CheckDefinition[] = [
+const SCHEMA: CheckSpec[] = [
   def(
     'jsonld_present',
     'structured_data',
@@ -678,7 +683,7 @@ const SCHEMA: CheckDefinition[] = [
 // 4. Content. Whether there is anything here worth ranking, and whether a
 //    visitor can act on it.
 // ---------------------------------------------------------------------------
-const CONTENT: CheckDefinition[] = [
+const CONTENT: CheckSpec[] = [
   def(
     'word_count',
     'content',
@@ -895,7 +900,7 @@ const CONTENT: CheckDefinition[] = [
 // 5. Images and media. The easiest wins on almost every site, and the ones a
 //    client can see the result of immediately.
 // ---------------------------------------------------------------------------
-const MEDIA: CheckDefinition[] = [
+const MEDIA: CheckSpec[] = [
   def(
     'img_alt_present',
     'media',
@@ -1022,7 +1027,7 @@ const MEDIA: CheckDefinition[] = [
 // 6. Social sharing. What the page looks like when somebody pastes it into
 //    WhatsApp, Facebook or Slack. Cheap to fix, visible to the client at once.
 // ---------------------------------------------------------------------------
-const SOCIAL: CheckDefinition[] = [
+const SOCIAL: CheckSpec[] = [
   def(
     'og_title',
     'social',
@@ -1136,7 +1141,7 @@ const SOCIAL: CheckDefinition[] = [
 //    the one request we already made. No PageSpeed call, no extra wait, and it
 //    still finds what actually makes small sites slow.
 // ---------------------------------------------------------------------------
-const PERFORMANCE: CheckDefinition[] = [
+const PERFORMANCE: CheckSpec[] = [
   def(
     'ttfb',
     'performance',
@@ -1276,7 +1281,7 @@ const PERFORMANCE: CheckDefinition[] = [
 // 8. Mobile. Most of these visitors are on a phone, and most small sites were
 //    checked on a laptop.
 // ---------------------------------------------------------------------------
-const MOBILE: CheckDefinition[] = [
+const MOBILE: CheckSpec[] = [
   def(
     'viewport_present',
     'mobile',
@@ -1348,7 +1353,7 @@ const MOBILE: CheckDefinition[] = [
 //    sees a warning leaves, and an agency that spots an exposed version number
 //    has a conversation to open.
 // ---------------------------------------------------------------------------
-const SECURITY: CheckDefinition[] = [
+const SECURITY: CheckSpec[] = [
   def(
     'mixed_content',
     'security',
@@ -1443,7 +1448,7 @@ const SECURITY: CheckDefinition[] = [
 //     carries legal weight in more and more countries, which is a real reason
 //     for an agency to call a prospect.
 // ---------------------------------------------------------------------------
-const ACCESSIBILITY: CheckDefinition[] = [
+const ACCESSIBILITY: CheckSpec[] = [
   def(
     'a11y_lang',
     'accessibility',
@@ -1558,6 +1563,250 @@ const ACCESSIBILITY: CheckDefinition[] = [
   ),
 ]
 
+/**
+ * What each check is actually worth to search. docs/05-checks.md holds the same
+ * table for people, docs/35-fix-effectiveness.md holds the evidence per label.
+ *
+ * It is a separate table rather than an eighth argument to def() because it was
+ * written in one pass from one document, and because reading it as a block is
+ * the only way to see that the shape is right: twenty blockers, not a hundred.
+ * A check missing from here throws on import, and the test says so more kindly.
+ */
+export const CHECK_IMPACT: Readonly<Record<string, CheckImpact>> = {
+  // Indexing. Everything that decides whether the page exists for a search
+  // engine at all. Canonicals are five checks here and one line in the research,
+  // so the count runs higher than its estimate of ten to fifteen.
+  page_status: 'blocker',
+  https_active: 'blocker',
+  https_redirect: 'blocker',
+  www_duplicate: 'blocker',
+  noindex: 'blocker',
+  robots_header_noindex: 'blocker',
+  robots_blocks: 'blocker',
+  robots_exists: 'hygiene', // a missing robots.txt means allow all, RFC 9309
+  robots_valid: 'blocker', // a malformed one can disallow by accident
+  robots_not_html: 'hygiene',
+  sitemap_declared: 'hygiene', // Google: under 500 pages you probably need none
+  sitemap_reachable: 'hygiene',
+  sitemap_valid: 'hygiene',
+  canonical_present: 'blocker',
+  canonical_absolute: 'blocker',
+  canonical_self: 'blocker',
+  canonical_single: 'blocker',
+  canonical_scheme: 'blocker',
+  redirect_chain: 'quality',
+  meta_refresh: 'blocker',
+  url_length: 'hygiene',
+  url_params: 'hygiene',
+  url_case: 'hygiene',
+  url_underscores: 'hygiene',
+  soft_404: 'blocker',
+  amp_link: 'hygiene',
+  hreflang_return: 'blocker', // for a multilingual site. Zero for one language
+  pagination_tags: 'hygiene',
+
+  // Page tags. Google rewrites 62 to 76 per cent of titles, so these raise the
+  // odds of keeping our words. They do not move position.
+  title_present: 'serp',
+  title_length: 'serp', // 51 to 60 characters is rewritten least, Zyppy
+  title_generic: 'serp',
+  title_brand_only: 'serp',
+  title_keyword_stuffed: 'serp',
+  title_single: 'serp',
+  title_caps: 'serp',
+  title_separators: 'serp', // a pipe is dropped or replaced 41 per cent of the time
+  meta_present: 'serp',
+  meta_length: 'serp',
+  meta_generic: 'serp',
+  meta_duplicate_title: 'serp',
+  meta_single: 'serp',
+  meta_keywords: 'hygiene', // Google does not read it
+  h1_present: 'serp', // an input to the title link, not a ranking factor
+  h1_single: 'serp',
+  h1_not_empty: 'serp',
+  h1_length: 'hygiene',
+  h1_differs_title: 'serp', // an h1 matching the title is rewritten far less
+  heading_order: 'hygiene', // Google: out of order does not matter to search
+  heading_not_empty: 'hygiene',
+  heading_count: 'quality',
+  lang_declared: 'hygiene', // Google detects language itself, this is for readers
+  lang_matches: 'hygiene',
+  charset_declared: 'quality', // mojibake is indexed, and indexed wrong
+  charset_early: 'hygiene',
+
+  // Structured data. Not a ranking factor. It qualifies a page for rich results,
+  // which is a click lever when it lands and nothing when it does not.
+  jsonld_present: 'serp',
+  jsonld_parses: 'serp',
+  jsonld_context: 'serp',
+  jsonld_type_known: 'serp',
+  org_present: 'serp',
+  org_required: 'serp',
+  localbusiness_address: 'serp',
+  localbusiness_phone: 'serp',
+  localbusiness_hours: 'serp',
+  localbusiness_geo: 'serp',
+  breadcrumb_present: 'serp',
+  website_schema: 'serp',
+  product_offers: 'serp',
+  product_availability: 'serp',
+  article_dates: 'serp',
+  faq_opportunity: 'hygiene', // Google is withdrawing the FAQ rich result
+  sameas_links: 'serp',
+  rating_unsupported: 'serp', // invented ratings lose the rich result, not the rank
+  schema_duplicate: 'serp',
+  microdata_only: 'hygiene',
+
+  // Content. Thin and duplicated content is the one on-page family a core update
+  // can genuinely punish. Contact details are trust, which is why they sit here.
+  word_count: 'quality',
+  text_ratio: 'hygiene',
+  placeholder_text: 'quality',
+  lorem_ipsum: 'quality',
+  coming_soon: 'quality',
+  duplicate_paragraphs: 'quality',
+  sentence_length: 'hygiene',
+  contact_phone: 'quality',
+  phone_clickable: 'hygiene',
+  contact_email: 'quality',
+  email_clickable: 'hygiene',
+  address_present: 'quality',
+  hours_present: 'hygiene',
+  cta_present: 'quality',
+  form_present: 'hygiene',
+  copyright_year: 'hygiene',
+  links_have_text: 'quality', // internal links are the only authority lever a small site owns
+  link_text_generic: 'quality',
+  links_not_empty: 'quality',
+  external_links_safe: 'hygiene',
+  internal_link_count: 'quality',
+  broken_internal_links: 'quality',
+  mixed_language: 'hygiene',
+  privacy_link: 'hygiene',
+  terms_link: 'hygiene',
+  thin_boilerplate: 'quality',
+
+  // Images and media. Alt text is accessibility and compliance, not search.
+  // The favicon is the exception: Google shows it in mobile results.
+  img_alt_present: 'hygiene',
+  img_alt_filename: 'hygiene',
+  img_alt_length: 'hygiene',
+  img_alt_stuffed: 'hygiene',
+  img_dimensions: 'quality', // missing dimensions are the usual cause of CLS
+  img_lazy: 'quality',
+  img_modern_format: 'quality',
+  img_srcset: 'quality',
+  img_count: 'hygiene',
+  img_inline_background: 'hygiene',
+  favicon_present: 'serp',
+  apple_icon: 'hygiene',
+  video_title: 'hygiene',
+  iframe_lazy: 'quality',
+  svg_accessible: 'hygiene',
+
+  // Social sharing. A share preview is a click lever on somebody else's surface.
+  og_title: 'serp',
+  og_description: 'serp',
+  og_image: 'serp',
+  og_image_absolute: 'serp',
+  og_image_size: 'serp',
+  og_image_loads: 'serp',
+  og_url: 'serp',
+  og_type: 'serp',
+  og_site_name: 'serp',
+  og_locale: 'hygiene',
+  twitter_card: 'serp',
+  twitter_image: 'serp',
+  social_profiles: 'hygiene',
+
+  // Speed. Core Web Vitals are a confirmed but weak ranking factor and a much
+  // better documented conversion factor. Sold as the second, never the first.
+  ttfb: 'quality',
+  html_size: 'quality',
+  compression: 'quality',
+  cache_headers: 'quality',
+  http_version: 'hygiene',
+  render_blocking_js: 'quality',
+  render_blocking_css: 'quality',
+  script_count: 'hygiene',
+  third_party_scripts: 'quality',
+  inline_styles: 'hygiene',
+  preconnect: 'hygiene',
+  font_display: 'hygiene',
+  font_count: 'hygiene',
+  third_party_fonts: 'hygiene',
+  dom_size: 'hygiene',
+  redirect_cost: 'quality',
+
+  // Mobile. Since July 2024 Google indexes with the smartphone crawler only, so
+  // a site that does not work on a phone is not a warning, it is not indexed.
+  viewport_present: 'blocker',
+  viewport_valid: 'blocker',
+  viewport_zoom: 'hygiene',
+  fixed_width: 'blocker',
+  font_size_small: 'hygiene',
+  tap_targets: 'hygiene',
+  theme_color: 'hygiene',
+  manifest: 'hygiene',
+
+  // Security and trust. Real work, and with one exception not search work.
+  mixed_content: 'blocker',
+  hsts: 'hygiene',
+  x_content_type: 'hygiene',
+  frame_protection: 'hygiene',
+  csp_present: 'hygiene',
+  referrer_policy: 'hygiene',
+  generator_exposed: 'hygiene',
+  outdated_library: 'hygiene',
+  server_header: 'hygiene',
+  cookies_secure: 'hygiene',
+
+  // Accessibility. Every one of these is hygiene for search and none of them is
+  // hygiene for the person using a screen reader. The label measures one thing.
+  a11y_lang: 'hygiene',
+  a11y_img_alt: 'hygiene',
+  a11y_form_labels: 'hygiene',
+  a11y_button_text: 'hygiene',
+  a11y_link_purpose: 'hygiene',
+  a11y_heading_order: 'hygiene',
+  a11y_landmarks: 'hygiene',
+  a11y_skip_link: 'hygiene',
+  a11y_tabindex: 'hygiene',
+  a11y_autofocus: 'hygiene',
+  a11y_iframe_title: 'hygiene',
+  a11y_table_headers: 'hygiene',
+  a11y_contrast_inline: 'hygiene',
+  a11y_focus_visible: 'hygiene',
+}
+
+/**
+ * How much one impact class outranks the next when the report decides what to
+ * lead with. Multiplied by severity rather than added to it, so a critical
+ * quality problem still beats a cosmetic SERP one. docs/05-checks.md.
+ */
+export const IMPACT_RANK: Record<CheckImpact, number> = {
+  blocker: 4,
+  serp: 3,
+  quality: 2,
+  hygiene: 1,
+}
+
+/** What a check with no label counts as. Only a code outside the catalogue. */
+export const DEFAULT_IMPACT: CheckImpact = 'quality'
+
+export const IMPACT_LABELS: Record<CheckImpact, string> = {
+  blocker: 'Blocks indexing',
+  serp: 'Changes how you appear',
+  quality: 'Quality and structure',
+  hygiene: 'Housekeeping',
+}
+
+const withImpact = (c: CheckSpec): CheckDefinition => {
+  const impact = CHECK_IMPACT[c.code]
+  if (!impact) throw new Error(`checks-catalog: ${c.code} has no impact label`)
+  return { ...c, impact }
+}
+
 /** Every check, in report order. */
 export const CHECKS: CheckDefinition[] = [
   ...INDEXING,
@@ -1570,7 +1819,7 @@ export const CHECKS: CheckDefinition[] = [
   ...MOBILE,
   ...SECURITY,
   ...ACCESSIBILITY,
-]
+].map(withImpact)
 
 /** What the widget runs today: everything that needs no crawl of the whole site. */
 export const PHASE_1_CHECKS = CHECKS.filter((c) => c.phase === 1)

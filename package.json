@@ -14,6 +14,7 @@
     "test": "turbo run test",
     "storybook": "pnpm --filter @tw/ui storybook",
     "build-storybook": "pnpm --filter @tw/ui build-storybook",
+    "docs:checks": "node --experimental-strip-types scripts/gen-checks-doc.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepare": "husky"

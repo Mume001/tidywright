@@ -2,9 +2,11 @@ import { describe, expect, it } from 'vitest'
 import {
   CHECKS,
   CHECKS_BY_CODE,
+  CHECK_IMPACT,
   GROUP_INTROS,
   GROUP_LABELS,
   GROUP_WEIGHTS,
+  IMPACT_RANK,
   PHASE_1_CHECKS,
 } from '../checks-catalog'
 import { ALL_GROUPS, prioritise, scoreChecks, scoreGroup } from '../score'
@@ -75,6 +77,37 @@ describe('catalogue integrity', () => {
   it('can repair a meaningful share of what it reports', () => {
     const fixable = PHASE_1_CHECKS.filter((c) => c.fixable).length
     expect(fixable / PHASE_1_CHECKS.length).toBeGreaterThan(0.55)
+  })
+})
+
+describe('impact labels', () => {
+  it('labels every check, and labels nothing that is not a check', () => {
+    const codes = new Set(CHECKS.map((c) => c.code))
+    for (const c of CHECKS) expect(CHECK_IMPACT[c.code], c.code).toBeDefined()
+    for (const code of Object.keys(CHECK_IMPACT)) expect(codes.has(code), code).toBe(true)
+  })
+
+  it('uses only the four labels', () => {
+    const allowed = new Set(Object.keys(IMPACT_RANK))
+    for (const c of CHECKS) expect(allowed.has(c.impact), `${c.code}: ${c.impact}`).toBe(true)
+  })
+
+  it('keeps blockers a short list, because that is the only claim we can make loudly', () => {
+    const blockers = CHECKS.filter((c) => c.impact === 'blocker')
+    expect(blockers.length).toBeGreaterThan(10)
+    expect(blockers.length).toBeLessThan(30)
+  })
+
+  it('calls no accessibility check a search blocker', () => {
+    for (const c of CHECKS.filter((c) => c.group === 'accessibility')) {
+      expect(c.impact, c.code).toBe('hygiene')
+    }
+  })
+
+  it('ranks the labels in the order the report reads them', () => {
+    expect(IMPACT_RANK.blocker).toBeGreaterThan(IMPACT_RANK.serp)
+    expect(IMPACT_RANK.serp).toBeGreaterThan(IMPACT_RANK.quality)
+    expect(IMPACT_RANK.quality).toBeGreaterThan(IMPACT_RANK.hygiene)
   })
 })
 
@@ -171,5 +204,40 @@ describe('what the report leads with', () => {
   it('leaves passing checks out of the priority list', () => {
     const order = prioritise([check('ok', 'tags', 'critical', 'pass')], new Set())
     expect(order).toEqual([])
+  })
+
+  it('puts a page Google cannot index above anything else', () => {
+    const order = prioritise(
+      [
+        check('title_present', 'tags', 'critical', 'fail'),
+        check('noindex', 'indexing', 'critical', 'fail'),
+      ],
+      new Set(['title_present', 'noindex']),
+    )
+    expect(order[0]).toBe('noindex')
+  })
+
+  it('puts lorem ipsum above a shouting title, which group weight alone did not', () => {
+    // title_caps is a notice in a group worth 18. lorem_ipsum is critical in a
+    // group worth 14. Before the impact label the lighter group lost.
+    const order = prioritise(
+      [
+        check('title_caps', 'tags', 'notice', 'fail'),
+        check('lorem_ipsum', 'content', 'critical', 'fail'),
+      ],
+      new Set(['title_caps']),
+    )
+    expect(order[0]).toBe('lorem_ipsum')
+  })
+
+  it('still ranks a missing title above a missing alt text', () => {
+    const order = prioritise(
+      [
+        check('img_alt_present', 'media', 'warning', 'fail'),
+        check('title_present', 'tags', 'critical', 'fail'),
+      ],
+      new Set(['img_alt_present', 'title_present']),
+    )
+    expect(order[0]).toBe('title_present')
   })
 })
