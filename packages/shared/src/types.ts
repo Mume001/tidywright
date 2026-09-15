@@ -12,16 +12,38 @@ export type LeadStatus = 'new' | 'contacted' | 'qualified' | 'won' | 'lost' | 's
 export type AuditStatus =
   'queued' | 'fetching' | 'checking' | 'generating' | 'done' | 'failed' | 'expired'
 
-/** Why an audit did not finish. The visitor sees a sentence per code, never the code. */
+/**
+ * Why an audit did not finish. The visitor sees a sentence per code, never the code.
+ *
+ * The class decides whether we retry, how long we wait, whether we escalate to the
+ * headless layer, and which sentence the report shows. docs/17-backend-spec.md has the
+ * behaviour of each one. challenge and blocked are not the same thing: the first is
+ * usually solved by a real browser, the second almost never is.
+ */
 export type FailureCode =
-  | 'fetch_timeout'
-  | 'blocked'
+  // the fetch itself
   | 'dns'
+  | 'connect'
+  | 'tls'
+  | 'timeout'
+  | 'http_client'
+  | 'http_server'
+  | 'ratelimit'
+  // they saw us and said no
+  | 'challenge'
+  | 'blocked'
+  | 'robots'
+  // we got something we cannot use
+  | 'content'
   | 'too_large'
+  // ours, not theirs
   | 'ssrf'
   | 'model'
   | 'model_rejected'
   | 'internal'
+
+/** Classes that mean the site refused us, rather than failed to answer. */
+export const REFUSED_CODES: readonly FailureCode[] = ['blocked', 'challenge', 'robots']
 
 export type AuditVariant = 'full' | 'score_only'
 

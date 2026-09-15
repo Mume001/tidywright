@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { buildReportLayout } from '@tw/shared'
+import { REFUSED_CODES, buildReportLayout } from '@tw/shared'
 import { ReportFailed, ReportGone } from '@tw/ui'
 import { BrandTheme } from '@/components/brand-theme'
 import { findAudit } from '@/lib/mock/audit-state'
@@ -80,7 +80,9 @@ export default async function ReportPage({ params, searchParams }: PageProps) {
             <ReportFailed
               agencyName={agency.name}
               host={host}
-              reason={audit.failureCode === 'blocked' ? 'blocked' : 'fetch'}
+              reason={
+                audit.failureCode && REFUSED_CODES.includes(audit.failureCode) ? 'blocked' : 'fetch'
+              }
               detail={audit.failureCode}
             />
           </Centred>

@@ -186,9 +186,9 @@ Jedan pokrenuti audit jedne stranice.
 | url | text | tačno šta smo dohvatili |
 | final_url | text null | poslije redirekta |
 | status | text | `queued`, `fetching`, `checking`, `generating`, `done`, `failed`, `expired`; CHECK |
-| failure_code | text null | `fetch_timeout`, `blocked`, `dns`, `too_large`, `ssrf`, `model`, `internal` |
+| failure_code | text null | `dns`, `connect`, `tls`, `timeout`, `http_client`, `http_server`, `ratelimit`, `challenge`, `blocked`, `robots`, `content`, `too_large`, `ssrf`, `model`, `model_rejected`, `internal`; CHECK. Klase i njihovo ponašanje su u `17-backend-spec.md` |
 | score | smallint null | 0 do 100 |
-| summary | jsonb null | `{groups: {technical: 80, content: 60, ...}, passed: [...], failed: [...], warnings: [...]}` |
+| summary | jsonb null | `{groups: {technical: 80, content: 60, ...}, passed: [...], failed: [...], warnings: [...], coverage: {ran, total}}`; `coverage` nosi djelimičan izvještaj i prikazuje se uz ocjenu |
 | result_path | text null | Storage putanja punog JSON-a |
 | variant | text | `full`, `score_only` |
 | fetch_ms, check_ms, model_ms | integer null | mjerenje |

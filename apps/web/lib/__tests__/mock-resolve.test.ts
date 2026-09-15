@@ -61,7 +61,7 @@ describe('demo aliases', () => {
 
     expect(audits.get(DEMO_TOKENS.scoreOnly)!.variant).toBe('score_only')
     expect(audits.get(DEMO_TOKENS.failedBlocked)!.failureCode).toBe('blocked')
-    expect(audits.get(DEMO_TOKENS.failedFetch)!.failureCode).toBe('fetch_timeout')
+    expect(audits.get(DEMO_TOKENS.failedFetch)!.failureCode).toBe('timeout')
     expect(audits.get(DEMO_TOKENS.expired)!.status).toBe('expired')
     expect(audits.get(DEMO_TOKENS.pending)!.status).toBe('queued')
   })

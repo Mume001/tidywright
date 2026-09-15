@@ -207,7 +207,7 @@ export function demoAudits(): Map<string, Audit> {
   map.set(DEMO_TOKENS.scoreOnly, { ...done, token: DEMO_TOKENS.scoreOnly, variant: 'score_only' })
 
   for (const [token, failureCode] of [
-    [DEMO_TOKENS.failedFetch, 'fetch_timeout'],
+    [DEMO_TOKENS.failedFetch, 'timeout'],
     [DEMO_TOKENS.failedBlocked, 'blocked'],
   ] as const) {
     map.set(token, {

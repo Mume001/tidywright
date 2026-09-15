@@ -354,7 +354,7 @@ export function buildMockData(seed = 42): MockData {
       failureCode: failed
         ? rng.weighted([
             ['blocked', 5],
-            ['fetch_timeout', 3],
+            ['timeout', 3],
             ['dns', 1],
           ])
         : null,

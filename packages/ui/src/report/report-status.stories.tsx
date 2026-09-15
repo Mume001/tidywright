@@ -57,7 +57,7 @@ export const FailedToFetch: StoryObj = {
       agencyName={agency.name}
       host="northwind-client.com"
       reason="fetch"
-      detail="fetch_timeout, no response in 10 s"
+      detail="timeout, no response in 10 s"
       onRetry={() => {}}
     />
   ),
